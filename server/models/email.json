@@ -17,7 +17,7 @@
 			"type": "text",
 			"read": true,
 			"write": true,
-			"component": "markdown"
+			"component": "textarea"
 		},
 		{
 			"name": "to",

@@ -4,12 +4,12 @@
             <div style="text-align: center; font-size: 2.5em">{{nbEmails}}</div>
             <div style="text-align: center">email{{ nbEmails > 1 ? 's' : '' }} sent</div>
         </div>
-        <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['mailjet'].from && app.addons.addonsConfig['mailjet'].apikey">
-            Emails are sent from <strong>{{app.addons.addonsConfig['mailjet'].from}}</strong> with <strong>Mailjet</strong>
-            <br>using the following Mailjet APIKey: <strong>{{app.addons.addonsConfig['mailjet'].apikey.substr(0, 5) + '*****' + app.addons.addonsConfig['mailjet'].apikey.substr(-5, 5)}}</strong>
+        <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
+            Emails are sent from <strong>{{app.addons.addonsConfig['@materia/mailjet'].from}}</strong> with <strong>Mailjet</strong>
+            <br>using the following Mailjet APIKey: <strong>{{app.addons.addonsConfig['@materia/mailjet'].apikey.substr(0, 5) + '*****' + app.addons.addonsConfig['@materia/mailjet'].apikey.substr(-5, 5)}}</strong>
             <br><a href="#">Edit the configuration</a>
         </div>
-        <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['mailjet'].from && app.addons.addonsConfig['mailjet'].apikey">
+        <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
             You need to configure this addon to send email in your application.
             <br><a href="#">Configure it now!</a>
         </div>
