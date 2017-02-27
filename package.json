@@ -1,0 +1,42 @@
+{
+  "name": "@materia/mailjet",
+  "version": "0.1.0",
+  "description": "Send emails in your application using Mailjet",
+  "main": "index.js",
+  "scripts": {
+    "start": "materia start --prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "materia": {
+    "display_name": "Mailjet",
+    "logo": "https://pbs.twimg.com/profile_images/811557097758461952/Q679jb7i.jpg",
+    "setup": [
+      {
+        "name": "apikey",
+        "description": "Enter your apikey",
+        "type": "string"
+      },
+      {
+        "name": "secret",
+        "description": "Enter your secret key",
+        "type": "string"
+      },
+      {
+        "name": "from",
+        "description": "Enter the email address (sender) attached with your apikey",
+        "type": "string"
+      },
+      {
+        "name": "name",
+        "description": "Enter the name you would like to see appear on your email",
+        "type": "string"
+      }
+
+    ]
+  },
+  "dependencies": {
+    "node-mailjet": "^3.0.6"
+  }
+}

@@ -1,0 +1,105 @@
+{
+	"id": "ea2047c9-dbed-443c-a6dd-348a0721b377",
+	"fields": [
+		{
+			"name": "id_email",
+			"type": "number",
+			"read": true,
+			"write": false,
+			"primary": true,
+			"unique": true,
+			"required": true,
+			"autoIncrement": true,
+			"component": "input"
+		},
+		{
+			"name": "body",
+			"type": "text",
+			"read": true,
+			"write": true,
+			"component": "markdown"
+		},
+		{
+			"name": "to",
+			"type": "text",
+			"read": true,
+			"write": true,
+			"required": true,
+			"component": "email"
+		},
+		{
+			"name": "from",
+			"type": "text",
+			"read": true,
+			"write": true,
+			"required": true,
+			"component": "email"
+		},
+		{
+			"name": "subject",
+			"type": "text",
+			"read": true,
+			"write": true,
+			"component": "input"
+		},
+		{
+			"name": "date_sent",
+			"type": "date",
+			"read": true,
+			"write": true,
+			"required": true,
+			"component": "dateTimePicker"
+		}
+	],
+	"relations": [],
+	"queries": [
+		{
+			"id": "send",
+			"type": "custom",
+			"opts": {
+				"params": [
+					{
+						"name": "to",
+						"type": "text",
+						"required": true,
+						"component": "email"
+					},
+					{
+						"name": "subject",
+						"type": "text",
+						"component": "input"
+					},
+					{
+						"name": "body",
+						"type": "text",
+						"component": "textarea"
+					}
+				],
+				"action": "send",
+				"model": "email"
+			}
+		},
+		{
+			"id": "latest",
+			"type": "findAll",
+			"opts": {
+				"select": [
+					"id_email",
+					"body",
+					"to",
+					"from",
+					"subject",
+					"date_sent"
+				],
+				"conditions": [],
+				"include": [],
+				"orderBy": [
+					{
+						"field": "date_sent",
+						"desc": true
+					}
+				]
+			}
+		}
+	]
+}
