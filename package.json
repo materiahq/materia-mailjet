@@ -1,6 +1,6 @@
 {
   "name": "@materia/mailjet",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Send emails in your application using Mailjet",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,6 @@
         "description": "Enter the name you would like to see appear on your email",
         "type": "string"
       }
-
     ]
   },
   "dependencies": {
