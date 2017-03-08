@@ -1,6 +1,6 @@
 const MailjetSender = require('../../lib/mailjet')
 
-class EmailModel {
+class MailjetModel {
 	constructor(app, entity) {
 		this.app = app;
 		this.entity = entity;
@@ -17,4 +17,4 @@ class EmailModel {
 	}
 }
 
-module.exports = EmailModel;
+module.exports = MailjetModel;

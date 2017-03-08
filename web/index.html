@@ -1,4 +1,4 @@
-<div ng-controller="EmailCtrl" layout="column" flex>
+<div ng-controller="MailjetCtrl" layout="column" flex>
     <div layout="row">
         <div md-colors="{background: 'deep-orange'}" style="width: 120px; padding: 10px 0 18px">
             <div style="text-align: center; font-size: 2.5em">{{nbEmails}}</div>
@@ -7,17 +7,21 @@
         <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
             Emails are sent from <strong>{{app.addons.addonsConfig['@materia/mailjet'].from}}</strong> with <strong>Mailjet</strong>
             <br>using the following Mailjet APIKey: <strong>{{app.addons.addonsConfig['@materia/mailjet'].apikey.substr(0, 5) + '*****' + app.addons.addonsConfig['@materia/mailjet'].apikey.substr(-5, 5)}}</strong>
-            <br><a href="#">Edit the configuration</a>
+            <br><a href ng-click="setup()">Edit the configuration</a>
         </div>
-        <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
+        <div style="padding-top: 15px; margin-left: 20px" flex ng-show="! app.addons.addonsConfig['@materia/mailjet'].from || !app.addons.addonsConfig['@materia/mailjet'].apikey">
             You need to configure this addon to send email in your application.
-            <br><a href="#">Configure it now!</a>
+            <br><a href ng-click="setup()">Configure it now!</a>
         </div>
     </div>
     <md-card flex>
         <md-card-header>
-            <md-card-header-text>
+            <md-card-header-text layout="row">
                 <span class="md-title">Latest emails sent</span>
+                <span flex></span>
+                <md-button ng-click="send($event)" class="md-icon-button">
+                    <md-icon>send</md-icon>
+                </md-button>
             </md-card-header-text>
         </md-card-header>
         <md-list>
