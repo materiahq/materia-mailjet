@@ -25,7 +25,7 @@
             </md-card-header-text>
         </md-card-header>
         <div ng-if="emails.length == 0" style="min-height: 140px;" layout-align="center center">
-            <p><strong>No email has been sent yet</strong></p>
+            <p style="padding-left: 16px"><strong>No email has been sent yet</strong></p>
             <md-button ng-click="send($event)">Send your first email now</md-button>
         </div>
         <md-list ng-if="emails.length > 0">
