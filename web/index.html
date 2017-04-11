@@ -1,5 +1,5 @@
 <div ng-controller="MailjetCtrl" layout="column" flex>
-    <div layout="row">
+    <div layout="row" style="min-height: 84px">
         <div md-colors="{background: 'deep-orange'}" style="width: 120px; padding: 10px 0 18px">
             <div style="text-align: center; font-size: 2.5em">{{nbEmails}}</div>
             <div style="text-align: center">email{{ nbEmails > 1 ? 's' : '' }} sent</div>
@@ -7,31 +7,43 @@
         <div style="padding-top: 15px; margin-left: 20px" flex ng-show="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
             Emails are sent from <strong>{{app.addons.addonsConfig['@materia/mailjet'].from}}</strong> with <strong>Mailjet</strong>
             <br>using the following Mailjet APIKey: <strong>{{app.addons.addonsConfig['@materia/mailjet'].apikey.substr(0, 5) + '*****' + app.addons.addonsConfig['@materia/mailjet'].apikey.substr(-5, 5)}}</strong>
-            <br><a href ng-click="setup()">Edit the configuration</a>
+            <br><a style="cursor:pointer; text-decoration: underline;" ng-click="setup()">Edit the configuration</a>
         </div>
         <div style="padding-top: 15px; margin-left: 20px" flex ng-show="! app.addons.addonsConfig['@materia/mailjet'].from || !app.addons.addonsConfig['@materia/mailjet'].apikey">
             You need to configure this addon to send email in your application.
-            <br><a href ng-click="setup()">Configure it now!</a>
+            <br><a style="cursor:pointer; text-decoration: underline;" href="setup()">Configure it now!</a>
         </div>
     </div>
-    <md-card flex>
+    <md-card>
         <md-card-header>
             <md-card-header-text layout="row">
                 <span class="md-title">Latest emails sent</span>
                 <span flex></span>
-                <md-button ng-click="send($event)" class="md-icon-button">
-                    <md-icon>send</md-icon>
+                <md-button ng-if="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey && app.addons.addonsConfig['@materia/mailjet'].secret" ng-click="send($event)" class="md-icon-button" style="margin-top: -15px; position: relative; top: 8px;">
+                    <md-tooltip>Send an email</md-tooltip>
                 </md-button>
             </md-card-header-text>
         </md-card-header>
-        <md-list>
-            <md-list-item ng-repeat="email in emails" layout="row">
-                <div style="overflow: hidden; text-overflow: ellipsis; width:190px; padding-right: 10px"><strong>{{ email.to }}</strong></div>
-                <span style="overflow: hidden; text-overflow: ellipsis;" flex>
-                    <strong>{{ email.subject }}</strong> - {{ email.body }}
-                </span>
-                <span style="width: 100px">{{email.date_sent | date}}</span>
-            </md-list-item>
+        <div ng-if="emails.length == 0" style="min-height: 140px;" layout-align="center center">
+            <p><strong>No email has been sent yet</strong></p>
+            <md-button ng-click="send($event)">Send your first email now</md-button>
+        </div>
+        <md-list ng-if="emails.length > 0">
+            <div ng-repeat="email in emails">
+                <md-divider ></md-divider>
+                <md-list-item style="margin-bottom: 1px solid #EEE" class="md-2-line">
+                    <div class="md-list-item-text" layout="column">
+                        <h3 style="font-size: 15px" layout="row">
+                            {{ email.to }}
+                            <span flex></span>
+                            <span style="font-size: 0.8rem">{{email.date_sent | date}}</span>
+                        </h3>
+                        <p class="text-line-1" flex>
+                            <strong>{{ email.subject }}</strong> - {{ email.body }}
+                        </p>
+                    </div>
+                </md-list-item>
+            </div>
         </md-list>
     </md-card>
 </div>
