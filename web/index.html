@@ -1,4 +1,4 @@
-<div ng-controller="MailjetCtrl" layout="column" flex>
+<div ng-controller="MailjetCtrl" layout="column">
     <div layout="row" style="min-height: 84px">
         <div md-colors="{background: 'deep-orange'}" style="width: 120px; padding: 10px 0 18px">
             <div style="text-align: center; font-size: 2.5em">{{nbEmails}}</div>
@@ -14,13 +14,14 @@
             <br><a style="cursor:pointer; text-decoration: underline;" href="setup()">Configure it now!</a>
         </div>
     </div>
-    <md-card>
-        <md-card-header>
+    <md-card style="overflow:auto;">
+        <md-card-header style="min-height: 30px;">
             <md-card-header-text layout="row">
                 <span class="md-title">Latest emails sent</span>
                 <span flex></span>
                 <md-button ng-if="app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey && app.addons.addonsConfig['@materia/mailjet'].secret" ng-click="send($event)" class="md-icon-button" style="margin-top: -15px; position: relative; top: 8px;">
                     <md-tooltip>Send an email</md-tooltip>
+                    <md-icon>send</md-icon>
                 </md-button>
             </md-card-header-text>
         </md-card-header>
@@ -30,7 +31,7 @@
         </div>
         <md-list ng-if="emails.length > 0">
             <div ng-repeat="email in emails">
-                <md-divider ></md-divider>
+                <md-divider></md-divider>
                 <md-list-item style="margin-bottom: 1px solid #EEE" class="md-2-line">
                     <div class="md-list-item-text" layout="column">
                         <h3 style="font-size: 15px" layout="row">
