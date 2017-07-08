@@ -1,6 +1,6 @@
 {
   "name": "@materia/mailjet",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Send emails in your application using Mailjet",
   "main": "index.js",
   "scripts": {
