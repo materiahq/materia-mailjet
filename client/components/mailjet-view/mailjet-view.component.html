@@ -1,0 +1,111 @@
+<div fxLayout="column" fxFlex class="mailjet">
+    <div fxLayout="row" style="height: 84px">
+        <div [style.background]="'#FF5722'" style="width: 120px; padding: 10px 0 18px; color: white;">
+            <div style="text-align: center; font-size: 2.5em">{{ nbEmails }}</div>
+            <div style="text-align: center">email{{ nbEmails > 1 ? 's' : '' }} sent</div>
+        </div>
+        <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
+            Emails are sent from
+            <strong>{{app.addons.addonsConfig['@materia/mailjet'].from}}</strong> with
+            <strong>Mailjet</strong>
+            <br>using the following Mailjet APIKey:
+            <strong>{{app.addons.addonsConfig['@materia/mailjet'].apikey.substr(0, 5) + '*****' + app.addons.addonsConfig['@materia/mailjet'].apikey.substr(-5,
+                5)}}
+            </strong>
+            <br>
+            <a style="cursor:pointer; text-decoration: underline;" (click)="setup()">Edit the configuration</a>
+        </div>
+        <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && (! app.addons.addonsConfig['@materia/mailjet'].from || !app.addons.addonsConfig['@materia/mailjet'].apikey)">
+            You need to configure this addon to send email in your application.
+            <br>
+            <a style="cursor:pointer; text-decoration: underline;" href="setup()">Configure it now!</a>
+        </div>
+    </div>
+    <mat-card fxFlex fxLayout="column">
+        <mat-tab-group fxFlex fxLayout="column">
+            <mat-tab label="Emails" fxLayout="column" fxFlex>
+                <div fxFlex fxLayout="column">
+                    <mat-card-title style="height: 50px; margin-bottom: 0px;">
+                        <div fxLayout="row" fxLayoutAlign="center center" style="height: 100%;">
+                            <span>Latest emails sent</span>
+                            <span fxFlex></span>
+                            <button mat-icon-button matTooltip="Send an email" *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey && app.addons.addonsConfig['@materia/mailjet'].secret"
+                                (click)="send($event)" style="margin-top: -15px; position: relative; top: 8px;">
+                                <mat-icon>send</mat-icon>
+                            </button>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-content fxFlex fxLayout="column" style="overflow:auto;">
+                        <div *ngIf="emails && emails.length == 0" style="min-height: 140px;" fxLayout="column" fxLayoutAlign="center center">
+                            <p style="padding-left: 16px; margin-bottom: 15px;">
+                                <strong>No email has been sent yet</strong>
+                            </p>
+                            <button mat-button color="primary" (click)="send($event)">Send your first email now</button>
+                        </div>
+                        <div fxLayout="row" fxFlex class="mailjet_email">
+                            <mat-list *ngIf="emails && emails.length > 0" style="width: 100%;" fxLayout="column">
+                                <div *ngFor="let email of emails" fxLayout="column">
+                                    <mat-list-item fxLayout="column" style="flex-direction: column !important;">
+                                        <div fxLayout="row" style="width: 100%;">
+                                            <h3 style="font-size: 15px; width: 100%; color: #FF5722;" fxLayout="row">
+                                                {{ email.to }}
+                                                <span fxFlex></span>
+                                                <span style="font-size: 0.8rem">{{email.date_sent | date}}</span>
+                                            </h3>
+                                        </div>
+                                        <div fxLayout="row" style="width: 100%;">
+                                            <p style="width: 100%; margin-top: 0px; font-size: 13px;">
+                                                <strong>{{ email.subject }}</strong> - {{ email.body }}
+                                            </p>
+                                        </div>
+                                    </mat-list-item>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </mat-list>
+                        </div>
+                    </mat-card-content>
+                </div>
+            </mat-tab>
+            <mat-tab label="Templates" fxLayout="column" fxFlex>
+                <div fxLayout="row" fxFlex>
+                    <div fxLayout="column" style="width: 150px;" fxLayoutAlign="start center">
+                        <div>
+                            <h3>Templates</h3>
+                        </div>
+                        <div *ngIf="! templates || (templates && ! templates.length)">
+                            <span>No template</span>
+                        </div>
+                        <div *ngIf="templates && templates.length" style="width: 100%;">
+                            <mat-nav-list style="width: 100%">
+                                <mat-divider></mat-divider>
+                                <div *ngFor="let template of templates" style="width: 100%;">
+                                    <mat-list-item (click)="selectTemplate(template)">{{template.name}}</mat-list-item>
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <div fxFlex fxLayout="column" *ngIf="templateSelected">
+                        <div fxFlex fxLayout="column">
+                            <div>
+                                <h3>{{ templateSelected.name }}</h3>
+                            </div>
+                            <materia-monaco-editor #editor [code]="templateSelected.code" [monacoEditorOpts]="{language: 'html', theme: 'vs-dark'}" (codeChange)="loadPreview($event)" fxFlex></materia-monaco-editor>
+                            <div fxLayout="row" fxLayoutAlign="center center" style="height: 50px;">
+                                <button mat-raised-button style="margin: 5px 0px">CANCEL</button>
+                                <button mat-raised-button style="margin: 5px 0px" color="primary">SAVE</button>
+
+                            </div>
+                        </div>
+                        <div fxFlex fxLayout="column" id="template-preview" [innerHTML]="code">
+
+                        </div>
+                        <div>
+                            <pre> {{ code }}</pre>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+</div>

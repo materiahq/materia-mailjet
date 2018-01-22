@@ -1,0 +1,35 @@
+:host {
+	flex: 1 1 0;
+	display: flex;
+	height: 100%;
+}
+
+mat-card {
+	margin: 8px;
+	padding: 0px;
+	mat-list.mat-list {
+		div {
+			mat-list-item.mat-list-item {
+				height: auto;
+			}
+		}
+	}
+}
+
+mat-tab {
+	padding: 8px;
+}
+
+.mailjet_email::ng-deep .mat-list-item-content {
+	flex-direction: column !important;
+}
+
+.mailjet::ng-deep .mat-tab-body-wrapper {
+	display: flex;
+	flex: 1;
+	.mat-tab-body-content {
+		display: flex;
+		flex: 1;
+	}
+}
+

@@ -79,6 +79,42 @@
 			}
 		},
 		{
+			"id": "sendTemplate",
+			"type": "custom",
+			"opts": {
+				"params": [
+					{
+						"name": "to",
+						"type": "text",
+						"required": true,
+						"component": "email"
+					},
+					{
+						"name": "subject",
+						"type": "text",
+						"component": "input"
+					},
+					{
+						"name": "body",
+						"type": "text",
+						"component": "textarea"
+					}
+				],
+				"action": "sendTemplate",
+				"model": "mailjet"
+			}
+		},
+		{
+			"id": "getTemplates",
+			"type": "custom",
+			"opts": {
+				"params": [
+				],
+				"action": "getTemplates",
+				"model": "mailjet"
+			}
+		},
+		{
 			"id": "latest",
 			"type": "findAll",
 			"opts": {
