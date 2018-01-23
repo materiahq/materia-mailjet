@@ -23,7 +23,6 @@ import { MailjetViewComponent } from "./components";
 
 // Addon class
 // export { UserManagementAddon } from "./user-management.addon";
-
 @NgModule({
 	imports: [
 		// Angular modules

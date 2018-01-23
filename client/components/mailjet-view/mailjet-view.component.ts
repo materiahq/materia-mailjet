@@ -3,24 +3,21 @@ const Component = ngcore.Component;
 const Input = ngcore.Input;
 import { OnInit } from "@angular/core";
 
-
 @Component({
 	selector: "materia-mailjet-view",
 	templateUrl: "./mailjet-view.component.html",
 	styleUrls: ["./mailjet-view.component.scss"]
 })
 export class MailjetViewComponent implements OnInit {
-	codes: any;
-	code: any;
+	lastUpdatedCode: any;
+	code: string;
 	templateSelected: any;
 	templates: any;
 	nbEmails: any;
 	emails = [];
 	@Input() app;
-	@Input() detectorRef;
 
-	constructor() {
-	}
+	constructor() {}
 
 	ngOnInit() {
 		console.log("Addon view INIT")
@@ -28,10 +25,8 @@ export class MailjetViewComponent implements OnInit {
 		this.loadTemplates();
 	}
 
-	// $scope.AddonsService = AddonsService
-
-	setup() {
-		// AddonsService.setup($rootScope.app.addons.get('@materia/mailjet'))
+	cancel() {
+		console.log("Click cancel")
 	}
 
 	send(ev) {
@@ -46,9 +41,8 @@ export class MailjetViewComponent implements OnInit {
 
 	init() {
 		if (this.app && this.app.entities && this.app.entities.get("mailjet")) {
-			console.log("Emails get latest query");
+
 			this.app.entities.get("mailjet").getQuery("latest").run().then(emails => {
-				console.log("Emails sent :", emails);
 				this.emails = [...emails.data];
 				this.nbEmails = emails.count;
 			}).catch(e => {
@@ -68,14 +62,17 @@ export class MailjetViewComponent implements OnInit {
 	}
 
 	selectTemplate(template) {
-		this.templateSelected = template;
+		this.templateSelected = Object.assign({}, template);
+		this.lastUpdatedCode = template.code;
 		this.loadPreview(template.code);
 	}
 
+	lastCodeEv(ev) {
+		this.lastUpdatedCode = ev;
+		return this.loadPreview(ev);
+	}
+
 	loadPreview(code) {
-		console.log("Load preview code : ", code);
-		this.code = code.trim();
-		console.log("This code :", this.code);
-		this.detectorRef.markForCheck();
+		this.code = code;
 	}
 }

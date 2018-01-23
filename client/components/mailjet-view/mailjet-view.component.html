@@ -86,23 +86,23 @@
                         </div>
                     </div>
                     <div fxFlex fxLayout="column" *ngIf="templateSelected">
-                        <div fxFlex fxLayout="column">
-                            <div>
-                                <h3>{{ templateSelected.name }}</h3>
+                        <mat-card fxFlex fxLayout="column" style="padding: 0px;">
+                            <div style="padding-left: 15px; height: 50px;">
+                                <div fxLayoutAlign="center center" style="height: 100%;">
+                                        <span style="font-size: 15px;">{{ templateSelected.name }}</span>
+                                </div>
                             </div>
-                            <materia-monaco-editor #editor [code]="templateSelected.code" [monacoEditorOpts]="{language: 'html', theme: 'vs-dark'}" (codeChange)="loadPreview($event)" fxFlex></materia-monaco-editor>
+                            <materia-monaco-editor #editor [code]="templateSelected.code" [monacoEditorOpts]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
+                                fxFlex></materia-monaco-editor>
                             <div fxLayout="row" fxLayoutAlign="center center" style="height: 50px;">
-                                <button mat-raised-button style="margin: 5px 0px">CANCEL</button>
-                                <button mat-raised-button style="margin: 5px 0px" color="primary">SAVE</button>
-
+                                <button mat-raised-button style="margin: 5px 0px" (click)="cancel($event)">CANCEL</button>
+                                <button mat-raised-button style="margin: 5px 0px" color="primary" (click)="loadPreview(lastUpdatedCode)">SAVE</button>
                             </div>
-                        </div>
-                        <div fxFlex fxLayout="column" id="template-preview" [innerHTML]="code">
-
-                        </div>
-                        <div>
-                            <pre> {{ code }}</pre>
-                        </div>
+                        </mat-card>
+                        <mat-card fxFlex fxLayout="column" style="padding: 0px;">
+                            <div fxFlex fxLayout="column" id="template-preview" [innerHTML]="code | safeHtml" *ngIf="code">
+                            </div>
+                        </mat-card>
                     </div>
                 </div>
             </mat-tab>
