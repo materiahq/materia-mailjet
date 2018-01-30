@@ -13,12 +13,12 @@
                 5)}}
             </strong>
             <br>
-            <a style="cursor:pointer; text-decoration: underline;" (click)="setup()">Edit the configuration</a>
+            <a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Edit the configuration</a>
         </div>
         <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && (! app.addons.addonsConfig['@materia/mailjet'].from || !app.addons.addonsConfig['@materia/mailjet'].apikey)">
             You need to configure this addon to send email in your application.
             <br>
-            <a style="cursor:pointer; text-decoration: underline;" href="setup()">Configure it now!</a>
+            <a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Configure it now!</a>
         </div>
     </div>
     <mat-card fxFlex fxLayout="column">

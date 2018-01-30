@@ -1,7 +1,9 @@
 const ngcore = (window as any).angular.core;
 const Component = ngcore.Component;
 const Input = ngcore.Input;
-import { OnInit } from "@angular/core";
+const Output = ngcore.Output;
+
+import { OnInit, EventEmitter } from "@angular/core";
 
 @Component({
 	selector: "materia-mailjet-view",
@@ -17,16 +19,18 @@ export class MailjetViewComponent implements OnInit {
 	emails = [];
 	@Input() app;
 
+	@Output() openSetup = new EventEmitter<void>();
+
 	constructor() {}
 
 	ngOnInit() {
-		console.log("Addon view INIT")
+		console.log("Addon view INIT");
 		this.init();
 		this.loadTemplates();
 	}
 
 	cancel() {
-		console.log("Click cancel")
+		console.log("Click cancel");
 	}
 
 	send(ev) {
