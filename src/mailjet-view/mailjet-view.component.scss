@@ -15,6 +15,13 @@ mat-card {
 		}
 	}
 }
+.templates {
+	mat-nav-list {
+		mat-divider {
+			width: 150px;
+		}
+	}
+}
 
 mat-tab {
 	padding: 8px;

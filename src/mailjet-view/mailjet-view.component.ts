@@ -1,10 +1,8 @@
-const ngcore = (window as any).angular.core;
-const Component = ngcore.Component;
-const Input = ngcore.Input;
-const Output = ngcore.Output;
 
-import { OnInit, EventEmitter } from "@angular/core";
+import { Component, OnInit, NgModule, Input, Output, EventEmitter } from "@angular/core";
+import { Extension } from 'plugins-core';
 
+@Extension("@materia/mailjet", [])
 @Component({
 	selector: "materia-mailjet-view",
 	templateUrl: "./mailjet-view.component.html",
@@ -79,4 +77,5 @@ export class MailjetViewComponent implements OnInit {
 	loadPreview(code) {
 		this.code = code;
 	}
+
 }
