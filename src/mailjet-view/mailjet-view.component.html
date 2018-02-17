@@ -1,5 +1,4 @@
 <div fxLayout="column" fxFlex class="mailjet">
-    HUAHAHAHA
     <div fxLayout="row" style="height: 84px">
         <div [style.background]="'#FF5722'" style="width: 120px; padding: 10px 0 18px; color: white;">
             <div style="text-align: center; font-size: 2.5em">{{ nbEmails }}</div>
@@ -25,9 +24,9 @@
     <mat-card fxFlex fxLayout="column">
         <mat-tab-group fxFlex fxLayout="column">
             <mat-tab label="Emails" fxLayout="column" fxFlex>
-                <div fxFlex fxLayout="column">
+                <div fxFlex fxLayout="column" style="height: 100%;">
                     <mat-card-title style="height: 50px; margin-bottom: 0px;">
-                        <div fxLayout="row" fxLayoutAlign="center center" style="height: 100%;">
+                        <div fxLayout="row" fxLayoutAlign="center center" style="height: 100%; padding: 0 5px;">
                             <span>Latest emails sent</span>
                             <span fxFlex></span>
                             <button mat-icon-button matTooltip="Send an email" *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey && app.addons.addonsConfig['@materia/mailjet'].secret"
@@ -68,16 +67,16 @@
                 </div>
             </mat-tab>
             <mat-tab label="Templates" fxLayout="column" fxFlex>
-                <div fxLayout="row" fxFlex>
-                    <div fxLayout="column" style="width: 150px;" fxLayoutAlign="start center">
+                <div fxLayout="row" style="height: 100%;">
+                    <mat-card fxLayout="column" fxLayoutAlign="start center" class="template-bar">
                         <div>
                             <h3>Templates</h3>
                         </div>
                         <div *ngIf="! templates || (templates && ! templates.length)">
                             <span>No template</span>
                         </div>
-                        <div *ngIf="templates && templates.length" style="width: 100%;">
-                            <mat-nav-list style="width: 100%">
+                        <div *ngIf="templates && templates.length" class="template-list">
+                            <mat-nav-list>
                                 <mat-divider></mat-divider>
                                 <div *ngFor="let template of templates" style="width: 100%;">
                                     <mat-list-item (click)="selectTemplate(template)">{{template.name}}</mat-list-item>
@@ -85,23 +84,23 @@
                                 </div>
                             </mat-nav-list>
                         </div>
-                    </div>
+                    </mat-card>
                     <div fxFlex fxLayout="column" *ngIf="templateSelected">
                         <mat-card fxFlex fxLayout="column" style="padding: 0px;">
                             <div style="padding-left: 15px; height: 50px;">
                                 <div fxLayoutAlign="center center" style="height: 100%;">
-                                        <span style="font-size: 15px;">{{ templateSelected.name }}</span>
+                                    <span style="font-size: 15px;">{{ templateSelected.name }}</span>
                                 </div>
                             </div>
-                            <materia-monaco-editor #editor [code]="templateSelected.code" [monacoEditorOpts]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
+                            <materia-monaco-editor #editor [code]="templateSelected.code" [options]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
                                 fxFlex></materia-monaco-editor>
                             <div fxLayout="row" fxLayoutAlign="center center" style="height: 50px;">
-                                <button mat-raised-button style="margin: 5px 0px" (click)="cancel($event)">CANCEL</button>
-                                <button mat-raised-button style="margin: 5px 0px" color="primary" (click)="loadPreview(lastUpdatedCode)">SAVE</button>
+                                <button mat-raised-button style="margin: 0px 5px" (click)="cancel($event)">CANCEL</button>
+                                <button mat-raised-button style="margin: 0px 5px" color="primary" (click)="saveTemplate()">SAVE</button>
                             </div>
                         </mat-card>
                         <mat-card fxFlex fxLayout="column" style="padding: 0px;">
-                            <div fxFlex fxLayout="column" id="template-preview" [innerHTML]="code | safeHtml" *ngIf="code">
+                            <div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode | safeHtml" *ngIf="lastUpdatedCode">
                             </div>
                         </mat-card>
                     </div>

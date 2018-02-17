@@ -22,7 +22,10 @@ export default {
     ],
     external: [
         'plugins-core',
+        '@angular/animations',
         '@angular/core',
-        '@angular/material'
+        '@angular/material',
+        '@angular/cdk',
+        '@angular/platform-browser'
     ]
 }

@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@angular/animations@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-5.2.5.tgz#3e72184321c4979305619c74902b8be92d76db70"
+  dependencies:
+    tslib "^1.7.1"
+
+"@angular/cdk@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-5.2.1.tgz#11500502deeaf42f88f92ca7d78d9a7642b07761"
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/core@^5.2.2":
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-5.2.5.tgz#24f9cd75c5b2728f2ddd1869777590ea7177bca9"

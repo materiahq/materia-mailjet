@@ -50,6 +50,25 @@ class MailjetSender {
         })
     }
 
+    saveTemplate(params) {
+        return new Promise((resolve, reject) => {
+            this._saveFile(params.name, params.content, params.appPath).then(d => resolve(d)).catch(e => reject(e));
+        })
+    }
+
+    _saveFile(filename, content, appPath) {
+        return new Promise((resolve, reject) => {
+            const p = appPath + "/server/mailjet/templates/" + filename;
+            fs.writeFile(p, content, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            })
+        })
+    }
+
     _listFiles(directory) {
         return new Promise((resolve, reject) => {
             const formatedFiles = []
@@ -99,11 +118,12 @@ class MailjetSender {
                     if (data) {
                         console.log("Result data content : ", data)
                         const code = data.toString();
-                        resolve({code: code, index: index});
+                        resolve({ code: code, index: index });
                     }
                 });
         })
     }
+
 }
 
 module.exports = MailjetSender

@@ -1,12 +1,14 @@
 
 import { Component, OnInit, NgModule, Input, Output, EventEmitter } from "@angular/core";
 import { Extension } from 'plugins-core';
+//import { MatSnackBarModule, MatSnackBar } from '@angular/material';
 
 @Extension("@materia/mailjet", [])
 @Component({
 	selector: "materia-mailjet-view",
 	templateUrl: "./mailjet-view.component.html",
-	styleUrls: ["./mailjet-view.component.scss"]
+	styleUrls: ["./mailjet-view.component.scss"],
+	providers: []
 })
 export class MailjetViewComponent implements OnInit {
 	lastUpdatedCode: any;
@@ -19,16 +21,27 @@ export class MailjetViewComponent implements OnInit {
 
 	@Output() openSetup = new EventEmitter<void>();
 
-	constructor() {}
+	constructor() { }
 
 	ngOnInit() {
-		console.log("Addon view INIT");
 		this.init();
 		this.loadTemplates();
 	}
 
 	cancel() {
-		console.log("Click cancel");
+		this.templateSelected = null;
+		this.lastUpdatedCode = null;
+	}
+
+	saveTemplate() {
+		if (this.app && this.app.entities && this.app.entities.get("mailjet")) {
+			this.app.entities.get("mailjet").getQuery("saveTemplate").run({ name: this.templateSelected.name, content: this.lastUpdatedCode }).then(result => {
+				this.templateSelected.code = this.lastUpdatedCode;
+				/*MatSnackBar.open("File successfully saved", "save", {
+					duration: 1500
+				})*/
+			}).catch(err => console.log("Error saving template : ", err));
+		}
 	}
 
 	send(ev) {
@@ -66,12 +79,10 @@ export class MailjetViewComponent implements OnInit {
 	selectTemplate(template) {
 		this.templateSelected = Object.assign({}, template);
 		this.lastUpdatedCode = template.code;
-		this.loadPreview(template.code);
 	}
 
 	lastCodeEv(ev) {
 		this.lastUpdatedCode = ev;
-		return this.loadPreview(ev);
 	}
 
 	loadPreview(code) {

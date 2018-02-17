@@ -30,6 +30,12 @@ class MailjetModel {
 			return files
 		})
 	}
+
+	saveTemplate(params) {
+		return this.emailSender.saveTemplate(Object.assign({}, params, {appPath: this.app.path})).then((files) => {
+			return files
+		})
+	}
 }
 
 module.exports = MailjetModel;
