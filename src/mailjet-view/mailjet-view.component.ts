@@ -1,9 +1,14 @@
 
 import { Component, OnInit, NgModule, Input, Output, EventEmitter } from "@angular/core";
-import { Extension } from 'plugins-core';
+import { Addon } from '@materia/addons';
 //import { MatSnackBarModule, MatSnackBar } from '@angular/material';
 
-@Extension("@materia/mailjet", [])
+@Addon({
+	package: "@materia/mailjet",
+	name: "Mailjet",
+	logo: "https://thyb.github.io/materia-website-content/logo/addons/mailjet.jpg",
+	deps: []
+})
 @Component({
 	selector: "materia-mailjet-view",
 	templateUrl: "./mailjet-view.component.html",

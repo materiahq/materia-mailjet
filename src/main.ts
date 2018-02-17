@@ -1,1 +1,1 @@
-export * from "./mailjet-view/mailjet-view.component";
+export { MailjetViewComponent } from "./mailjet-view/mailjet-view.component";
