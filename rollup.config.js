@@ -24,8 +24,12 @@ export default {
 		"@materia/addons",
 		"@angular/animations",
 		"@angular/core",
+		"@angular/common",
+		"@angular/common/http",
 		"@angular/material",
 		"@angular/cdk",
-		"@angular/platform-browser"
+		"@angular/platform-browser",
+		"rxjs",
+		"rxjs/operators"
 	]
 };

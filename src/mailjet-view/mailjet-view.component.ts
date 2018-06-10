@@ -1,5 +1,6 @@
 
-import { Component, OnInit, NgModule, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter, Inject } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
 import { Addon } from '@materia/addons';
 //import { MatSnackBarModule, MatSnackBar } from '@angular/material';
 
@@ -7,13 +8,13 @@ import { Addon } from '@materia/addons';
 	package: "@materia/mailjet",
 	name: "Mailjet",
 	logo: "https://thyb.github.io/materia-website-content/logo/addons/mailjet.jpg",
-	deps: []
+	deps: [ ]
 })
 @Component({
 	selector: "materia-mailjet-view",
 	templateUrl: "./mailjet-view.component.html",
 	styleUrls: ["./mailjet-view.component.scss"],
-	providers: []
+	providers: [ ]
 })
 export class MailjetViewComponent implements OnInit {
 	lastUpdatedCode: any;
@@ -23,10 +24,14 @@ export class MailjetViewComponent implements OnInit {
 	nbEmails: any;
 	emails = [];
 	@Input() app;
+	@Input() settings;
+	@Input() baseUrl: string;
 
 	@Output() openSetup = new EventEmitter<void>();
 
-	constructor() { }
+	constructor(
+		@Inject('HttpClient') private http: HttpClient
+	) { }
 
 	ngOnInit() {
 		this.init();
@@ -39,44 +44,31 @@ export class MailjetViewComponent implements OnInit {
 	}
 
 	saveTemplate() {
-		if (this.app && this.app.entities && this.app.entities.get("mailjet")) {
-			this.app.entities.get("mailjet").getQuery("saveTemplate").run({ name: this.templateSelected.name, content: this.lastUpdatedCode }).then(result => {
-				this.templateSelected.code = this.lastUpdatedCode;
-				/*MatSnackBar.open("File successfully saved", "save", {
-					duration: 1500
-				})*/
-			}).catch(err => console.log("Error saving template : ", err));
-		}
+		this.runQuery('mailjet', 'saveTemplate', {
+			name: this.templateSelected.name,
+			content: this.lastUpdatedCode 
+		}).then(result => {
+			this.templateSelected.code = this.lastUpdatedCode;
+			/*MatSnackBar.open("File successfully saved", "save", {
+				duration: 1500
+			})*/
+		}).catch(err => console.log("Error saving template : ", err));
 	}
 
 	send(ev) {
 		// QueryService.execute($rootScope.app.entities.get('mailjet').getQuery('send'), null, ev)
 	}
 
-	/* $rootScope.$on('query::run', (e, data) => {
-        if (data.entity == 'mailjet' && data.query == 'send') {
-            init()
-        }
-    })*/
-
 	init() {
-		if (this.app && this.app.entities && this.app.entities.get("mailjet")) {
-
-			this.app.entities.get("mailjet").getQuery("latest").run().then(emails => {
-				this.emails = [...emails.data];
-				this.nbEmails = emails.count;
-			}).catch(e => {
-				console.log("error", e, e.stack);
-			});
-		} else {
-			setTimeout(() => {
-				this.init();
-			}, 100);
-		}
+		this.runQuery('mailjet', 'latest')
+			.then(response => {
+				this.emails = [...response.data];
+				this.nbEmails = response.count;
+			})
 	}
 
 	loadTemplates() {
-		this.app.entities.get("mailjet").getQuery("getTemplates").run().then(files => {
+		this.runQuery('mailjet', 'getTemplates').then(files => {
 			this.templates = files;
 		});
 	}
@@ -94,4 +86,11 @@ export class MailjetViewComponent implements OnInit {
 		this.code = code;
 	}
 
+	private runQuery(entity: string, query: string, params?: any) {
+		return this.http
+			.post(`${this.baseUrl}/entities/${entity}/queries/${query}`, {
+				params: params
+			})
+			.toPromise()
+	}
 }

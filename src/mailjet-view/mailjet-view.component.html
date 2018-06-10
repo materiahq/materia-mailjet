@@ -1,21 +1,21 @@
 <div fxLayout="column" fxFlex class="mailjet">
-    <div fxLayout="row" style="height: 84px">
+    <div fxLayout="row" style="height: 84px; min-height: 84px;">
         <div [style.background]="'#FF5722'" style="width: 120px; padding: 10px 0 18px; color: white;">
             <div style="text-align: center; font-size: 2.5em">{{ nbEmails }}</div>
             <div style="text-align: center">email{{ nbEmails > 1 ? 's' : '' }} sent</div>
         </div>
-        <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey">
+        <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="settings && settings.from && settings.apikey">
             Emails are sent from
-            <strong>{{app.addons.addonsConfig['@materia/mailjet'].from}}</strong> with
+            <strong>{{settings.from}}</strong> with
             <strong>Mailjet</strong>
             <br>using the following Mailjet APIKey:
-            <strong>{{app.addons.addonsConfig['@materia/mailjet'].apikey.substr(0, 5) + '*****' + app.addons.addonsConfig['@materia/mailjet'].apikey.substr(-5,
+            <strong>{{settings.apikey.substr(0, 5) + '*****' + settings.apikey.substr(-5,
                 5)}}
             </strong>
             <br>
-            <a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Edit the configuration</a>
+            <a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Edit the settings</a>
         </div>
-        <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && (! app.addons.addonsConfig['@materia/mailjet'].from || !app.addons.addonsConfig['@materia/mailjet'].apikey)">
+        <div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="settings && (! settings.from || !settings.apikey)">
             You need to configure this addon to send email in your application.
             <br>
             <a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Configure it now!</a>
@@ -29,7 +29,7 @@
                         <div fxLayout="row" fxLayoutAlign="center center" style="height: 100%; padding: 0 5px;">
                             <span>Latest emails sent</span>
                             <span fxFlex></span>
-                            <button mat-icon-button matTooltip="Send an email" *ngIf="app && app.addons && app.addons.addonsConfig['@materia/mailjet'] && app.addons.addonsConfig['@materia/mailjet'].from && app.addons.addonsConfig['@materia/mailjet'].apikey && app.addons.addonsConfig['@materia/mailjet'].secret"
+                            <button mat-icon-button matTooltip="Send an email" *ngIf="settings && settings.from && settings.apikey && settings.secret"
                                 (click)="send($event)" style="margin-top: -15px; position: relative; top: 8px;">
                                 <mat-icon>send</mat-icon>
                             </button>

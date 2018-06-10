@@ -23,10 +23,11 @@
     "postinstall": "npm rebuild node-sass"
   },
   "dependencies": {
-    "@angular/animations": "^5.2.5",
-    "@angular/cdk": "^5.2.1",
-    "@angular/core": "^5.2.2",
-    "@angular/material": "^5.2.1",
+    "@angular/animations": "^6.0.3",
+    "@angular/cdk": "^6.0.3",
+    "@angular/common": "^6.0.3",
+    "@angular/core": "^6.0.3",
+    "@angular/material": "^6.0.3",
     "node-mailjet": "^3.0.6"
   },
   "devDependencies": {
