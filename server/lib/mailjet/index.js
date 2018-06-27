@@ -1,129 +1,158 @@
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
+
 class MailjetSender {
-    constructor(key, secret, from, name) {
-        this.from = from
+	constructor(key, secret, from, name) {
+		this.from = from
+		this.mailjet = require('node-mailjet').connect(key, secret);
+	}
 
-        this.mailjet = require('node-mailjet').connect(key, secret);
-    }
+	send(params) {
+		var sendEmail = this.mailjet.post('send');
 
-    send(params) {
-        var sendEmail = this.mailjet.post('send');
+		var emailData = {
+			'FromEmail': this.from,
+			'Subject': params.subject,
+			'Text-part': params.body,
+			'Recipients': [{
+				'Email': params.to
+			}]
+		}
+		if (this.name) {
+			emailData['FromName'] = this.name
+		}
 
-        var emailData = {
-            'FromEmail': this.from,
-            'Subject': params.subject,
-            'Text-part': params.body,
-            'Recipients': [{ 'Email': params.to }]
-        }
-        if (this.name) {
-            emailData['FromName'] = this.name
-        }
+		return sendEmail.request(emailData)
+	}
 
-        return sendEmail.request(emailData)
-    }
+	sendTemplate(params) {
+		var sendEmail = this.mailjet.post('send');
 
-    sendTemplate(params) {
-        var sendEmail = this.mailjet.post('send');
+		var emailData = {
+			'FromEmail': this.from,
+			'Subject': params.subject,
+			'Html-part': params.body,
+			'Recipients': [{
+				'Email': params.to
+			}]
+		}
+		if (this.name) {
+			emailData['FromName'] = this.name
+		}
 
-        var emailData = {
-            'FromEmail': this.from,
-            'Subject': params.subject,
-            'Html-part': params.body,
-            'Recipients': [{ 'Email': params.to }]
-        }
-        if (this.name) {
-            emailData['FromName'] = this.name
-        }
+		return sendEmail.request(emailData)
+	}
 
-        return sendEmail.request(emailData)
-    }
+	getTemplates(params) {
+		return new Promise((resolve, reject) => {
+			const p = path.join(params.appPath, 'server', 'mailjet', 'templates');
+			this._checkDirectory(p)
+				.then(() =>
+					this._listFiles(p)
+				)
+				.then(files => resolve(files))
+				.catch(() => resolve([]))
+		});
+	}
 
-    getTemplates(params) {
-        return new Promise((resolve, reject) => {
-            const p = params.appPath + "/server/mailjet/templates";
-            this._checkDirectory(p).then(() => {
-                this._listFiles(p).then(files => resolve(files)).catch(err => resolve([]));
-            }).catch(err => {
-                resolve([]);
-            })
-        })
-    }
+	saveTemplate(params) {
+		const p = path.join(params.appPath, 'server', 'mailjet', 'templates');
+		return this._checkDirectory(p)
+			.then(() => {
+				return this._saveFile(params.name, params.content, params.appPath);
+			}).catch(() => {
+				return this._createDirectory(p).then(() => {
+					return this._saveFile(params.name, params.content, params.appPath)
+				})
+			})
+	}
 
-    saveTemplate(params) {
-        return new Promise((resolve, reject) => {
-            this._saveFile(params.name, params.content, params.appPath).then(d => resolve(d)).catch(e => reject(e));
-        })
-    }
+	_saveFile(filename, content, appPath) {
+		return new Promise((resolve, reject) => {
+			const p = path.join(appPath, 'server', 'mailjet', 'templates', filename);
+			if (filename.indexOf('.html') === -1) {
+				p = `${p}.html`
+			}
+			fs.writeFile(p, content, (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			})
+		})
+	}
 
-    _saveFile(filename, content, appPath) {
-        return new Promise((resolve, reject) => {
-            const p = appPath + "/server/mailjet/templates/" + filename;
-            fs.writeFile(p, content, (err, result) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-            })
-        })
-    }
+	_listFiles(directory) {
+		return new Promise((resolve, reject) => {
+			const formatedFiles = []
+			fs.readdir(directory, (err, files) => {
+				if (err) {
+					reject(err)
+				}
+				if (files && files.length) {
+					files.forEach((file, index) => {
+						this._loadTemplateCode(directory, file, index).then((res) => {
+							formatedFiles.push({
+								name: files[res.index],
+								code: res.code
+							})
+							if (res.index === files.length - 1) {
+								resolve(formatedFiles);
+							}
+						})
+					})
+				} else {
+					resolve([]);
+				}
+			})
+		})
+	}
 
-    _listFiles(directory) {
-        return new Promise((resolve, reject) => {
-            const formatedFiles = []
-            fs.readdir(directory, (err, files) => {
-                if (err) {
-                    reject(err)
-                }
-                console.log("files result : ", files)
-                files.forEach((file, index) => {
-                    console.log("File : ", file);
-                    this._loadTemplateCode(directory, file, index).then((res) => {
-                        formatedFiles.push({ name: file, code: res.code })
-                        if (res.index == files.length - 1) {
-                            resolve(formatedFiles);
-                        }
-                    })
-                })
-            })
-        })
-    }
-    _checkDirectory(directory) {
-        return new Promise((resolve, reject) => {
-            fs.stat(directory, function (err, stats) {
-                //Check if error defined and the error code is "not exists"
-                if (err && err.errno === 34) {
-                    //Create the directory, call the callback.
-                    reject(err)
-                }
-                else if (!err) {
-                    resolve()
-                }
-                else {
-                    reject(err)
-                }
-            });
-        });
-    }
-    _loadTemplateCode(directory, filename, index) {
-        return new Promise((resolve, reject) => {
-            fs.readFile(
-                path.join(directory, filename),
-                "utf-8",
-                (err, data) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    if (data) {
-                        console.log("Result data content : ", data)
-                        const code = data.toString();
-                        resolve({ code: code, index: index });
-                    }
-                });
-        })
-    }
+	_createDirectory(p) {
+		return new Promise((resolve, reject) => {
+			fs.mkdir(p, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			})
+		})
+	}
 
+	_checkDirectory(directory) {
+		return new Promise((resolve, reject) => {
+			fs.stat(directory, (err, stats) => {
+				// Check if error defined and the error code is "not exists"
+				if (err && err.errno === 34) {
+					reject(err)
+				}
+				resolve();
+			});
+		});
+	}
+
+	_loadTemplateCode(directory, filename, index) {
+		return new Promise((resolve, reject) => {
+			fs.readFile(
+				path.join(directory, filename),
+				'utf-8',
+				(err, data) => {
+					let code;
+					if (err) {
+						code = '';
+					}
+					if (data) {
+						code = data.toString();
+					}
+					resolve({
+						code: code,
+						index: index
+					});
+				});
+		})
+	}
 }
 
 module.exports = MailjetSender

@@ -29,9 +29,13 @@
 							<span>Latest emails sent</span>
 							<span fxFlex></span>
 							<button mat-icon-button matTooltip="Send an email" *ngIf="settings && settings.from && settings.apikey && settings.secret"
-							    (click)="send($event)" style="margin-top: -15px; position: relative; top: 8px;">
+							    (click)="openSendDialog()" style="margin-top: -15px; position: relative; top: 8px;">
 								<mat-icon>send</mat-icon>
 							</button>
+							<button mat-icon-button matTooltip="Send a template" *ngIf="settings && settings.from && settings.apikey && settings.secret"
+							(click)="openSendTemplateDialog()" style="margin-top: -15px; position: relative; top: 8px; margin-left: 10px;">
+							<mat-icon>note_add</mat-icon>
+						</button>
 						</div>
 					</mat-card-title>
 					<mat-card-content fxFlex fxLayout="column">
@@ -39,7 +43,7 @@
 							<p style="padding-left: 16px; margin-bottom: 15px;">
 								<strong>No email has been sent yet</strong>
 							</p>
-							<button mat-button color="primary" (click)="send($event)">Send your first email now</button>
+							<button mat-button color="primary" (click)="openSendDialog()">Send your first email now</button>
 						</div>
 						<div fxLayout="row" fxFlex class="mailjet_email">
 							<mat-accordion fxFlex>
@@ -49,15 +53,16 @@
 											{{ email.to }}
 										</mat-panel-title>
 										<mat-panel-description>
-											{{ email.subject }} - <span style="font-size: 0.8rem">{{email.date_sent | date}}</span>
+											{{ email.subject }} -
+											<span style="font-size: 0.8rem">{{email.date_sent | date}}</span>
 										</mat-panel-description>
 									</mat-expansion-panel-header>
 
 									<ng-template matExpansionPanelContent>
-                                        <div class="email-body" fxLayout="column">
-                                            <span style="font-size: 15px;">Subject: {{email.subject}}</span>
-                                            <p>{{ email.body }}</p>
-                                        </div>
+										<div class="email-body" fxLayout="column">
+											<span style="font-size: 15px;">Subject: {{email.subject}}</span>
+											<p>{{ email.body }}</p>
+										</div>
 									</ng-template>
 								</mat-expansion-panel>
 							</mat-accordion>
@@ -66,10 +71,13 @@
 				</div>
 			</mat-tab>
 			<mat-tab label="Templates" fxLayout="column" fxFlex>
-				<div fxLayout="row" style="height: 100%;">
+				<div fxLayout="row" style="height: 100%;" *ngIf="templates?.length; else firstTemplate">
 					<mat-card fxLayout="column" fxLayoutAlign="start center" class="template-bar">
-						<div>
-							<h3>Templates</h3>
+						<div fxLayout="row" fxLayoutAlign="center center">
+							<h3 fxFlex>Templates</h3>
+							<button mat-mini-fab matTooltip="New template" (click)="newTemplate()" style="margin-left: 10px;">
+								<mat-icon>add</mat-icon>
+							</button>
 						</div>
 						<div *ngIf="! templates || (templates && ! templates.length)">
 							<span>No template</span>
@@ -78,32 +86,103 @@
 							<mat-nav-list>
 								<mat-divider></mat-divider>
 								<div *ngFor="let template of templates" style="width: 100%;">
-									<mat-list-item (click)="selectTemplate(template)">{{template.name}}</mat-list-item>
+									<mat-list-item (click)="selectTemplate(template)" [ngClass]="{'active': templateSelected && templateSelected.name === template.name}">{{template.name}}</mat-list-item>
 									<mat-divider></mat-divider>
 								</div>
 							</mat-nav-list>
 						</div>
 					</mat-card>
-					<div fxFlex fxLayout="column" *ngIf="templateSelected">
-						<mat-card fxFlex fxLayout="column" style="padding: 0px;">
-							<div style="padding-left: 15px; height: 50px;">
-								<div fxLayoutAlign="center center" style="height: 100%;">
-									<span style="font-size: 15px;">{{ templateSelected.name }}</span>
+					<div fxFlex fxLayout="column">
+						<div fxLayout="row" *ngIf="templateSelected" style="margin: 8px 0 0 8px;">
+							<mat-button-toggle [ngClass]="{'active': templateSelected.editorVisible}" (click)="templateSelected.editorVisible = !templateSelected.editorVisible"
+							    matTooltip="Editor">
+								<mat-icon>edit</mat-icon>
+							</mat-button-toggle>
+							<mat-button-toggle [ngClass]="{'active': templateSelected.previewVisible}" (click)="templateSelected.previewVisible = !templateSelected.previewVisible"
+							    matTooltip="Preview">
+								<mat-icon>pageview</mat-icon>
+							</mat-button-toggle>
+						</div>
+						<div fxFlex fxLayout="row" *ngIf="templateSelected">
+							<mat-card fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.editorVisible">
+								<div style="padding-left: 15px; height: 50px;">
+									<div fxLayoutAlign="center center" style="height: 100%;">
+										<span style="font-size: 15px;">{{ templateSelected.name }}</span>
+									</div>
 								</div>
-							</div>
-							<materia-monaco-editor #editor [code]="templateSelected.code" [options]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
-							    fxFlex></materia-monaco-editor>
-							<div fxLayout="row" fxLayoutAlign="center center" style="height: 50px;">
-								<button mat-raised-button style="margin: 0px 5px" (click)="cancel($event)">CANCEL</button>
-								<button mat-raised-button style="margin: 0px 5px" color="primary" (click)="saveTemplate()">SAVE</button>
-							</div>
-						</mat-card>
-						<mat-card fxFlex fxLayout="column" style="padding: 0px;">
-							<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode | safeHtml" *ngIf="lastUpdatedCode">
-							</div>
-						</mat-card>
+								<materia-monaco-editor #editor [code]="templateSelected.code" [options]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
+								    fxFlex></materia-monaco-editor>
+								<div fxLayout="row" fxLayoutAlign="center center" style="height: 50px;">
+									<button mat-raised-button style="margin: 0px 5px" color="primary" (click)="saveTemplate()" [disabled]="templateSelected.code === lastUpdatedCode">SAVE</button>
+								</div>
+							</mat-card>
+							<mat-card fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.previewVisible">
+								<div style="padding-left: 15px; height: 50px;">
+									<div fxLayoutAlign="center center" style="height: 100%;">
+										<span style="font-size: 15px;">Preview: {{ templateSelected.name }}</span>
+									</div>
+								</div>
+								<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode | safeHtml" *ngIf="lastUpdatedCode">
+								</div>
+							</mat-card>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="center center" *ngIf="templateSelected">
+							<button mat-raised-button style="margin: 0px 5px" (click)="cancel($event)">CANCEL</button>
+						</div>
+						<div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! templateSelected">
+							<span>No template selected</span>
+						</div>
 					</div>
 				</div>
+				<ng-template #firstTemplate>
+					<div fxFlex fxLayout="column" style="height: 100%;" fxLayoutAlign="center center">
+						<p>You haven't any html template yet</p>
+						<button mat-raised-button (click)="newTemplate()">NEW TEMPLATE</button>
+					</div>
+				</ng-template>
+				<ng-template #templateDialog>
+					<form>
+						<h1>New html template</h1>
+						<mat-form-field>
+							<input matInput placeholder="Template name" [formControl]="templateName">
+						</mat-form-field>
+					</form>
+					<button mat-raised-button color="primary" (click)="addTemplate()">Save</button>
+				</ng-template>
+				<ng-template #sendDialog>
+					<form fxLayout="column">
+						<h1>Send an email</h1>
+						<mat-form-field>
+							<input matInput placeholder="Subject" [formControl]="subject">
+						</mat-form-field>
+						<mat-form-field>
+							<textarea matInput placeholder="Body" [formControl]="body"></textarea>
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="To" [formControl]="to">
+						</mat-form-field>
+					</form>
+					<button mat-raised-button color="primary" (click)="send()">Send</button>
+				</ng-template>
+				<ng-template #sendTemplateDialog>
+						<form fxLayout="column">
+							<h1>Send an email</h1>
+							<mat-form-field>
+								<input matInput placeholder="Subject" [formControl]="subject">
+							</mat-form-field>
+							<mat-form-field>
+									<mat-select placeholder="Template" [formControl]="templateControl">
+									  <mat-option *ngFor="let t of templates" [value]="t.name">
+										{{ t.name }}
+									  </mat-option>
+									</mat-select>
+								  </mat-form-field>
+							<mat-form-field>
+								<input matInput placeholder="To" [formControl]="to">
+							</mat-form-field>
+						</form>
+						<button mat-raised-button color="primary" (click)="sendTemplate()">Send</button>
+					</ng-template>
 			</mat-tab>
 		</mat-tab-group>
 	</mat-card>

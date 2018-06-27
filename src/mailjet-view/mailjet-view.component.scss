@@ -38,4 +38,10 @@ mat-tab {
 .template-list {
 	width: 100%;
 }
-
+:host::ng-deep mat-list-item.active {
+	border-right: 4px solid #2196f3;
+}
+:host::ng-deep mat-button-toggle.active {
+	background: #2196f3;
+	color: white;
+}

@@ -27,6 +27,7 @@
     "@angular/cdk": "^6.0.3",
     "@angular/common": "^6.0.3",
     "@angular/core": "^6.0.3",
+    "@angular/forms": "^6.0.3",
     "@angular/material": "^6.0.3",
     "node-mailjet": "^3.0.6"
   },

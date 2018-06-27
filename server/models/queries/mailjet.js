@@ -26,15 +26,11 @@ class MailjetModel {
 	}
 
 	getTemplates() {
-		return this.emailSender.getTemplates({appPath: this.app.path}).then((files) => {
-			return files
-		})
+		return this.emailSender.getTemplates({appPath: this.app.path});
 	}
 
 	saveTemplate(params) {
-		return this.emailSender.saveTemplate(Object.assign({}, params, {appPath: this.app.path})).then((files) => {
-			return files
-		})
+		return this.emailSender.saveTemplate(Object.assign({}, params, {appPath: this.app.path}));
 	}
 }
 

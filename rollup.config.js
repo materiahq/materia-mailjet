@@ -23,6 +23,7 @@ export default {
 	external: [
 		"@materia/addons",
 		"@angular/animations",
+		"@angular/forms",
 		"@angular/core",
 		"@angular/common",
 		"@angular/common/http",
