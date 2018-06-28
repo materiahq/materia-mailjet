@@ -85,23 +85,23 @@ class MailjetSender {
 
 	_listFiles(directory) {
 		return new Promise((resolve, reject) => {
-			const formatedFiles = []
+			const formatedFiles = [];
+			let p = Promise.resolve();
+
 			fs.readdir(directory, (err, files) => {
 				if (err) {
-					reject(err)
+					reject(err);
 				}
 				if (files && files.length) {
 					files.forEach((file, index) => {
-						this._loadTemplateCode(directory, file, index).then((res) => {
-							formatedFiles.push({
-								name: files[res.index],
-								code: res.code
-							})
-							if (res.index === files.length - 1) {
-								resolve(formatedFiles);
-							}
-						})
-					})
+						p = p.then(() => this._loadTemplateCode(directory, file, index).then((res) => {
+						   formatedFiles.push({
+							  name: files[res.index],
+							  code: res.code
+						   });
+						}));
+					 });
+					 p.then(() => resolve(formatedFiles));
 				} else {
 					resolve([]);
 				}
