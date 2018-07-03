@@ -44,27 +44,20 @@ class MailjetSender {
 	}
 
 	getTemplates(params) {
-		return new Promise((resolve, reject) => {
-			const p = path.join(params.appPath, 'server', 'mailjet', 'templates');
-			this._checkDirectory(p)
-				.then(() =>
-					this._listFiles(p)
-				)
-				.then(files => resolve(files))
-				.catch(() => resolve([]))
-		});
+		const mailjetDir = path.join(params.appPath, 'server', 'mailjet');
+		const templateDir = path.join(params.appPath, 'server', 'mailjet', 'templates');
+		let p = Promise.resolve();
+		p = p.then(() => this._checkDirectory(mailjetDir))
+		p = p.then(() => this._checkDirectory(templateDir))
+		p = p.then(() => this._listFiles(templateDir))
+		return p.then(files => files)
+			.catch(() => {
+				return []
+			})
 	}
 
 	saveTemplate(params) {
-		const p = path.join(params.appPath, 'server', 'mailjet', 'templates');
-		return this._checkDirectory(p)
-			.then(() => {
-				return this._saveFile(params.name, params.content, params.appPath);
-			}).catch(() => {
-				return this._createDirectory(p).then(() => {
-					return this._saveFile(params.name, params.content, params.appPath)
-				})
-			})
+		return this._saveFile(params.name, params.content, params.appPath)
 	}
 
 	_saveFile(filename, content, appPath) {
@@ -76,9 +69,8 @@ class MailjetSender {
 			fs.writeFile(p, content, (err, result) => {
 				if (err) {
 					reject(err);
-				} else {
-					resolve();
 				}
+				resolve();
 			})
 		})
 	}
@@ -95,13 +87,13 @@ class MailjetSender {
 				if (files && files.length) {
 					files.forEach((file, index) => {
 						p = p.then(() => this._loadTemplateCode(directory, file, index).then((res) => {
-						   formatedFiles.push({
-							  name: files[res.index],
-							  code: res.code
-						   });
+							formatedFiles.push({
+								name: files[res.index],
+								code: res.code
+							});
 						}));
-					 });
-					 p.then(() => resolve(formatedFiles));
+					});
+					p.then(() => resolve(formatedFiles));
 				} else {
 					resolve([]);
 				}
@@ -110,26 +102,21 @@ class MailjetSender {
 	}
 
 	_createDirectory(p) {
-		return new Promise((resolve, reject) => {
-			fs.mkdir(p, (err) => {
-				if (err) {
-					reject(err);
-				} else {
-					resolve();
-				}
-			})
-		})
+		return fs.mkdir(p, (err) => {
+			if (err) {
+				return Promise.reject(err);
+			}
+			return Promise.resolve();
+		});
 	}
 
 	_checkDirectory(directory) {
-		return new Promise((resolve, reject) => {
-			fs.stat(directory, (err, stats) => {
-				// Check if error defined and the error code is "not exists"
-				if (err && err.errno === 34) {
-					reject(err)
-				}
-				resolve();
-			});
+		return fs.stat(directory, (err, stats) => {
+			// Check if error defined and the error code is "not exists"
+			if (err && err.code === 'ENOENT') {
+				return this._createDirectory(directory);
+			}
+			return Promise.resolve();
 		});
 	}
 
