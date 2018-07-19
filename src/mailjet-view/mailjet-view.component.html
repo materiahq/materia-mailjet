@@ -93,7 +93,7 @@
 						</div>
 					</mat-card>
 					<div fxFlex fxLayout="column">
-						<div fxLayout="row" *ngIf="templateSelected" style="margin: 8px 0 0 8px;">
+						<!--<div fxLayout="row" *ngIf="templateSelected">
 							<mat-button-toggle [ngClass]="{'active': templateSelected.editorVisible}" (click)="templateSelected.editorVisible = !templateSelected.editorVisible"
 							    matTooltip="Editor">
 								<mat-icon>edit</mat-icon>
@@ -102,31 +102,20 @@
 							    matTooltip="Preview">
 								<mat-icon>pageview</mat-icon>
 							</mat-button-toggle>
-						</div>
+						</div>-->
 						<div fxFlex fxLayout="row" *ngIf="templateSelected">
-							<mat-card fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.editorVisible">
-								<div style="padding-left: 15px; height: 50px;">
-									<div fxLayoutAlign="center center" style="height: 100%;">
-										<span style="font-size: 15px;">{{ templateSelected.name }}</span>
-									</div>
+							<div fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.editorVisible">
+								<ngx-monaco-editor #editor [code]="templateSelected.code" [options]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
+									fxFlex>
+								</ngx-monaco-editor>
+							</div>
+							<div fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.previewVisible">
+								<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode" *ngIf="lastUpdatedCode">
 								</div>
-								<materia-monaco-editor #editor [code]="templateSelected.code" [options]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
-								    fxFlex></materia-monaco-editor>
-								<div fxLayout="row" fxLayoutAlign="center center" style="height: 50px;">
-									<button mat-raised-button style="margin: 0px 5px" color="primary" (click)="saveTemplate()" [disabled]="templateSelected.code === lastUpdatedCode">SAVE</button>
-								</div>
-							</mat-card>
-							<mat-card fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.previewVisible">
-								<div style="padding-left: 15px; height: 50px;">
-									<div fxLayoutAlign="center center" style="height: 100%;">
-										<span style="font-size: 15px;">Preview: {{ templateSelected.name }}</span>
-									</div>
-								</div>
-								<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode | safeHtml" *ngIf="lastUpdatedCode">
-								</div>
-							</mat-card>
+							</div>
 						</div>
-						<div fxLayout="row" fxLayoutAlign="center center" *ngIf="templateSelected">
+						<div fxLayout="row" fxLayoutAlign="center center" *ngIf="templateSelected" [style.height.px]="50">
+							<button mat-raised-button style="margin: 0px 5px" color="primary" (click)="saveTemplate()" *ngIf="templateSelected.editorVisible" [disabled]="templateSelected.code === lastUpdatedCode">SAVE</button>
 							<button mat-raised-button style="margin: 0px 5px" (click)="cancel($event)">CANCEL</button>
 						</div>
 						<div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! templateSelected">

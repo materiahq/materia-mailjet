@@ -119,7 +119,7 @@ export class MailjetViewComponent implements OnInit {
 	}
 
 	selectTemplate(template) {
-		this.templateSelected = Object.assign({}, template, {editorVisible: false, previewVisible: true});
+		this.templateSelected = Object.assign({}, template, {editorVisible: true, previewVisible: true});
 		this.lastUpdatedCode = template.code;
 	}
 
