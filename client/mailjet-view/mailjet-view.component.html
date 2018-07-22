@@ -1,0 +1,178 @@
+<div fxLayout="column" fxFlex class="mailjet">
+	<div fxLayout="row" style="height: 84px; min-height: 84px;">
+		<div [style.background]="'#FF5722'" style="width: 120px; padding: 10px 0 18px; color: white;">
+			<div style="text-align: center; font-size: 2.5em">{{ nbEmails || 0 }}</div>
+			<div style="text-align: center">email{{ nbEmails > 1 ? 's' : '' }} sent</div>
+		</div>
+		<div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="settings && settings.from && settings.apikey">
+			Emails are sent from
+			<strong>{{settings.from}}</strong> with
+			<strong>Mailjet</strong>
+			<br>using the following Mailjet APIKey:
+			<strong>{{settings.apikey.substr(0, 5) + '*****' + settings.apikey.substr(-5, 5)}}
+			</strong>
+			<br>
+			<a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Edit the settings</a>
+		</div>
+		<div style="padding-top: 15px; margin-left: 20px" fxFlex *ngIf="settings && (! settings.from || !settings.apikey)">
+			You need to configure this addon to send email in your application.
+			<br>
+			<a style="cursor:pointer; text-decoration: underline;" (click)="openSetup.emit()">Configure it now!</a>
+		</div>
+	</div>
+	<mat-card fxFlex fxLayout="column">
+		<mat-tab-group fxFlex fxLayout="column">
+			<mat-tab label="Emails" fxLayout="column" fxFlex>
+				<div fxFlex fxLayout="column">
+					<mat-card-title style="height: 50px; margin-bottom: 0px;">
+						<div fxLayout="row" fxLayoutAlign="center center" style="height: 100%; padding: 0 5px;">
+							<span>Latest emails sent</span>
+							<span fxFlex></span>
+							<button mat-icon-button matTooltip="Send an email" *ngIf="settings && settings.from && settings.apikey && settings.secret"
+							    (click)="openSendDialog()" style="margin-top: -15px; position: relative; top: 8px;">
+								<mat-icon>send</mat-icon>
+							</button>
+							<button mat-icon-button matTooltip="Send a template" *ngIf="settings && settings.from && settings.apikey && settings.secret"
+							(click)="openSendTemplateDialog()" style="margin-top: -15px; position: relative; top: 8px; margin-left: 10px;">
+							<mat-icon>note_add</mat-icon>
+						</button>
+						</div>
+					</mat-card-title>
+					<mat-card-content fxFlex fxLayout="column">
+						<div *ngIf="emails && emails.length == 0" style="min-height: 140px;" fxLayout="column" fxLayoutAlign="center center">
+							<p style="padding-left: 16px; margin-bottom: 15px;">
+								<strong>No email has been sent yet</strong>
+							</p>
+							<button mat-button color="primary" (click)="openSendDialog()">Send your first email now</button>
+						</div>
+						<div fxLayout="row" fxFlex class="mailjet_email">
+							<mat-accordion fxFlex>
+								<mat-expansion-panel *ngFor="let email of emails">
+									<mat-expansion-panel-header>
+										<mat-panel-title>
+											{{ email.to }}
+										</mat-panel-title>
+										<mat-panel-description>
+											{{ email.subject }} -
+											<span style="font-size: 0.8rem">{{email.date_sent | date}}</span>
+										</mat-panel-description>
+									</mat-expansion-panel-header>
+
+									<ng-template matExpansionPanelContent>
+										<div class="email-body" fxLayout="column">
+											<span style="font-size: 15px;">Subject: {{email.subject}}</span>
+											<p>{{ email.body }}</p>
+										</div>
+									</ng-template>
+								</mat-expansion-panel>
+							</mat-accordion>
+						</div>
+					</mat-card-content>
+				</div>
+			</mat-tab>
+			<mat-tab label="Templates" fxLayout="column" fxFlex>
+				<div fxLayout="row" style="height: 100%; width: 100%" *ngIf="templates?.length; else firstTemplate">
+					<mat-card fxLayout="column" fxLayoutAlign="start center" class="template-bar">
+						<div fxLayout="row" fxLayoutAlign="center center">
+							<h3 fxFlex>Templates</h3>
+							<button mat-mini-fab matTooltip="New template" (click)="newTemplate()" style="margin-left: 10px;">
+								<mat-icon>add</mat-icon>
+							</button>
+						</div>
+						<div *ngIf="! templates || (templates && ! templates.length)">
+							<span>No template</span>
+						</div>
+						<div *ngIf="templates && templates.length" class="template-list">
+							<mat-nav-list>
+								<mat-divider></mat-divider>
+								<div *ngFor="let template of templates" style="width: 100%;">
+									<mat-list-item (click)="selectTemplate(template)" [ngClass]="{'active': templateSelected && templateSelected.name === template.name}">{{template.name}}</mat-list-item>
+									<mat-divider></mat-divider>
+								</div>
+							</mat-nav-list>
+						</div>
+					</mat-card>
+					<div fxFlex fxLayout="column">
+						<!--<div fxLayout="row" *ngIf="templateSelected">
+							<mat-button-toggle [ngClass]="{'active': templateSelected.editorVisible}" (click)="templateSelected.editorVisible = !templateSelected.editorVisible"
+							    matTooltip="Editor">
+								<mat-icon>edit</mat-icon>
+							</mat-button-toggle>
+							<mat-button-toggle [ngClass]="{'active': templateSelected.previewVisible}" (click)="templateSelected.previewVisible = !templateSelected.previewVisible"
+							    matTooltip="Preview">
+								<mat-icon>pageview</mat-icon>
+							</mat-button-toggle>
+						</div>-->
+						<div fxFlex fxLayout="row" *ngIf="templateSelected">
+							<div fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.editorVisible">
+								<ngx-monaco-editor #editor [code]="templateSelected.code" [options]="{language: 'html', theme: 'vs-dark'}" (codeChange)="lastCodeEv($event)"
+									fxFlex>
+								</ngx-monaco-editor>
+							</div>
+							<div fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.previewVisible">
+								<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode" *ngIf="lastUpdatedCode">
+								</div>
+							</div>
+						</div>
+						<div fxLayout="row" fxLayoutAlign="center center" *ngIf="templateSelected" [style.height.px]="50">
+							<button mat-raised-button style="margin: 0px 5px" color="primary" (click)="saveTemplate()" *ngIf="templateSelected.editorVisible" [disabled]="templateSelected.code === lastUpdatedCode">SAVE</button>
+							<button mat-raised-button style="margin: 0px 5px" (click)="cancel()">CANCEL</button>
+						</div>
+						<div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! templateSelected">
+							<span>No template selected</span>
+						</div>
+					</div>
+				</div>
+				<ng-template #firstTemplate>
+					<div fxFlex fxLayout="column" style="height: 100%;" fxLayoutAlign="center center">
+						<p>You haven't any html template yet</p>
+						<button mat-raised-button (click)="newTemplate()">NEW TEMPLATE</button>
+					</div>
+				</ng-template>
+				<ng-template #templateDialog>
+					<form>
+						<h1>New html template</h1>
+						<mat-form-field>
+							<input matInput placeholder="Template name" [formControl]="templateName">
+						</mat-form-field>
+					</form>
+					<button mat-raised-button color="primary" (click)="addTemplate()">Save</button>
+				</ng-template>
+				<ng-template #sendDialog>
+					<form fxLayout="column">
+						<h1>Send an email</h1>
+						<mat-form-field>
+							<input matInput placeholder="Subject" [formControl]="subject">
+						</mat-form-field>
+						<mat-form-field>
+							<textarea matInput placeholder="Body" [formControl]="body"></textarea>
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="To" [formControl]="to">
+						</mat-form-field>
+					</form>
+					<button mat-raised-button color="primary" (click)="send()">Send</button>
+				</ng-template>
+				<ng-template #sendTemplateDialog>
+						<form fxLayout="column">
+							<h1>Send an email</h1>
+							<mat-form-field>
+								<input matInput placeholder="Subject" [formControl]="subject">
+							</mat-form-field>
+							<mat-form-field>
+									<mat-select placeholder="Template" [formControl]="templateControl">
+									  <mat-option *ngFor="let t of templates" [value]="t.name">
+										{{ t.name }}
+									  </mat-option>
+									</mat-select>
+								  </mat-form-field>
+							<mat-form-field>
+								<input matInput placeholder="To" [formControl]="to">
+							</mat-form-field>
+						</form>
+						<button mat-raised-button color="primary" (click)="sendTemplate()">Send</button>
+					</ng-template>
+			</mat-tab>
+		</mat-tab-group>
+	</mat-card>
+</div>

@@ -1,1 +1,0 @@
-export { MailjetViewComponent } from "./mailjet-view/mailjet-view.component";
