@@ -31,6 +31,7 @@
     "@angular/core": "^6.0.9",
     "@angular/flex-layout": "^6.0.0-beta.16",
     "@angular/material": "^6.4.0",
+    "@angular/platform-browser": "^6.0.9",
     "@materia-ui/ngx-monaco-editor": "^1.0.0"
   },
   "devDependencies": {

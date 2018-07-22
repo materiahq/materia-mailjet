@@ -110,7 +110,7 @@
 								</ngx-monaco-editor>
 							</div>
 							<div fxFlex fxLayout="column" style="padding: 0px;" *ngIf="templateSelected.previewVisible">
-								<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode" *ngIf="lastUpdatedCode">
+								<div fxFlex fxLayout="column" id="template-preview" [innerHTML]="lastUpdatedCode | safeTemplate" *ngIf="lastUpdatedCode">
 								</div>
 							</div>
 						</div>

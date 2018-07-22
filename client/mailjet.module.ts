@@ -42,6 +42,7 @@ export const UI_MODULES = [
 import { Addon } from '@materia/addons';
 
 import { MailjetViewComponent } from './mailjet-view/mailjet-view.component';
+import { SafeTemplatePipe } from './safe-template.pipe';
 
 @Addon('@materia/mailjet')
 @NgModule({
@@ -52,7 +53,7 @@ import { MailjetViewComponent } from './mailjet-view/mailjet-view.component';
     HttpClientModule,
     ...UI_MODULES
   ],
-  declarations: [MailjetViewComponent],
-  exports: [MailjetViewComponent]
+  declarations: [MailjetViewComponent, SafeTemplatePipe],
+  exports: [MailjetViewComponent, SafeTemplatePipe]
 })
 export class MailjetModule {}
