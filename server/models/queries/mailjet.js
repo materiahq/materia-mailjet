@@ -8,12 +8,7 @@ class MailjetModel {
 	}
 
 	send(params) {
-		return this.emailSender.send(params).then(() => {
-			params.from = this.app.addons.addonsConfig['@materia/mailjet'].from
-			params.date_sent = new Date()
-			return this.entity.getQuery('create')
-				.run(params)
-		})
+		return this.emailSender.send(params);
 	}
 
 	sendTemplate(params) {
@@ -31,6 +26,43 @@ class MailjetModel {
 
 	saveTemplate(params) {
 		return this.emailSender.saveTemplate(Object.assign({}, params, {appPath: this.app.path}));
+	}
+
+	getUserDetails() {
+		return this.emailSender.getUserDetails().then((result) => {
+			return result.body.Data;
+		}).catch(err => {
+			console.log(err);
+			return err;
+		})
+	}
+	getStats(params) {
+		return this.emailSender.getStats(params).then((result) => {
+			return result.body.Data;
+		}).catch(err => {
+			console.log(err);
+			return err;
+		})
+	}
+	getAPIKeyStats() {
+		return this.emailSender.getAPIKeyStats().then((result) => result.body.Data).catch(err => err);
+	}
+	getMailjetTemplates() {
+		return this.emailSender.getMailjetTemplates().then((result) => result.body.Data).catch(err => err);
+	}
+	getMessages(params) {
+		return this.emailSender.getMessages(params).then((result) => result.body.Data).catch(err => err);
+	}
+	getCampaigns() {
+		return this.emailSender.getCampaigns().then((result) => result.body.Data).catch(err => err);
+	}
+	getContacts() {
+		return this.emailSender.getContacts().then((result) => {
+			return result.body.Data;
+		}).catch(err => {
+			console.log(err);
+			return err;
+		})
 	}
 }
 

@@ -1,0 +1,25 @@
+<img src="https://pbs.twimg.com/profile_images/811557097758461952/Q679jb7i.jpg">
+<div class="settings-detail" fxFlex *ngIf="settings && settings.from && settings.apikey">
+  Emails are sent from
+  <strong>{{settings.from}}</strong> with
+  <strong>Mailjet</strong>
+  <br>using the following Mailjet APIKey:
+  <strong>{{settings.apikey.substr(0, 5) + '*****' + settings.apikey.substr(-5, 5)}}
+  </strong>
+  <br>
+  <a class="settings-link" (click)="settingsOpened.emit()">Edit the settings</a>
+</div>
+<div class="settings-detail" fxFlex *ngIf="settings && (! settings.from || !settings.apikey)">
+  You need to configure this addon to send email in your application.
+  <br>
+  <a class="settings-link" (click)="settingsOpened.emit()">Configure it now!</a>
+</div>
+<div fxLayout="column" fxLayoutAlign="start center" *ngIf="settings && settings.from && settings.apikey">
+  <button mat-raised-button color="primary" (click)="sendDialogOpened.emit()">Send a test email</button>
+</div>
+<div fxLayout="column">
+  <mat-button-toggle-group #statsButtonGroup="matButtonToggleGroup" value="lastWeek" (valueChange)="timelineChanged.emit($event)" *ngIf="settings && settings.from && settings.apikey">
+    <mat-button-toggle value="lastWeek">Week</mat-button-toggle>
+    <mat-button-toggle value="lastMonth">Month</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

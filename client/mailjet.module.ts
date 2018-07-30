@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MonacoEditorModule } from '@materia-ui/ngx-monaco-editor';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import {
   MatButtonModule,
@@ -18,12 +19,12 @@ import {
   MatOptionModule,
   MatExpansionModule,
   MatDividerModule,
-  MatListModule
+  MatListModule,
+  MatButtonToggleModule,
+  MatTooltipModule
 } from '@angular/material';
 
 export const UI_MODULES = [
-  MonacoEditorModule,
-  FlexLayoutModule,
   MatButtonModule,
   MatRippleModule,
   MatSnackBarModule,
@@ -36,13 +37,23 @@ export const UI_MODULES = [
   MatOptionModule,
   MatExpansionModule,
   MatDividerModule,
-  MatListModule
+  MatListModule,
+  MatButtonToggleModule,
+  MatTooltipModule,
+
+  FlexLayoutModule,
+
+  NgxChartsModule,
+  MonacoEditorModule
 ];
 
 import { Addon } from '@materia/addons';
 
 import { MailjetViewComponent } from './mailjet-view/mailjet-view.component';
 import { SafeTemplatePipe } from './safe-template.pipe';
+import { StatsCounterComponent } from './stats-counter/stats-counter.component';
+import { MailjetStatisticComponent } from './mailjet-statistic/mailjet-statistic.component';
+import { MailjetHeaderComponent } from './mailjet-header/mailjet-header.component';
 
 @Addon('@materia/mailjet')
 @NgModule({
@@ -53,7 +64,7 @@ import { SafeTemplatePipe } from './safe-template.pipe';
     HttpClientModule,
     ...UI_MODULES
   ],
-  declarations: [MailjetViewComponent, SafeTemplatePipe],
-  exports: [MailjetViewComponent, SafeTemplatePipe]
+  declarations: [MailjetViewComponent, SafeTemplatePipe, StatsCounterComponent, MailjetStatisticComponent, MailjetHeaderComponent],
+  exports: [MailjetViewComponent]
 })
 export class MailjetModule {}

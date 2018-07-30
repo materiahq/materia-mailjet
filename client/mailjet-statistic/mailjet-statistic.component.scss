@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    width: 100%;
+    flex: 1;
+}
+.chart-section {
+    position: relative;
+}
+.chart-container {
+    position: absolute;
+    top: 0;
+    bottom: 15px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+}

@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "addon-boilerplate": {
+    "materia-mailjet-addon": {
       "root": "",
       "sourceRoot": "",
       "projectType": "library",
-      "prefix": "materia",
+      "prefix": "mailjet",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
@@ -44,5 +44,5 @@
       }
     }
   },
-  "defaultProject": "addon-boilerplate"
+  "defaultProject": "materia-mailjet-addon"
 }

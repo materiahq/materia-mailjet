@@ -1,161 +1,183 @@
 {
-	"fields": [
-		{
-			"name": "id_email",
-			"type": "number",
-			"read": true,
-			"write": false,
-			"primary": true,
-			"unique": true,
-			"required": true,
-			"autoIncrement": true,
-			"component": "input"
-		},
-		{
-			"name": "body",
-			"type": "text",
-			"read": true,
-			"write": true,
-			"component": "textarea"
-		},
-		{
-			"name": "to",
-			"type": "text",
-			"read": true,
-			"write": true,
-			"required": true,
-			"component": "email"
-		},
-		{
-			"name": "from",
-			"type": "text",
-			"read": true,
-			"write": true,
-			"required": true,
-			"component": "email"
-		},
-		{
-			"name": "subject",
-			"type": "text",
-			"read": true,
-			"write": true,
-			"component": "input"
-		},
-		{
-			"name": "date_sent",
-			"type": "date",
-			"read": true,
-			"write": true,
-			"required": true,
-			"component": "dateTimePicker"
-		}
-	],
-	"relations": [],
-	"queries": [
-		{
-			"id": "send",
-			"type": "custom",
-			"opts": {
-				"params": [
-					{
-						"name": "to",
-						"type": "text",
-						"required": true,
-						"component": "email"
-					},
-					{
-						"name": "subject",
-						"type": "text",
-						"component": "input"
-					},
-					{
-						"name": "body",
-						"type": "text",
-						"component": "textarea"
-					}
-				],
-				"action": "send",
-				"model": "mailjet"
-			}
-		},
-		{
-			"id": "sendTemplate",
-			"type": "custom",
-			"opts": {
-				"params": [
-					{
-						"name": "to",
-						"type": "text",
-						"required": true,
-						"component": "email"
-					},
-					{
-						"name": "subject",
-						"type": "text",
-						"component": "input"
-					},
-					{
-						"name": "body",
-						"type": "text",
-						"component": "textarea"
-					}
-				],
-				"action": "sendTemplate",
-				"model": "mailjet"
-			}
-		},
-		{
-			"id": "getTemplates",
-			"type": "custom",
-			"opts": {
-				"params": [
-				],
-				"action": "getTemplates",
-				"model": "mailjet"
-			}
-		},
-		{
-			"id": "saveTemplate",
-			"type": "custom",
-			"opts": {
-				"params": [
-					{
-						"name": "name",
-						"type": "text",
-						"required": true,
-						"component": "email"
-					},
-					{
-						"name": "content",
-						"type": "text",
-						"component": "input"
-					}
-				],
-				"action": "saveTemplate",
-				"model": "mailjet"
-			}
-		},
-		{
-			"id": "latest",
-			"type": "findAll",
-			"opts": {
-				"select": [
-					"id_email",
-					"body",
-					"to",
-					"from",
-					"subject",
-					"date_sent"
-				],
-				"conditions": [],
-				"include": [],
-				"orderBy": [
-					{
-						"field": "date_sent",
-						"desc": true
-					}
-				]
-			}
-		}
-	]
+  "virtual": true,
+  "fields": [],
+  "relations": [],
+  "queries": [{
+      "id": "send",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "to",
+            "type": "text",
+            "required": true,
+            "component": "email"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "component": "input"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "component": "textarea"
+          }
+        ],
+        "action": "send",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "sendTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "to",
+            "type": "text",
+            "required": true,
+            "component": "email"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "component": "input"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "component": "textarea"
+          }
+        ],
+        "action": "sendTemplate",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "getTemplates",
+      "type": "custom",
+      "opts": {
+        "params": [],
+        "action": "getTemplates",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "getMailjetTemplates",
+      "type": "custom",
+      "opts": {
+        "params": [],
+        "action": "getMailjetTemplates",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "saveTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "name",
+            "type": "text",
+            "required": true,
+            "component": "email"
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "component": "input"
+          }
+        ],
+        "action": "saveTemplate",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "getUserDetails",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet",
+        "action": "getUserDetails"
+      }
+    },
+    {
+      "id": "getStats",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet",
+        "action": "getStats",
+        "params": [
+			{
+            "name": "CounterSource",
+            "type": "text",
+            "required": true,
+            "component": "input"
+		  },
+		  {
+            "name": "CounterResolution",
+            "type": "text",
+            "required": true,
+            "component": "input"
+		  },
+		  {
+            "name": "CounterTiming",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "FromTS",
+            "type": "date",
+            "component": "datePicker"
+          },
+          {
+            "name": "ToTS",
+            "type": "date",
+            "component": "datePicker"
+          }
+        ]
+      }
+    },
+    {
+      "id": "getAPIKeyStats",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet",
+        "action": "getAPIKeyStats"
+      }
+    },
+    {
+      "id": "getContacts",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet",
+        "action": "getContacts"
+      }
+    },
+    {
+      "id": "getMessages",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet",
+        "action": "getMessages",
+        "params": [{
+            "name": "FromTS",
+            "type": "date",
+            "component": "datePicker"
+          },
+          {
+            "name": "ToTS",
+            "type": "date",
+            "component": "datePicker"
+          }
+        ]
+      }
+    },
+    {
+      "id": "getCampaigns",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet",
+        "action": "getCampaigns"
+      }
+    }
+  ]
 }

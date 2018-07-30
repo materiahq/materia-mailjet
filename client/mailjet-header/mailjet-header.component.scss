@@ -1,0 +1,33 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    height: 84px;
+    min-height: 84px;
+}
+
+.settings-detail {
+    padding-top: 15px;
+    margin-left: 20px;
+    .settings-link {
+        cursor: pointer; 
+        text-decoration: underline;
+    }
+}
+
+.mat-button-toggle-checked {
+    background-color: white;
+    color: #FF5722;
+    border: solid 1px #FF5722;
+}
+
+button {
+    margin: 10px;
+}
+
+mat-button-toggle-group {
+    margin: 10px;
+}
+
+img {
+    height: 84px;
+}
