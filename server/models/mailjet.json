@@ -62,35 +62,6 @@
       }
     },
     {
-      "id": "getMailjetTemplates",
-      "type": "custom",
-      "opts": {
-        "params": [],
-        "action": "getMailjetTemplates",
-        "model": "mailjet"
-      }
-    },
-    {
-      "id": "saveTemplate",
-      "type": "custom",
-      "opts": {
-        "params": [{
-            "name": "name",
-            "type": "text",
-            "required": true,
-            "component": "email"
-          },
-          {
-            "name": "content",
-            "type": "text",
-            "component": "input"
-          }
-        ],
-        "action": "saveTemplate",
-        "model": "mailjet"
-      }
-    },
-    {
       "id": "getUserDetails",
       "type": "custom",
       "opts": {

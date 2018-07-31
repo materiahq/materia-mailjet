@@ -72,17 +72,6 @@ export class MailjetViewComponent implements OnInit {
     });
   }
 
-  saveTemplate() {
-    this.runQuery('mailjet', 'saveTemplate', {
-      name: this.templateSelected.name,
-      content: this.lastUpdatedCode
-    }).then(() => {
-      this.templateSelected.code = this.lastUpdatedCode;
-      this.loadTemplates();
-      this.snackBar.open(`${this.templateSelected.name} save`, null, { duration: 2000 });
-    }).catch(err => console.log('Error saving template : ', err));
-  }
-
   openSendDialog() {
     this.subject = new FormControl('[TEST] Subject');
     this.body = new FormControl('');
@@ -103,53 +92,6 @@ export class MailjetViewComponent implements OnInit {
       this.snackBar.open(`Email send`, null, { duration: 2000 });
       this.reload();
     });
-  }
-
-  /*openSendTemplateDialog() {
-    this.subject = new FormControl('');
-    this.templateControl = new FormControl(this.templates[0].name);
-    this.to = new FormControl('');
-    const dialogRef = this.dialog.open(this.sendTemplateDialog);
-  }*/
-
-  sendTemplate() {
-    const template = this.templates.find(t => t.name === this.templateControl.value);
-    this.runQuery('mailjet', 'sendTemplate', { subject: this.subject.value, body: template.code, to: this.to.value }).then(() => {
-      this.dialogRef.close();
-      this.snackBar.open(`Email send`, null, { duration: 2000 });
-    });
-  }
-
-  selectTemplate(template) {
-    this.templateSelected = Object.assign({}, template, { editorVisible: true, previewVisible: true });
-    this.lastUpdatedCode = template.code;
-  }
-
-  lastCodeEv(ev) {
-    this.lastUpdatedCode = ev;
-  }
-
-  loadPreview(code) {
-    this.code = code;
-  }
-
- /* newTemplate() {
-    this.templateName = new FormControl('');
-    this.dialogRef = this.dialog.open(this.templateDialog);
-  }*/
-
-  addTemplate() {
-    this.dialogRef.close();
-    this.runQuery(
-      'mailjet',
-      'saveTemplate',
-      {
-        name: `${this.templateName.value}.html`,
-        content: `<div style="text-align: center"><h1>New ${this.templateName.value} template</h1></div>`
-      }).then(() => {
-        this.snackBar.open(`${this.templateName.value}.html save`, null, { duration: 2000 });
-        this.loadTemplates();
-      }).catch(err => console.log('Error saving template : ', err));
   }
 
   statsTimelineChange(timeline) {
@@ -185,9 +127,8 @@ export class MailjetViewComponent implements OnInit {
     this.runQuery('mailjet', 'getContacts', {FromTS: fromTimestamp}).then((result: any) => {
       this.contacts = result.data;
     });
-    this.runQuery('mailjet', 'getUserDetails').then((result: any) => {
-      this.mailjetUser = result.data[0];
-      this.runQuery('mailjet', 'getMailjetTemplates', {FromTS: fromTimestamp}).then((templateResult: any) => {
+    this.getMailjetUser().then(() => {
+      this.runQuery('mailjet', 'getTemplates', {FromTS: fromTimestamp}).then((templateResult: any) => {
         this.templates = templateResult.data.filter(t => t.OwnerId === this.mailjetUser.ID);
       });
     });
@@ -251,8 +192,8 @@ export class MailjetViewComponent implements OnInit {
 
   private getMailjetUser() {
     return this.runQuery('mailjet', 'getUserDetails').then((result: { count: number, data: any }) => {
-      this.mailjetUser = result.data;
-      console.log('Mailjet user : ', this.mailjetUser);
+      this.mailjetUser = result.data[0];
+      return this.mailjetUser;
     });
   }
 

@@ -20,14 +20,6 @@ class MailjetModel {
 		})
 	}
 
-	getTemplates() {
-		return this.emailSender.getTemplates({appPath: this.app.path});
-	}
-
-	saveTemplate(params) {
-		return this.emailSender.saveTemplate(Object.assign({}, params, {appPath: this.app.path}));
-	}
-
 	getUserDetails() {
 		return this.emailSender.getUserDetails().then((result) => {
 			return result.body.Data;
@@ -47,8 +39,8 @@ class MailjetModel {
 	getAPIKeyStats() {
 		return this.emailSender.getAPIKeyStats().then((result) => result.body.Data).catch(err => err);
 	}
-	getMailjetTemplates() {
-		return this.emailSender.getMailjetTemplates().then((result) => result.body.Data).catch(err => err);
+	getTemplates() {
+		return this.emailSender.getTemplates().then((result) => result.body.Data).catch(err => err);
 	}
 	getMessages(params) {
 		return this.emailSender.getMessages(params).then((result) => result.body.Data).catch(err => err);
