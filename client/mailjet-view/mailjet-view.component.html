@@ -10,7 +10,7 @@
     <div fxFlex fxLayout="column">
       <mat-card-content fxFlex fxLayout="column" *ngIf="settings && settings.from && settings.apikey">
         <mat-accordion fxFlex fxLayout="column">
-          <mat-expansion-panel #stats *ngIf="data" [expanded]="statsExpanded" (opened)="statsExpanded = true" (closed)="statsExpanded = false" [ngClass]="{'flexed': statsExpanded}">
+          <mat-expansion-panel #stats [expanded]="statsExpanded" (opened)="statsExpanded = true" (closed)="statsExpanded = false" [ngClass]="{'flexed': statsExpanded}">
             <mat-expansion-panel-header>
               <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-icon style="margin-right: 10px;">timeline</mat-icon>
