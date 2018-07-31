@@ -39,8 +39,8 @@ class MailjetModel {
 	getAPIKeyStats() {
 		return this.emailSender.getAPIKeyStats().then((result) => result.body.Data).catch(err => err);
 	}
-	getTemplates() {
-		return this.emailSender.getTemplates().then((result) => result.body.Data).catch(err => err);
+	getTemplates(params) {
+		return this.emailSender.getTemplates(params).then((result) => result.body.Data).catch(err => err);
 	}
 	getMessages(params) {
 		return this.emailSender.getMessages(params).then((result) => result.body.Data).catch(err => err);
@@ -55,6 +55,9 @@ class MailjetModel {
 			console.log(err);
 			return err;
 		})
+	}
+	createTemplate(params) {
+		return this.emailSender.createTemplate(params).then((result) => result.body.Data).catch(err => err);
 	}
 }
 

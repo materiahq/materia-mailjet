@@ -65,7 +65,7 @@ class MailjetSender {
 		var message = this.mailjet.get('message');
 		const lastweek = new Date()
 		lastweek.setDate(new Date().getDate() - 7);
-		var newParams = Object.assign({}, {ShowSubject: true, ShowContactAlt: true, FromTS: lastweek.toISOString()}, params);
+		var newParams = Object.assign({}, {ShowSubject: true, ShowContactAlt: true, FromTS: lastweek.toISOString(), Sort: 'ArrivedAt'}, params);
 		return message.request(newParams);
 	}
 
@@ -75,9 +75,9 @@ class MailjetSender {
 	}
 
 
-	getTemplates() {
+	getTemplates(params) {
 		var templates = this.mailjet.get('template');
-		return templates.request();
+		return templates.request(params);
 	}
 
 	sendTemplate(params) {
@@ -96,6 +96,11 @@ class MailjetSender {
 		}
 
 		return sendEmail.request(emailData)
+	}
+
+	createTemplate(params) {
+		const createTemplate = this.mailjet.post('template');
+		return createTemplate.request(params);
 	}
 }
 

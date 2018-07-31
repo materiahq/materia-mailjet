@@ -28,6 +28,21 @@
       }
     },
     {
+      "id": "createTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "Name",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "createTemplate",
+        "model": "mailjet"
+      }
+    },
+    {
       "id": "sendTemplate",
       "type": "custom",
       "opts": {
@@ -56,7 +71,19 @@
       "id": "getTemplates",
       "type": "custom",
       "opts": {
-        "params": [],
+        "params": [{
+            "name": "User",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "OwnerType",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          }
+        ],
         "action": "getTemplates",
         "model": "mailjet"
       }
