@@ -21,7 +21,8 @@ import {
   MatDividerModule,
   MatListModule,
   MatButtonToggleModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 export const UI_MODULES = [
@@ -40,6 +41,8 @@ export const UI_MODULES = [
   MatListModule,
   MatButtonToggleModule,
   MatTooltipModule,
+  MatProgressSpinnerModule,
+
 
   FlexLayoutModule,
 
@@ -65,7 +68,14 @@ import { TemplateEditorComponent } from './dialog/template-editor/template-edito
     HttpClientModule,
     ...UI_MODULES
   ],
-  declarations: [MailjetViewComponent, SafeTemplatePipe, StatsCounterComponent, MailjetStatisticComponent, MailjetHeaderComponent, TemplateEditorComponent],
+  declarations: [
+    MailjetViewComponent,
+    SafeTemplatePipe,
+    StatsCounterComponent,
+    MailjetStatisticComponent,
+    MailjetHeaderComponent,
+    TemplateEditorComponent
+  ],
   exports: [MailjetViewComponent]
 })
 export class MailjetModule {}
