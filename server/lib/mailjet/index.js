@@ -67,7 +67,7 @@ class MailjetSender {
 		const resolution = params.CounterResolution ? params.CounterResolution : 'Lifetime';
 		const lastweek = new Date()
 		lastweek.setDate(new Date().getDate() - 7);
-		var newParams = Object.assign({}, {FromTS: lastweek.toISOString()}, params, {CounterResoltion: resolution});
+		var newParams = Object.assign({}, {FromTS: lastweek.toISOString(), Sort: 'Timeslice'}, params, {CounterResoltion: resolution});
 		if (params.CounterResolution === 'Lifetime') {
 			delete newParams.FromTS;
 			delete newParams.ToTS;
