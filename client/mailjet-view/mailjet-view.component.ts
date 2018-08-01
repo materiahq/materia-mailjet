@@ -161,26 +161,15 @@ export class MailjetViewComponent implements OnInit {
     .then((result: any) => {
       const newTemplate = result.data[0];
       this.runQuery('mailjet', 'updateTemplateContent', {ID: newTemplate.ID, 'Html-part': `<html>
-      <style>
-        .title {
-          text-align: center;
-          font-weight: 300;
-          color: #0D47A1;
-          margin: 20px;
-        }
-        .unsubscribe {
-          font-size: 10px;
-          margin-top: 50px;
-          margin-left: 10px;
-        }
-      </style>
       <body>
-        <h1 class="title">
+        <h1 style="text-align: center; font-weight: 300; color: #0D47A1; margin: 20px;">
           Template generated via Materia Designer
         </h1>
-        <p class="unsubscribe">
+        <p style=" font-size: 10px; margin-top: 50px; margin-left: 10px;">
           This email was sent to [[EMAIL_TO]],
-          <a href="[[UNSUB_LINK_${this.mailjetUser.Locale.split('_')[1]}]]" target="_blank">click here to unsubscribe</a>.
+          <a style="text-decoration: none; color: inherit" href="[[UNSUB_LINK_${this.mailjetUser.Locale.split('_')[1]}]]" target="_blank">
+          click here to unsubscribe
+          </a>.
         </p>
       </body>
     </html>`,
