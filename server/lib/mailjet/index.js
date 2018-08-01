@@ -5,6 +5,8 @@ class MailjetSender {
 	constructor(key, secret, from, name) {
 		if (key && secret && from && name) {
 			this.connect(key, secret, from, name)
+			this.from = from;
+			this.name = name;
 		}
 	}
 
@@ -99,8 +101,27 @@ class MailjetSender {
 	}
 
 	createTemplate(params) {
+		if (params.Purposes) {
+			params.Purposes = params.Purposes.split(',');
+		}
 		const createTemplate = this.mailjet.post('template');
 		return createTemplate.request(params);
+	}
+
+	updateTemplateContent(params) {
+		const updateTemplateContent = this.mailjet.post(`template/${params.ID}/detailcontent`);
+		delete params.ID;
+		return updateTemplateContent.request(params);
+	}
+
+	getTemplateContent(params) {
+		const getTemplateContent = this.mailjet.get(`template/${params.ID}/detailcontent`);
+		return getTemplateContent.request();
+	}
+
+	deleteTemplate(params) {
+		const deleteTemplate = this.mailjet.delete(`template/${params.ID}`);
+		return deleteTemplate.request();
 	}
 }
 

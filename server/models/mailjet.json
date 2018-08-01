@@ -36,9 +36,90 @@
             "type": "text",
             "required": true,
             "component": "input"
+          },
+          {
+            "name": "OwnerType",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Author",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "EditMode",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Purposes",
+            "type": "text",
+            "required": false,
+            "component": "input"
           }
         ],
         "action": "createTemplate",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "deleteTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "deleteTemplate",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "updateTemplateContent",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "Html-part",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Text-part",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          }
+        ],
+        "action": "updateTemplateContent",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "getTemplateContent",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "getTemplateContent",
         "model": "mailjet"
       }
     },

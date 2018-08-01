@@ -59,6 +59,15 @@ class MailjetModel {
 	createTemplate(params) {
 		return this.emailSender.createTemplate(params).then((result) => result.body.Data).catch(err => err);
 	}
+	updateTemplateContent(params) {
+		return this.emailSender.updateTemplateContent(params).then((result) => result.body.Data).catch(err => err);
+	}
+	getTemplateContent(params) {
+		return this.emailSender.getTemplateContent(params).then((result) => result.body.Data).catch(err => err);
+	}
+	deleteTemplate(params) {
+		return this.emailSender.deleteTemplate(params).then((result) => true).catch(err => err);
+	}
 }
 
 module.exports = MailjetModel;
