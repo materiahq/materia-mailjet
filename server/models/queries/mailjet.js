@@ -8,25 +8,21 @@ class MailjetModel {
 	}
 
 	send(params) {
-		return this.emailSender.send(params);
+		return this.emailSender.send(params).then((result) => {
+			return result.body.Data;
+		}).catch(err => err)
 	}
 
 	sendTemplate(params) {
-		return this.emailSender.sendTemplate(params).then(() => {
-			params.from = this.app.addons.addonsConfig['@materia/mailjet'].from
-			params.date_sent = new Date()
-			return this.entity.getQuery('create')
-				.run(params)
-		})
+		return this.emailSender.sendTemplate(params).then((result) => {
+			return result.body;
+		}).catch(err => err)
 	}
 
 	getUserDetails() {
 		return this.emailSender.getUserDetails().then((result) => {
 			return result.body.Data;
-		}).catch(err => {
-			console.log(err);
-			return err;
-		})
+		}).catch(err => err)
 	}
 	getStats(params) {
 		return this.emailSender.getStats(params).then((result) => {

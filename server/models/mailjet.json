@@ -15,15 +15,44 @@
           {
             "name": "subject",
             "type": "text",
+            "required": true,
             "component": "input"
           },
           {
             "name": "body",
             "type": "text",
+            "required": true,
             "component": "textarea"
           }
         ],
         "action": "send",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "sendTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "to",
+            "type": "text",
+            "required": true,
+            "component": "email"
+          },
+          {
+            "name": "templateId",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "sendTemplate",
         "model": "mailjet"
       }
     },
@@ -120,31 +149,6 @@
           }
         ],
         "action": "getTemplateContent",
-        "model": "mailjet"
-      }
-    },
-    {
-      "id": "sendTemplate",
-      "type": "custom",
-      "opts": {
-        "params": [{
-            "name": "to",
-            "type": "text",
-            "required": true,
-            "component": "email"
-          },
-          {
-            "name": "subject",
-            "type": "text",
-            "component": "input"
-          },
-          {
-            "name": "body",
-            "type": "text",
-            "component": "textarea"
-          }
-        ],
-        "action": "sendTemplate",
         "model": "mailjet"
       }
     },

@@ -35,6 +35,29 @@ class MailjetSender {
 		return sendEmail.request(emailData);
 	}
 
+	sendTemplate(params) {
+		var sendEmail = this.mailjet.post('send');
+
+		var emailData = {
+			'FromEmail': this.from,
+			'Subject': params.subject,
+			'Recipients': [{
+				'Email': params.to
+			}]
+		}
+
+		if (this.name) {
+			emailData['FromName'] = this.name;
+		}
+		return this.getTemplateContent({ID: params.templateId}).then(result => {
+			delete params.templateId;
+			const content = result.body.Data[0];
+			console.log('Template content : ', content);
+			emailData['Html-part'] = content['Html-part'];
+			return sendEmail.request(emailData);
+		 });
+	}
+
 	getUserDetails() {
 		var user = this.mailjet.get('user');
 		return user.request();
@@ -80,24 +103,6 @@ class MailjetSender {
 	getTemplates(params) {
 		var templates = this.mailjet.get('template');
 		return templates.request(params);
-	}
-
-	sendTemplate(params) {
-		var sendEmail = this.mailjet.post('send');
-
-		var emailData = {
-			'FromEmail': this.from,
-			'Subject': params.subject,
-			'Html-part': params.body,
-			'Recipients': [{
-				'Email': params.to
-			}]
-		}
-		if (this.name) {
-			emailData['FromName'] = this.name
-		}
-
-		return sendEmail.request(emailData)
 	}
 
 	createTemplate(params) {
