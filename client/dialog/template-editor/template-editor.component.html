@@ -1,0 +1,13 @@
+<ng-template #templateDialog>
+  <form fxLayout="column" [formGroup]="templateForm">
+    <h1>{{ edition ? 'Edit' : 'New' }} template</h1>
+    <mat-form-field>
+      <input matInput placeholder="Template name" formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Author" formControlName="author">
+    </mat-form-field>
+  </form>
+  <button mat-raised-button color="primary" (click)="confirm()">Confirm</button>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+</ng-template>

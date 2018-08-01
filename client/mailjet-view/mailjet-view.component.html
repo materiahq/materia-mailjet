@@ -79,7 +79,14 @@
                 <h2>Templates</h2>
               </div>
             </mat-expansion-panel-header>
-            <mat-list style="margin: 0 24px;">
+            <div fxLayout="row" fxLayoutAlign="start center" class="template-actions">
+              <button mat-mini-fab *ngIf="templatesExpanded" style="margin: 5px;" matTooltip="New template">
+                <mat-icon (click)="openTemplateEditor(true)">
+                  add
+                </mat-icon>
+              </button>
+            </div>
+            <mat-list style="margin: 0 24px;" *ngIf="templates && templates.length">
               <mat-list-item *ngFor="let template of templates">
                 <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                   <span fxFlex>{{ template.Name }}</span>
@@ -94,6 +101,12 @@
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
+            <div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! templates">
+              <span>You haven't created any template yet</span>
+              <button mat-raised-button color="primary" (click)="openTemplateEditor(true)">
+                Create my first template
+              </button>
+            </div>
           </mat-expansion-panel>
         </mat-accordion>
       </mat-card-content>
@@ -115,3 +128,5 @@
   </form>
   <button mat-raised-button color="primary" (click)="send()">Send</button>
 </ng-template>
+<mailjet-template-editor [edition]="!newTemplate" [user]="mailjetUser" [settings]="settings" (confirmed)="saveTemplate($event)" (cancelled)="closeTemplateEditor()">
+</mailjet-template-editor>

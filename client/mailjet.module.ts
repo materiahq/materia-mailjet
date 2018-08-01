@@ -54,6 +54,7 @@ import { SafeTemplatePipe } from './safe-template.pipe';
 import { StatsCounterComponent } from './stats-counter/stats-counter.component';
 import { MailjetStatisticComponent } from './mailjet-statistic/mailjet-statistic.component';
 import { MailjetHeaderComponent } from './mailjet-header/mailjet-header.component';
+import { TemplateEditorComponent } from './dialog/template-editor/template-editor.component';
 
 @Addon('@materia/mailjet')
 @NgModule({
@@ -64,7 +65,7 @@ import { MailjetHeaderComponent } from './mailjet-header/mailjet-header.componen
     HttpClientModule,
     ...UI_MODULES
   ],
-  declarations: [MailjetViewComponent, SafeTemplatePipe, StatsCounterComponent, MailjetStatisticComponent, MailjetHeaderComponent],
+  declarations: [MailjetViewComponent, SafeTemplatePipe, StatsCounterComponent, MailjetStatisticComponent, MailjetHeaderComponent, TemplateEditorComponent],
   exports: [MailjetViewComponent]
 })
 export class MailjetModule {}

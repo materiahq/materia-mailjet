@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog, MatSnackBar, MatButtonToggleGroup } from '@angular/material';
 import { AddonView } from '@materia/addons';
 import { DatePipe } from '@angular/common';
-import { StatsCounterComponent } from '../stats-counter/stats-counter.component';
+import { TemplateEditorComponent } from '../dialog/template-editor/template-editor.component';
 
 @AddonView('@materia/mailjet')
 @Component({
@@ -54,6 +54,9 @@ export class MailjetViewComponent implements OnInit {
 
   @ViewChild('sendDialog') sendDialog: TemplateRef<any>;
   @ViewChild('statsButtonGroup') statsButtonGroup: MatButtonToggleGroup;
+  @ViewChild(TemplateEditorComponent) templateEditor: TemplateEditorComponent;
+  templateDialogRef: any;
+  newTemplate: boolean;
 
   constructor(
     private http: HttpClient,
@@ -64,12 +67,6 @@ export class MailjetViewComponent implements OnInit {
 
   ngOnInit() {
     this.statsExpanded = true;
-  }
-
-  loadTemplates() {
-    this.runQuery('mailjet', 'getTemplates').then((result: any) => {
-      this.templates = result.data;
-    });
   }
 
   openSendDialog() {
@@ -128,14 +125,72 @@ export class MailjetViewComponent implements OnInit {
       this.contacts = result.data;
     });
     this.getMailjetUser().then(() => {
-      this.runQuery('mailjet', 'getTemplates', {FromTS: fromTimestamp}).then((templateResult: any) => {
-        this.templates = templateResult.data.filter(t => t.OwnerId === this.mailjetUser.ID);
-      });
+      this.loadTemplates();
     });
   }
 
   openMailjetTemplateEditor(templateId) {
     this.openInBrowser.emit(`https://app.mailjet.com/template/${templateId}/build`);
+  }
+
+  openTemplateEditor(newTemplate) {
+    this.newTemplate = newTemplate;
+    this.templateEditor.refreshTemplateForm();
+    this.templateDialogRef = this.dialog.open(this.templateEditor.template);
+  }
+
+  closeTemplateEditor() {
+    this.templateDialogRef.close();
+  }
+
+  saveTemplate(data) {
+    if (this.newTemplate) {
+      this._createNewTemplate(data);
+    }
+  }
+
+  loadTemplates() {
+    this.runQuery('mailjet', 'getTemplates', {User: this.mailjetUser.ID}).then((templateResult: any) => {
+      this.templates = templateResult.data;
+    });
+  }
+
+  private _createNewTemplate(data) {
+    this.runQuery('mailjet', 'createTemplate',
+    {Name: data.name, Author: data.author, Purposes: 'marketing', Locale: this.mailjetUser.Locale})
+    .then((result: any) => {
+      const newTemplate = result.data[0];
+      this.runQuery('mailjet', 'updateTemplateContent', {ID: newTemplate.ID, 'Html-part': `<html>
+      <style>
+        .title {
+          text-align: center;
+          font-weight: 300;
+          color: #0D47A1;
+          margin: 20px;
+        }
+        .unsubscribe {
+          font-size: 10px;
+          margin-top: 50px;
+          margin-left: 10px;
+        }
+      </style>
+      <body>
+        <h1 class="title">
+          Template generated via Materia Designer
+        </h1>
+        <p class="unsubscribe">
+          This email was sent to [[EMAIL_TO]],
+          <a href="[[UNSUB_LINK_${this.mailjetUser.Locale.split('_')[1]}]]" target="_blank">click here to unsubscribe</a>.
+        </p>
+      </body>
+    </html>`,
+    Headers: {From: this.settings.name, Subject: 'Subject', 'Reply-To': this.settings.from}})
+      .then((templateContent) => {
+        this.templateDialogRef.close();
+        this.loadTemplates();
+        this.openMailjetTemplateEditor(newTemplate.ID);
+      });
+    });
   }
 
   private _fillStats(stats, fromTs) {
