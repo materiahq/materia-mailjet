@@ -188,7 +188,11 @@ export class MailjetViewComponent implements OnInit {
     timeUnits.forEach(timeUnit => {
       let match = false;
       stats.forEach(stat => {
-        if (new Date(timeUnit).getDate() === new Date(stat.Timeslice).getDate()) {
+        const timeUnitDate = new Date(timeUnit);
+        timeUnitDate.setHours(0, 0, 0, 0);
+        const statDate = new Date(stat.Timeslice);
+        statDate.setHours(0, 0, 0, 0);
+        if ( timeUnitDate.toISOString() === statDate.toISOString()) {
           match = true;
           newStats.push(stat);
         }
@@ -246,9 +250,7 @@ export class MailjetViewComponent implements OnInit {
       Object.assign({}, params, { CounterResolution: 'Day', CounterTiming: 'Message', CounterSource: 'APIKey' })
       : { CounterResolution: 'Day', CounterTiming: 'Message', CounterSource: 'APIKey' };
     return this.runQuery('mailjet', 'getStats', queryParams)
-      .then((result: { count: number, data: any }) => {
-        return result.data;
-      });
+      .then((result: { count: number, data: any }) => result.data);
   }
 
   private getSerie(name, displayName, data) {
