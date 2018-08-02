@@ -1,0 +1,115 @@
+{
+  "virtual": true,
+  "fields": [
+    {
+      "name": "ID",
+      "type": "number",
+      "read": true,
+      "primary": true,
+      "unique": true,
+      "required": true,
+      "component": "input"
+    },
+    {
+      "name": "ContactID",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "ContactAlt",
+      "type": "string",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "ArrivedAt",
+      "type": "date",
+      "read": true,
+      "write": false,
+      "component": "datePicker"
+    },
+    {
+      "name": "AttachmentCount",
+      "type": "number",
+      "read": true,
+      "write": false,
+      "component": "input"
+    },
+    {
+      "name": "AttemptCount",
+      "type": "number",
+      "read": true,
+      "write": false,
+      "component": "input"
+    },
+    {
+      "name": "Delay",
+      "type": "number",
+      "read": true,
+      "write": false,
+      "component": "input"
+    },
+    {
+      "name": "IsOpenTracked",
+      "type": "boolean",
+      "read": true,
+      "write": false,
+      "component": "switch"
+    },
+    {
+      "name": "IsClickTracked",
+      "type": "boolean",
+      "read": true,
+      "write": false,
+      "component": "switch"
+    },
+    {
+      "name": "IsUnsubTracked",
+      "type": "boolean",
+      "read": true,
+      "write": false,
+      "component": "switch"
+    },
+    {
+      "name": "IsTextPartIncluded",
+      "type": "boolean",
+      "read": true,
+      "write": false,
+      "component": "switch"
+    },
+    {
+      "name": "IsHTMLPartIncluded",
+      "type": "boolean",
+      "read": true,
+      "write": false,
+      "component": "switch"
+    },
+    {
+      "name": "MessageSize",
+      "type": "number",
+      "read": true,
+      "write": false,
+      "component": "input"
+    },
+    {
+      "name": "Status",
+      "type": "text",
+      "read": true,
+      "write": false,
+      "component": "input"
+    }
+  ],
+  "relations": [],
+  "queries": [{
+    "id": "list",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet",
+      "action": "getMessages",
+      "params": [{
+        "limit": 1000
+      }]
+    }
+  }]
+}

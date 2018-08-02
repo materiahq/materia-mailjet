@@ -1,0 +1,99 @@
+{
+  "virtual": true,
+  "fields": [{
+      "name": "ID",
+      "type": "number",
+      "read": true,
+      "primary": true,
+      "unique": true,
+      "required": true,
+      "component": "input"
+    },
+    {
+      "name": "Email",
+      "type": "text",
+      "read": true,
+      "unique": true,
+      "required": true,
+      "component": "input"
+    },
+    {
+      "name": "Name",
+      "type": "text",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "DeliveredCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "IsExcludedCampaigns",
+      "type": "boolean",
+      "read": true,
+      "component": "switch"
+    },
+    {
+      "name": "ExclusionFromCampaignsUpdatedAt",
+      "type": "date",
+      "read": true,
+      "component": "datePicker"
+    },
+    {
+      "name": "IsOptInPending",
+      "type": "boolean",
+      "read": true,
+      "component": "switch"
+    },
+    {
+      "name": "IsSpamComplaining",
+      "type": "boolean",
+      "read": true,
+      "component": "switch"
+    },
+    {
+      "name": "CreatedAt",
+      "type": "date",
+      "read": true,
+      "component": "datePicker"
+    },
+    {
+      "name": "LastUpdatedAt",
+      "type": "date",
+      "read": true,
+      "component": "datePicker"
+    },
+    {
+      "name": "LastActivityAt",
+      "type": "date",
+      "read": true,
+      "component": "datePicker"
+    },
+    {
+      "name": "UnsubscribedAt",
+      "type": "date",
+      "read": true,
+      "component": "datePicker"
+    },
+    {
+      "name": "UnsubscribedBy",
+      "type": "text",
+      "read": true,
+      "component": "datePicker"
+    }
+  ],
+  "relations": [],
+  "queries": [{
+    "id": "list",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet",
+      "action": "getContacts",
+      "params": [{
+        "limit": 1000
+      }]
+    }
+  }]
+}

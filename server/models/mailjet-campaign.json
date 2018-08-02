@@ -1,0 +1,94 @@
+{
+    "virtual": true,
+    "fields": [
+        {
+        "name": "ID",
+        "type": "number",
+        "read": true,
+        "primary": true,
+        "unique": true,
+        "required": true,
+        "component": "input"
+      },
+      {
+        "name": "CampaignType",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "component": "input"
+      },
+      {
+        "name": "CreatedAt",
+        "type": "date",
+        "read": true,
+        "write": false,
+        "component": "datePicker"
+      },
+      {
+        "name": "LastActivityAt",
+        "type": "date",
+        "read": true,
+        "write": false,
+        "component": "datePicker"
+      },
+      {
+        "name": "SendStartAt",
+        "type": "date",
+        "read": true,
+        "write": false,
+        "component": "datePicker"
+      },
+      {
+        "name": "SendEndAt",
+        "type": "date",
+        "read": true,
+        "write": false,
+        "component": "datePicker"
+      },
+      {
+        "name": "FromEmail",
+        "type": "text",
+        "read": true,
+        "write": false,
+        "component": "input"
+      },
+      {
+        "name": "FromName",
+        "type": "text",
+        "read": true,
+        "write": false,
+        "component": "input"
+      },
+      {
+        "name": "HasHtmlCount",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "component": "input"
+      },
+      {
+        "name": "HasTxtCount",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "component": "input"
+      },
+      {
+        "name": "Status",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "component": "input"
+      }
+    ],
+    "relations": [],
+    "queries": [{
+        "id": "list",
+        "type": "custom",
+        "opts": {
+          "model": "mailjet",
+          "action": "getCampaigns",
+          "params": []
+        }
+      }]
+}
