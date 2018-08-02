@@ -173,7 +173,7 @@ export class MailjetViewComponent implements OnInit {
 
   private _createNewTemplate(data) {
     this.runQuery('mailjet', 'createTemplate',
-    {Name: data.name, Author: data.author, Purposes: 'marketing', Locale: this.mailjetUser.Locale})
+    {Name: data.name, Author: data.author, Purposes: data.templateType, Locale: this.mailjetUser.Locale})
     .then((result: any) => {
       const newTemplate = result.data[0];
       this.runQuery('mailjet', 'updateTemplateContent', {ID: newTemplate.ID, 'Html-part': `<html>

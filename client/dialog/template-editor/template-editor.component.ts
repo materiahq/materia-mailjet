@@ -27,7 +27,8 @@ export class TemplateEditorComponent implements OnInit {
   refreshTemplateForm() {
     this.templateForm = this.fb.group({
       name: ['', Validators.required],
-      author: [this.user ? this.user.Username : '', Validators.required]
+      author: [this.user ? this.user.Username : '', Validators.required],
+      templateType: ['transactional', Validators.required]
     });
   }
 
