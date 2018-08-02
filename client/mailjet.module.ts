@@ -44,6 +44,8 @@ export const UI_MODULES = [
   MatTooltipModule,
   MatProgressSpinnerModule,
   MatBadgeModule,
+  MatSelectModule,
+  MatOptionModule,
 
   FlexLayoutModule,
 
@@ -59,6 +61,7 @@ import { StatsCounterComponent } from './stats-counter/stats-counter.component';
 import { MailjetStatisticComponent } from './mailjet-statistic/mailjet-statistic.component';
 import { MailjetHeaderComponent } from './mailjet-header/mailjet-header.component';
 import { TemplateEditorComponent } from './dialog/template-editor/template-editor.component';
+import { SendModalComponent } from './dialog/send-modal/send-modal.component';
 
 @Addon('@materia/mailjet')
 @NgModule({
@@ -75,7 +78,8 @@ import { TemplateEditorComponent } from './dialog/template-editor/template-edito
     StatsCounterComponent,
     MailjetStatisticComponent,
     MailjetHeaderComponent,
-    TemplateEditorComponent
+    TemplateEditorComponent,
+    SendModalComponent
   ],
   exports: [MailjetViewComponent]
 })

@@ -2,7 +2,7 @@
   <mat-card fxFlex fxLayout="column">
     <mailjet-header
       [settings]="settings"
-      (sendDialogOpened)="openSendDialog()"
+      (sendDialogOpened)="openSendDialog('simple')"
       (settingsOpened)="openSetup.emit()"
       (timelineChanged)="statsTimelineChange($event)">
     </mailjet-header>
@@ -31,14 +31,14 @@
             <ng-template matExpansionPanelContent>
               <mat-list>
                 <mat-list-item *ngFor="let email of emails">
-                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="start center">
                     <span fxFlex>{{ email.ContactAlt }}</span>
-                    <span fxFlex>{{ email.Subject }} -
-                      <span style="font-size: 0.8rem">
-                        {{ email.ArrivedAt | date }}
-                      </span>
+                    <span fxFlex fxLayout="row" style="margin-left: 10px;">
+                      {{ email.ArrivedAt | date }}
                     </span>
-                    <span [style.color]="statusColors[email.Status]" style="font-weight: bold;">{{ email.Status }}</span>
+                    <span fxFlex>{{ email.Subject }}
+                    </span>
+                    <span fxLayout="row" [style.color]="statusColors[email.Status]" style="font-weight: bold;">{{ email.Status }}</span>
                   </div>
                   <mat-divider></mat-divider>
                 </mat-list-item>
@@ -47,7 +47,7 @@
                 <p style="padding-left: 16px; margin-bottom: 15px;">
                   <strong>No email has been sent during this period</strong>
                 </p>
-                <button mat-button color="primary" (click)="openSendDialog()">Send a test email now</button>
+                <button mat-button color="primary" (click)="openSendDialog('simple')">Send a test email now</button>
               </div>
             </ng-template>
           </mat-expansion-panel>
@@ -63,7 +63,7 @@
               <mat-list-item *ngFor="let contact of contacts">
                 <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                   <span fxFlex>{{ contact.Email }}</span>
-                  <span fxFlex>{{ contact.CreatedAt | date:'fullDate' }}
+                  <span fxFlex>{{ contact.CreatedAt | date }}
                   </span>
                   <button mat-icon-button>
                     <mat-icon matTooltip="Send an email" (click)="openSendToDialog(contact.Email)">send</mat-icon>
@@ -82,21 +82,34 @@
               </div>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-            <div fxLayout="row" fxLayoutAlign="start center" class="template-actions">
-              <button mat-mini-fab *ngIf="templatesExpanded" style="margin: 5px;" matTooltip="New template">
-                <mat-icon (click)="openTemplateEditor(true)">
-                  add
-                </mat-icon>
-              </button>
-            </div>
             <mat-list *ngIf="templates && templates.length">
+              <mat-list-item>
+                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center" class="list-title">
+                      <span fxFlex>Name</span>
+                      <span fxFlex>Author
+                      </span>
+                      <span fxFlex>CreatedAt
+                      </span>
+                      <span style="width: 100px;">
+                        <button mat-mini-fab *ngIf="templatesExpanded" style="margin: 5px;" matTooltip="New template">
+                          <mat-icon (click)="openTemplateEditor(true)">
+                            add
+                          </mat-icon>
+                        </button>
+                      </span>
+                  </div>
+              </mat-list-item>
+              <mat-divider></mat-divider>
               <mat-list-item *ngFor="let template of templates">
                 <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                   <span fxFlex>{{ template.Name }}</span>
                   <span fxFlex>{{ template.Author }}
                   </span>
-                  <span fxFlex>{{ template.CreatedAt | date:'fullDate' }}
+                  <span fxFlex>{{ template.CreatedAt | date }}
                   </span>
+                  <button mat-icon-button>
+                      <mat-icon matTooltip="Send" (click)="openSendDialog('template'); templateSelected = template.ID;">send</mat-icon>
+                    </button>
                   <button mat-icon-button>
                     <mat-icon matTooltip="Edit" (click)="openMailjetTemplateEditor(template.ID)">edit</mat-icon>
                   </button>
@@ -117,20 +130,6 @@
     </div>
   </mat-card>
 </div>
-<ng-template #sendDialog>
-  <form fxLayout="column">
-    <h1>Send an email</h1>
-    <mat-form-field>
-      <input matInput placeholder="Subject" [formControl]="subject">
-    </mat-form-field>
-    <mat-form-field>
-      <textarea matInput placeholder="Body" [formControl]="body"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="To" [formControl]="to">
-    </mat-form-field>
-  </form>
-  <button mat-raised-button color="primary" (click)="send()">Send</button>
-</ng-template>
 <mailjet-template-editor [edition]="!newTemplate" [user]="mailjetUser" [settings]="settings" (confirmed)="saveTemplate($event)" (cancelled)="closeTemplateEditor()">
 </mailjet-template-editor>
+<mailjet-send-modal [templates]="templates" [templateId]="templateSelected" [to]="sendTo" [subject]="sendSubject" [type]="sendType" (cancelled)="closeSendDialog()" (confirmed)="send($event)"></mailjet-send-modal>

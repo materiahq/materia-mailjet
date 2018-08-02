@@ -1,11 +1,11 @@
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormControl } from '@angular/forms';
-import { MatDialog, MatSnackBar, MatButtonToggleGroup } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddonView } from '@materia/addons';
 import { DatePipe } from '@angular/common';
 import { TemplateEditorComponent } from '../dialog/template-editor/template-editor.component';
+import { SendModalComponent } from '../dialog/send-modal/send-modal.component';
 
 @AddonView('@materia/mailjet')
 @Component({
@@ -17,19 +17,20 @@ import { TemplateEditorComponent } from '../dialog/template-editor/template-edit
 export class MailjetViewComponent implements OnInit {
   nbEmails: any;
   emails = [];
+  contacts: any[];
+  templates: any[];
 
-  lastUpdatedCode: any;
-  code: string;
+  sendTo: string;
+  sendSubject: string;
+  sendType: string;
   templateSelected: any;
-  templateName: any;
-  dialogRef: any;
 
-  subject: FormControl;
-  body: FormControl;
-  to: FormControl;
-  templateControl: FormControl;
+  sendDialogRef: any;
+  templateDialogRef: any;
+  newTemplate: boolean;
 
   data: any[];
+  stats: any = {};
   mailjetUser: any;
   statusColors = {
     sent: '#2196F3',
@@ -41,9 +42,6 @@ export class MailjetViewComponent implements OnInit {
   contactsExpanded: boolean;
   templatesExpanded: boolean;
   emailsExpanded: boolean;
-  contacts: any[];
-  templates: any[];
-  stats: any = {};
 
   @Input() app;
   @Input() settings;
@@ -52,11 +50,8 @@ export class MailjetViewComponent implements OnInit {
   @Output() openSetup = new EventEmitter<void>();
   @Output() openInBrowser: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild('sendDialog') sendDialog: TemplateRef<any>;
-  @ViewChild('statsButtonGroup') statsButtonGroup: MatButtonToggleGroup;
   @ViewChild(TemplateEditorComponent) templateEditor: TemplateEditorComponent;
-  templateDialogRef: any;
-  newTemplate: boolean;
+  @ViewChild(SendModalComponent) sendModalComponent: SendModalComponent;
 
   constructor(
     private http: HttpClient,
@@ -69,26 +64,47 @@ export class MailjetViewComponent implements OnInit {
     this.statsExpanded = true;
   }
 
-  openSendDialog() {
-    this.subject = new FormControl('[TEST] Subject');
-    this.body = new FormControl('');
-    this.to = new FormControl('');
-    this.dialogRef = this.dialog.open(this.sendDialog);
+  openSendDialog(type) {
+    this.sendSubject = '[TEST] Subject';
+    this.sendType = type;
+    this.sendModalComponent.refreshForm(type);
+    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template);
   }
 
   openSendToDialog(mail) {
-    this.subject = new FormControl('[TEST] Subject');
-    this.body = new FormControl('');
-    this.to = new FormControl(mail);
-    this.dialogRef = this.dialog.open(this.sendDialog);
+    this.sendSubject = '[TEST] Subject';
+    this.sendTo = mail;
+    this.sendType = 'simple';
+    this.sendModalComponent.refreshForm();
+    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template);
   }
 
-  send() {
-    this.runQuery('mailjet', 'send', { subject: this.subject.value, body: this.body.value, to: this.to.value }).then(() => {
-      this.dialogRef.close();
+  send(data) {
+    if (data.type === 'simple') {
+      this._sendSimpleMessage(data);
+    } else {
+      this._sendTemplateMessage(data);
+    }
+  }
+
+  private _sendSimpleMessage(data) {
+    this.runQuery('mailjet', 'send', { subject: data.subject, body: data.body, to: data.to }).then(() => {
+      this.sendDialogRef.close();
       this.snackBar.open(`Email send`, null, { duration: 2000 });
       this.reload();
     });
+  }
+
+  private _sendTemplateMessage(data) {
+    this.runQuery('mailjet', 'sendTemplate', {templateId: data.template, subject: data.subject, to: data.to}).then(() => {
+      this.sendDialogRef.close();
+      this.snackBar.open(`Email send`, null, { duration: 2000 });
+      this.reload();
+    });
+  }
+
+  closeSendDialog() {
+    this.sendDialogRef.close();
   }
 
   statsTimelineChange(timeline) {
