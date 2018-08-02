@@ -7,7 +7,10 @@ import { Component, Input, OnChanges } from '@angular/core';
 })
 export class MailjetStatisticComponent implements OnChanges {
   @Input() data: any;
-  loading: boolean;
+  get loading() {
+    const loading = this.data && this.data[0] && this.data[0].series && this.data[0].series.length ? false : true;
+    return loading;
+  }
 
   counts: any =  {
     sent: 0,
@@ -16,23 +19,18 @@ export class MailjetStatisticComponent implements OnChanges {
     spam: 0
   };
 
-  constructor() {
-    this.loading = true;
-  }
+  constructor() { }
 
   ngOnChanges(changes) {
     if (changes && changes.data && changes.data.currentValue) {
       const data = changes.data.currentValue;
       data.forEach(d => {
         if (d.series && d.series.length) {
-          this.loading = false;
           let count = this.counts[d.name.toLowerCase()] = 0;
           d.series.forEach(s => {
             count = count + s.value;
           });
           this.counts[d.name.toLowerCase()] = count;
-        } else {
-          this.loading = true;
         }
       });
     }

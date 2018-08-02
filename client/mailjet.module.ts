@@ -22,7 +22,8 @@ import {
   MatListModule,
   MatButtonToggleModule,
   MatTooltipModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatBadgeModule
 } from '@angular/material';
 
 export const UI_MODULES = [
@@ -42,7 +43,7 @@ export const UI_MODULES = [
   MatButtonToggleModule,
   MatTooltipModule,
   MatProgressSpinnerModule,
-
+  MatBadgeModule,
 
   FlexLayoutModule,
 

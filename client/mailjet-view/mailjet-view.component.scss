@@ -15,6 +15,13 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+:host::ng-deep mat-list {
+	margin: 0 24px;
+}
+:host::ng-deep .mat-badge-content {
+    color: white;
+    background: #FFA726;
+}
 mat-expansion-panel {
 	width: 100%;
 }
@@ -31,11 +38,6 @@ mat-card {
 mat-card-content {
 	overflow: hidden;
 	margin: 0;
-}
-.mat-button-toggle-checked {
-    background-color: white;
-    color: #FF5722;
-    border: solid 1px #FF5722;
 }
 .flexed {
 	flex: 1;
