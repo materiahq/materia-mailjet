@@ -1,6 +1,11 @@
 <ng-template #sendDialog>
-  <form fxLayout="column" [formGroup]="sendForm" fxLayout="column">
+  <mat-toolbar class="mailjet-theme">
+    <mat-icon>
+      send
+    </mat-icon>
     <h1>Send an email</h1>
+  </mat-toolbar>
+  <form fxLayout="column" [formGroup]="sendForm" fxLayout="column">
     <div fxLayout="row" fxLayoutAlign="center center">
       <mat-button-toggle-group #messageTypeGroup="matButtonToggleGroup" [value]="type" (valueChange)="refreshForm($event)">
         <mat-button-toggle value="simple">Simple</mat-button-toggle>
@@ -24,7 +29,7 @@
       <input matInput placeholder="To" formControlName="to">
     </mat-form-field>
     <div fxLayout="row" fxLayoutAlign="start center">
-      <button mat-raised-button color="primary" (click)="send()">SEND</button>
+      <button mat-raised-button class="mailjet-theme" (click)="send()">SEND</button>
       <button mat-raised-button (click)="cancelled.emit()">CANCEL</button>
     </div>
   </form>

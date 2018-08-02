@@ -68,7 +68,7 @@ export class MailjetViewComponent implements OnInit {
     this.sendSubject = '[TEST] Subject';
     this.sendType = type;
     this.sendModalComponent.refreshForm(type);
-    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template);
+    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, {panelClass: 'no-padding'});
   }
 
   openSendToDialog(mail) {
@@ -76,7 +76,7 @@ export class MailjetViewComponent implements OnInit {
     this.sendTo = mail;
     this.sendType = 'simple';
     this.sendModalComponent.refreshForm();
-    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template);
+    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, {panelClass: 'no-padding'});
   }
 
   send(data) {
@@ -152,7 +152,7 @@ export class MailjetViewComponent implements OnInit {
   openTemplateEditor(newTemplate) {
     this.newTemplate = newTemplate;
     this.templateEditor.refreshTemplateForm();
-    this.templateDialogRef = this.dialog.open(this.templateEditor.template);
+    this.templateDialogRef = this.dialog.open(this.templateEditor.template, {panelClass: 'no-padding'});
   }
 
   closeTemplateEditor() {
