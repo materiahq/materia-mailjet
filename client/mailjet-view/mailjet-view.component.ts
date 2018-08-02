@@ -132,12 +132,12 @@ export class MailjetViewComponent implements OnInit {
     } else {
       this.data = this.stats[timeline];
     }
-    this.runQuery('mailjet', 'getMessages', { FromTS: fromTimestamp })
+    this.runQuery('mailjet', 'getMessages', { FromTS: fromTimestamp, limit: 1000 })
       .then((response: any) => {
         this.emails = [...response.data];
         this.nbEmails = response.count;
       });
-    this.runQuery('mailjet', 'getContacts', {FromTS: fromTimestamp}).then((result: any) => {
+    this.runQuery('mailjet', 'getContacts', {FromTS: fromTimestamp, limit: 1000 }).then((result: any) => {
       this.contacts = result.data;
     });
     this.getMailjetUser().then(() => {
