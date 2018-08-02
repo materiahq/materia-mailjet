@@ -88,9 +88,16 @@ class MailjetSender {
 
 	getMessages(params) {
 		var message = this.mailjet.get('message');
-		const lastweek = new Date()
-		lastweek.setDate(new Date().getDate() - 7);
-		var newParams = Object.assign({}, {ShowSubject: true, ShowContactAlt: true, FromTS: lastweek.toISOString(), Sort: 'ArrivedAt'}, params);
+		if (! params.FromTS) {
+			const lastweek = new Date()
+			lastweek.setDate(new Date().getDate() - 7);
+			params.FromTS = lastweek.toISOString();
+		}
+		if (! params.ToTS) {
+			const now = new Date()
+			params.ToTS = now.toISOString()
+		}
+		var newParams = Object.assign({}, {ShowSubject: true, ShowContactAlt: true, Sort: 'ArrivedAt'}, params);
 		return message.request(newParams);
 	}
 
