@@ -36,7 +36,8 @@ export class MailjetViewComponent implements OnInit {
     sent: '#2196F3',
     opened: '#4CAF50',
     clicked: '#8BC34A',
-    spam: '#FFC107'
+    spam: '#FFC107',
+    bounce: '#F44336'
   };
   statsExpanded: boolean;
   contactsExpanded: boolean;
@@ -126,7 +127,8 @@ export class MailjetViewComponent implements OnInit {
             this.getSerie('MessageSentCount', 'Sent', stats),
             this.getSerie('MessageOpenedCount', 'Opened', stats),
             this.getSerie('MessageClickedCount', 'Clicked', stats),
-            this.getSerie('MessageSpamCount', 'Spam', stats)
+            this.getSerie('MessageSpamCount', 'Spam', stats),
+            this.getSerie('MessageHardBouncedCount', 'Bounce', stats)
           ];
           this.stats[timeline] = this.data;
         }
@@ -212,11 +214,19 @@ export class MailjetViewComponent implements OnInit {
         statDate.setHours(0, 0, 0, 0);
         if ( timeUnitDate.toISOString() === statDate.toISOString()) {
           match = true;
+
           newStats.push(stat);
         }
       });
       if (!match) {
-        newStats.push({ MessageSentCount: 0, MessageSpamCount: 0, MessageOpenedCount: 0, MessageClickedCount: 0, Timeslice: timeUnit });
+        newStats.push({
+          MessageSentCount: 0,
+          MessageSpamCount: 0,
+          MessageOpenedCount: 0,
+          MessageClickedCount: 0,
+          MessageHardBouncedCount: 0,
+          Timeslice: timeUnit
+        });
       }
     });
     return newStats;

@@ -16,7 +16,8 @@ export class MailjetStatisticComponent implements OnChanges {
     sent: 0,
     opened: 0,
     clicked: 0,
-    spam: 0
+    spam: 0,
+    bounced: 0
   };
 
   constructor() { }
