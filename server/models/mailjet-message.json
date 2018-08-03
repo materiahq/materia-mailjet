@@ -1,7 +1,6 @@
 {
   "virtual": true,
-  "fields": [
-    {
+  "fields": [{
       "name": "ID",
       "type": "number",
       "read": true,
@@ -102,14 +101,70 @@
   ],
   "relations": [],
   "queries": [{
-    "id": "list",
-    "type": "custom",
-    "opts": {
-      "model": "mailjet",
-      "action": "getMessages",
-      "params": [{
-        "limit": 1000
-      }]
+      "id": "list",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet-message",
+        "action": "list",
+        "params": [{
+          "limit": 1000
+        }]
+      }
+    },
+    {
+      "id": "send",
+      "type": "custom",
+      "opts": {
+        "params": [
+          {
+            "name": "to",
+            "type": "text",
+            "required": true,
+            "component": "email"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "body",
+            "type": "text",
+            "required": true,
+            "component": "textarea"
+          }
+        ],
+        "action": "send",
+        "model": "mailjet"
+      }
+    },
+    {
+      "id": "sendTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "to",
+            "type": "text",
+            "required": true,
+            "component": "email"
+          },
+          {
+            "name": "templateId",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "sendTemplate",
+        "model": "mailjet"
+      }
     }
-  }]
+  ]
 }

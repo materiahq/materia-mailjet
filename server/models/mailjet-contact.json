@@ -89,8 +89,8 @@
     "id": "list",
     "type": "custom",
     "opts": {
-      "model": "mailjet",
-      "action": "getContacts",
+      "model": "mailjet-contact",
+      "action": "list",
       "params": [{
         "limit": 1000
       }]

@@ -86,8 +86,8 @@
         "id": "list",
         "type": "custom",
         "opts": {
-          "model": "mailjet",
-          "action": "getCampaigns",
+          "model": "mailjet-campaign",
+          "action": "list",
           "params": []
         }
       }]

@@ -85,8 +85,8 @@
     "id": "list",
     "type": "custom",
     "opts": {
-      "model": "mailjet",
-      "action": "getUserDetails",
+      "model": "mailjet-user",
+      "action": "list",
       "params": []
     }
   }]

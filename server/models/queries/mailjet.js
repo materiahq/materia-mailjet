@@ -18,52 +18,6 @@ class MailjetModel {
 			return result.body;
 		}).catch(err => err)
 	}
-
-	getUserDetails() {
-		return this.emailSender.getUserDetails().then((result) => {
-			return result.body.Data;
-		}).catch(err => err)
-	}
-	getStats(params) {
-		return this.emailSender.getStats(params).then((result) => {
-			return result.body.Data;
-		}).catch(err => {
-			console.log(err);
-			return err;
-		})
-	}
-	getAPIKeyStats() {
-		return this.emailSender.getAPIKeyStats().then((result) => result.body.Data).catch(err => err);
-	}
-	getTemplates(params) {
-		return this.emailSender.getTemplates(params).then((result) => result.body.Data).catch(err => err);
-	}
-	getMessages(params) {
-		return this.emailSender.getMessages(params).then((result) => result.body.Data).catch(err => err);
-	}
-	getCampaigns() {
-		return this.emailSender.getCampaigns().then((result) => result.body.Data).catch(err => err);
-	}
-	getContacts() {
-		return this.emailSender.getContacts().then((result) => {
-			return result.body.Data;
-		}).catch(err => {
-			console.log(err);
-			return err;
-		})
-	}
-	createTemplate(params) {
-		return this.emailSender.createTemplate(params).then((result) => result.body.Data).catch(err => err);
-	}
-	updateTemplateContent(params) {
-		return this.emailSender.updateTemplateContent(params).then((result) => result.body.Data).catch(err => err);
-	}
-	getTemplateContent(params) {
-		return this.emailSender.getTemplateContent(params).then((result) => result.body.Data).catch(err => err);
-	}
-	deleteTemplate(params) {
-		return this.emailSender.deleteTemplate(params).then((result) => true).catch(err => err);
-	}
 }
 
 module.exports = MailjetModel;

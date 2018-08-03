@@ -1,0 +1,183 @@
+{
+  "virtual": true,
+  "fields": [{
+      "name": "APIKeyID",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventClickDelay",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventClickedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventOpenDelay",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventOpenedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventSpamCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventUnsubscribedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "EventWorkflowExitedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageBlockedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageClickedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageDeferredCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageHardBouncedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageOpenedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageSoftBouncedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageQueuedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageSentCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageSpamCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageUnsubscribedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "SourceID",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "MessageWorkFlowExitedCount",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    },
+    {
+      "name": "Timeslice",
+      "type": "date",
+      "read": true,
+      "component": "datePicker"
+    },
+    {
+      "name": "Total",
+      "type": "number",
+      "read": true,
+      "component": "input"
+    }
+  ],
+  "relations": [],
+  "queries": [{
+      "id": "find",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet-statistic",
+        "action": "find",
+        "params": [{
+            "name": "CounterSource",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "CounterResolution",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "CounterTiming",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "FromTS",
+            "type": "date",
+            "component": "datePicker"
+          },
+          {
+            "name": "ToTS",
+            "type": "date",
+            "component": "datePicker"
+          }
+        ]
+      }
+    },
+    {
+      "id": "list",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet-statistic",
+        "action": "list"
+      }
+    }
+  ]
+}
