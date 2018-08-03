@@ -7,10 +7,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 })
 export class MailjetStatisticComponent implements OnChanges {
   @Input() data: any;
-  get loading() {
-    const loading = this.data && this.data[0] && this.data[0].series && this.data[0].series.length ? false : true;
-    return loading;
-  }
+  @Input() loading: boolean;
 
   counts: any =  {
     sent: 0,

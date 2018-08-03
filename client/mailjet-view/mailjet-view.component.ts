@@ -43,6 +43,7 @@ export class MailjetViewComponent implements OnInit {
   contactsExpanded: boolean;
   templatesExpanded: boolean;
   emailsExpanded: boolean;
+  statsProcessing: boolean;
 
   @Input() app;
   @Input() settings;
@@ -59,10 +60,14 @@ export class MailjetViewComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private datePipe: DatePipe
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.statsExpanded = true;
+    if (this.settings.secret && this.settings.apikey) {
+      this.statsProcessing = true;
+    }
   }
 
   openSendDialog(type) {
@@ -120,6 +125,7 @@ export class MailjetViewComponent implements OnInit {
   init(timeline) {
     const fromTimestamp = this._getTimeline(timeline);
     if (!this.stats[timeline]) {
+      this.statsProcessing = true;
       this.getStats({ FromTS: fromTimestamp }).then(stats => {
         if (stats && stats.length) {
           stats = this._fillStats(stats, fromTimestamp);
@@ -131,6 +137,9 @@ export class MailjetViewComponent implements OnInit {
             this.getSerie('MessageHardBouncedCount', 'Bounce', stats)
           ];
           this.stats[timeline] = this.data;
+          setTimeout(() => {
+            this.statsProcessing = false;
+          }, 1000);
         }
       });
     } else {
