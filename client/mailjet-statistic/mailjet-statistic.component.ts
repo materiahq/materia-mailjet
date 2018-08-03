@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { LineChartComponent } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'mailjet-statistic',
@@ -8,8 +9,11 @@ import { Component, Input, OnChanges } from '@angular/core';
 export class MailjetStatisticComponent implements OnChanges {
   @Input() data: any;
   @Input() loading: boolean;
+  @Input() expanded: boolean;
 
-  counts: any =  {
+  @ViewChild(LineChartComponent) chart: LineChartComponent;
+
+  counts: any = {
     sent: 0,
     opened: 0,
     clicked: 0,
@@ -20,6 +24,11 @@ export class MailjetStatisticComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes) {
+    if (changes && changes.expanded && changes.expanded.currentValue && this.chart) {
+      setTimeout(() => {
+        this.chart.update();
+      }, 500);
+    }
     if (changes && changes.data && changes.data.currentValue) {
       const data = changes.data.currentValue;
       data.forEach(d => {
