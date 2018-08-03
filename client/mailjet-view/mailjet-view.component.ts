@@ -120,14 +120,16 @@ export class MailjetViewComponent implements OnInit {
     const fromTimestamp = this._getTimeline(timeline);
     if ( ! this.stats[timeline]) {
       this.getStats({ FromTS: fromTimestamp }).then(stats => {
-        stats = this._fillStats(stats, fromTimestamp);
-        this.data = [
-          this.getSerie('MessageSentCount', 'Sent', stats),
-          this.getSerie('MessageOpenedCount', 'Opened', stats),
-          this.getSerie('MessageClickedCount', 'Clicked', stats),
-          this.getSerie('MessageSpamCount', 'Spam', stats)
-        ];
-        this.stats[timeline] = this.data;
+        if (stats && stats.length) {
+          stats = this._fillStats(stats, fromTimestamp);
+          this.data = [
+            this.getSerie('MessageSentCount', 'Sent', stats),
+            this.getSerie('MessageOpenedCount', 'Opened', stats),
+            this.getSerie('MessageClickedCount', 'Clicked', stats),
+            this.getSerie('MessageSpamCount', 'Spam', stats)
+          ];
+          this.stats[timeline] = this.data;
+        }
       });
     } else {
       this.data = this.stats[timeline];
@@ -145,8 +147,8 @@ export class MailjetViewComponent implements OnInit {
     });
   }
 
-  openMailjetTemplateEditor(templateId) {
-    this.openInBrowser.emit(`https://app.mailjet.com/template/${templateId}/build`);
+  openMailjetTemplateEditor(template) {
+    this.openInBrowser.emit(`https://app.mailjet.com/template/${template.ID}/${template.EditMode === 1 ? 'build' : 'html'}`);
   }
 
   openTemplateEditor(newTemplate) {
@@ -166,17 +168,17 @@ export class MailjetViewComponent implements OnInit {
   }
 
   loadTemplates() {
-    this.runQuery('mailjet', 'getTemplates', {User: this.mailjetUser.ID}).then((templateResult: any) => {
+    this.runQuery('mailjet-template', 'findAll', {OwnerId: this.mailjetUser.ID}).then((templateResult: any) => {
       this.templates = templateResult.data;
     });
   }
 
   private _createNewTemplate(data) {
-    this.runQuery('mailjet', 'createTemplate',
+    this.runQuery('mailjet-template', 'create',
     {Name: data.name, Author: data.author, Purposes: data.templateType, Locale: this.mailjetUser.Locale})
     .then((result: any) => {
       const newTemplate = result.data[0];
-      this.runQuery('mailjet', 'updateTemplateContent', {ID: newTemplate.ID, 'Html-part': `<html>
+      this.runQuery('mailjet-template', 'updateContent', {ID: newTemplate.ID, 'Html-part': `<html>
       <body>
         <h1 style="text-align: center; font-weight: 300; color: #0D47A1; margin: 20px;">
           Template generated via Materia Designer
@@ -193,7 +195,7 @@ export class MailjetViewComponent implements OnInit {
       .then((templateContent) => {
         this.templateDialogRef.close();
         this.loadTemplates();
-        this.openMailjetTemplateEditor(newTemplate.ID);
+        this.openMailjetTemplateEditor(newTemplate);
       });
     });
   }

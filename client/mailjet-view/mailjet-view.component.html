@@ -83,8 +83,8 @@
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
             <mat-list *ngIf="templates && templates.length">
-              <mat-list-item>
-                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center" class="list-title">
+              <mat-list-item class="list-title">
+                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                       <span fxFlex>Name</span>
                       <span fxFlex>Author
                       </span>
@@ -111,7 +111,7 @@
                       <mat-icon matTooltip="Send" (click)="openSendDialog('template'); templateSelected = template.ID;">send</mat-icon>
                     </button>
                   <button mat-icon-button>
-                    <mat-icon matTooltip="Edit" (click)="openMailjetTemplateEditor(template.ID)">edit</mat-icon>
+                    <mat-icon matTooltip="Edit" (click)="openMailjetTemplateEditor(template)">edit</mat-icon>
                   </button>
                 </div>
                 <mat-divider></mat-divider>
