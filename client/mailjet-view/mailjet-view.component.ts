@@ -194,7 +194,7 @@ export class MailjetViewComponent implements OnInit {
         </p>
       </body>
     </html>`,
-          Headers: { From: this.settings.name, Subject: 'Subject', 'Reply-To': this.settings.from }
+          Headers: { From: `${this.settings.name} <${this.settings.from}>`, Subject: 'Subject', 'Reply-To': this.settings.from }
         })
           .then((templateContent) => {
             this.templateDialogRef.close();
