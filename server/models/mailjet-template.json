@@ -96,15 +96,190 @@
     }
   ],
   "relations": [],
-  "queries": [{
-    "id": "list",
-    "type": "custom",
-    "opts": {
-      "model": "mailjet",
-      "action": "getTemplates",
-      "params": [{
-        "limit": 1000
-      }]
+  "queries": [
+    {
+      "id": "list",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet-template",
+        "action": "list",
+        "params": [{
+          "limit": 1000
+        }]
+      }
+    },
+    {
+      "id": "findAll",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "OwnerId",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "OwnerType",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          }
+        ],
+        "action": "list",
+        "model": "mailjet-template"
+      }
+    },
+    {
+      "id": "create",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "Name",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "OwnerType",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Author",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "EditMode",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Purposes",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "create",
+        "model": "mailjet-template"
+      }
+    },
+    {
+      "id": "createTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "Name",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "OwnerType",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Author",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "EditMode",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Purposes",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "create",
+        "model": "mailjet-template"
+      }
+    },
+
+    {
+      "id": "deleteTemplate",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "delete",
+        "model": "mailjet-template"
+      }
+    },
+    {
+      "id": "delete",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "delete",
+        "model": "mailjet-template"
+      }
+    },
+
+    {
+      "id": "updateContent",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "Html-part",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Text-part",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          }
+        ],
+        "action": "updateContent",
+        "model": "mailjet-template"
+      }
+    },
+    {
+      "id": "getContent",
+      "type": "custom",
+      "opts": {
+        "params": [{
+            "name": "ID",
+            "type": "number",
+            "required": true,
+            "component": "input"
+          }
+        ],
+        "action": "getContent",
+        "model": "mailjet-template"
+      }
     }
-  }]
+  ]
 }
