@@ -35,15 +35,13 @@ mat-card {
 		margin: 0 5px;
 	}
 }
-mat-select {
-	width: 180px;
-}
 mat-card-content {
 	overflow: hidden;
 	margin: 0;
 }
 .list-title {
-	font-weight: bold;
+	font-weight: 500;
+	background: #FAFAFA;
 }
 .flexed {
 	flex: 1;
