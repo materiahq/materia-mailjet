@@ -30,6 +30,17 @@
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
               <mat-list>
+                <mat-list-item class="list-title">
+                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+                    <span fxFlex>Email</span>
+                    <span fxFlex fxLayout="row" style="margin-left: 10px;">ArrivedAt
+                    </span>
+                    <span fxFlex>Subject
+                    </span>
+                    <span>Status
+                    </span>
+                  </div>
+                </mat-list-item>
                 <mat-list-item *ngFor="let email of emails">
                   <div style="width: 100%;" fxLayout="row" fxLayoutAlign="start center">
                     <span fxFlex>{{ email.ContactAlt }}</span>
@@ -60,6 +71,15 @@
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
             <mat-list>
+              <mat-list-item class="list-title">
+                  <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+                      <span fxFlex>Email</span>
+                      <span fxFlex>CreatedAt
+                      </span>
+                      <span style="width: 50px;">
+                      </span>
+                  </div>
+              </mat-list-item>
               <mat-list-item *ngFor="let contact of contacts">
                 <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                   <span fxFlex>{{ contact.Email }}</span>
