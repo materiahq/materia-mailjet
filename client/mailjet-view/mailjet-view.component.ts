@@ -69,7 +69,7 @@ export class MailjetViewComponent implements OnInit {
     this.sendSubject = '[TEST] Subject';
     this.sendType = type;
     this.sendModalComponent.refreshForm(type);
-    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, {panelClass: 'no-padding'});
+    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, { panelClass: 'no-padding' });
   }
 
   openSendToDialog(mail) {
@@ -77,7 +77,7 @@ export class MailjetViewComponent implements OnInit {
     this.sendTo = mail;
     this.sendType = 'simple';
     this.sendModalComponent.refreshForm();
-    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, {panelClass: 'no-padding'});
+    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, { panelClass: 'no-padding' });
   }
 
   send(data) {
@@ -89,7 +89,7 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private _sendSimpleMessage(data) {
-    this.runQuery('mailjet', 'send', { subject: data.subject, body: data.body, to: data.to }).then(() => {
+    this.runQuery('mailjet-message', 'send', { subject: data.subject, body: data.body, to: data.to }).then(() => {
       this.sendDialogRef.close();
       this.snackBar.open(`Email send`, null, { duration: 2000 });
       this.reload();
@@ -97,7 +97,7 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private _sendTemplateMessage(data) {
-    this.runQuery('mailjet', 'sendTemplate', {templateId: data.template, subject: data.subject, to: data.to}).then(() => {
+    this.runQuery('mailjet-message', 'sendTemplate', { templateId: data.template, subject: data.subject, to: data.to }).then(() => {
       this.sendDialogRef.close();
       this.snackBar.open(`Email send`, null, { duration: 2000 });
       this.reload();
@@ -119,7 +119,7 @@ export class MailjetViewComponent implements OnInit {
 
   init(timeline) {
     const fromTimestamp = this._getTimeline(timeline);
-    if ( ! this.stats[timeline]) {
+    if (!this.stats[timeline]) {
       this.getStats({ FromTS: fromTimestamp }).then(stats => {
         if (stats && stats.length) {
           stats = this._fillStats(stats, fromTimestamp);
@@ -136,12 +136,12 @@ export class MailjetViewComponent implements OnInit {
     } else {
       this.data = this.stats[timeline];
     }
-    this.runQuery('mailjet', 'getMessages', { FromTS: fromTimestamp, limit: 1000 })
+    this.runQuery('mailjet-message', 'list', { FromTS: fromTimestamp, limit: 1000 })
       .then((response: any) => {
         this.emails = [...response.data];
         this.nbEmails = response.count;
       });
-    this.runQuery('mailjet', 'getContacts', {FromTS: fromTimestamp, limit: 1000 }).then((result: any) => {
+    this.runQuery('mailjet-contact', 'list', { FromTS: fromTimestamp, limit: 1000 }).then((result: any) => {
       this.contacts = result.data;
     });
     this.getMailjetUser().then(() => {
@@ -156,7 +156,7 @@ export class MailjetViewComponent implements OnInit {
   openTemplateEditor(newTemplate) {
     this.newTemplate = newTemplate;
     this.templateEditor.refreshTemplateForm();
-    this.templateDialogRef = this.dialog.open(this.templateEditor.template, {panelClass: 'no-padding'});
+    this.templateDialogRef = this.dialog.open(this.templateEditor.template, { panelClass: 'no-padding' });
   }
 
   closeTemplateEditor() {
@@ -170,17 +170,18 @@ export class MailjetViewComponent implements OnInit {
   }
 
   loadTemplates() {
-    this.runQuery('mailjet-template', 'findAll', {OwnerId: this.mailjetUser.ID}).then((templateResult: any) => {
+    this.runQuery('mailjet-template', 'findAll', { OwnerId: this.mailjetUser.ID }).then((templateResult: any) => {
       this.templates = templateResult.data;
     });
   }
 
   private _createNewTemplate(data) {
     this.runQuery('mailjet-template', 'create',
-    {Name: data.name, Author: data.author, Purposes: data.templateType, Locale: this.mailjetUser.Locale})
-    .then((result: any) => {
-      const newTemplate = result.data[0];
-      this.runQuery('mailjet-template', 'updateContent', {ID: newTemplate.ID, 'Html-part': `<html>
+      { Name: data.name, Author: data.author, Purposes: data.templateType, Locale: this.mailjetUser.Locale })
+      .then((result: any) => {
+        const newTemplate = result.data[0];
+        this.runQuery('mailjet-template', 'updateContent', {
+          ID: newTemplate.ID, 'Html-part': `<html>
       <body>
         <h1 style="text-align: center; font-weight: 300; color: #0D47A1; margin: 20px;">
           Template generated via Materia Designer
@@ -193,13 +194,14 @@ export class MailjetViewComponent implements OnInit {
         </p>
       </body>
     </html>`,
-    Headers: {From: this.settings.name, Subject: 'Subject', 'Reply-To': this.settings.from}})
-      .then((templateContent) => {
-        this.templateDialogRef.close();
-        this.loadTemplates();
-        this.openMailjetTemplateEditor(newTemplate);
+          Headers: { From: this.settings.name, Subject: 'Subject', 'Reply-To': this.settings.from }
+        })
+          .then((templateContent) => {
+            this.templateDialogRef.close();
+            this.loadTemplates();
+            this.openMailjetTemplateEditor(newTemplate);
+          });
       });
-    });
   }
 
   private _fillStats(stats, fromTs) {
@@ -212,7 +214,7 @@ export class MailjetViewComponent implements OnInit {
         timeUnitDate.setHours(0, 0, 0, 0);
         const statDate = new Date(stat.Timeslice);
         statDate.setHours(0, 0, 0, 0);
-        if ( timeUnitDate.toISOString() === statDate.toISOString()) {
+        if (timeUnitDate.toISOString() === statDate.toISOString()) {
           match = true;
 
           newStats.push(stat);
@@ -267,7 +269,7 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private getMailjetUser() {
-    return this.runQuery('mailjet', 'getUserDetails').then((result: { count: number, data: any }) => {
+    return this.runQuery('mailjet-user', 'list').then((result: { count: number, data: any }) => {
       this.mailjetUser = result.data[0];
       return this.mailjetUser;
     });
@@ -277,7 +279,7 @@ export class MailjetViewComponent implements OnInit {
     const queryParams = params ?
       Object.assign({}, params, { CounterResolution: 'Day', CounterTiming: 'Message', CounterSource: 'APIKey' })
       : { CounterResolution: 'Day', CounterTiming: 'Message', CounterSource: 'APIKey' };
-    return this.runQuery('mailjet', 'getStats', queryParams)
+    return this.runQuery('mailjet-statistic', 'find', queryParams)
       .then((result: { count: number, data: any }) => result.data);
   }
 
