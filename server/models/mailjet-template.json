@@ -21,77 +21,66 @@
       "name": "Author",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "OwnerId",
       "type": "number",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "OwnerType",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "Description",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "Locale",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "Purposes",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "Categories",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "Copyright",
       "type": "text",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "EditMode",
       "type": "number",
       "read": true,
-      "required": true,
       "component": "input"
     },
     {
       "name": "CreatedAt",
       "type": "date",
       "read": true,
-      "required": true,
       "component": "datePicker"
     },
     {
       "name": "LastUpdatedAt",
       "type": "date",
       "read": true,
-      "required": true,
       "component": "datePicker"
     }
   ],
