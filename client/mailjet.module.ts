@@ -57,13 +57,13 @@ export const UI_MODULES = [
 
 import { Addon } from '@materia/addons';
 
-import { MailjetViewComponent } from './mailjet-view/mailjet-view.component';
-import { SafeTemplatePipe } from './safe-template.pipe';
-import { StatsCounterComponent } from './stats-counter/stats-counter.component';
-import { MailjetStatisticComponent } from './mailjet-statistic/mailjet-statistic.component';
-import { MailjetHeaderComponent } from './mailjet-header/mailjet-header.component';
-import { TemplateEditorComponent } from './dialog/template-editor/template-editor.component';
-import { SendModalComponent } from './dialog/send-modal/send-modal.component';
+import { MailjetViewComponent } from './components/mailjet-view/mailjet-view.component';
+import { SafeTemplatePipe } from './pipes/safe-template.pipe';
+import { StatsCounterComponent } from './components/stats-counter/stats-counter.component';
+import { MailjetStatisticComponent } from './components/mailjet-statistic/mailjet-statistic.component';
+import { MailjetHeaderComponent } from './components/mailjet-header/mailjet-header.component';
+import { TemplateEditorComponent } from './dialogs/template-editor/template-editor.component';
+import { SendModalComponent } from './dialogs/send-modal/send-modal.component';
 
 @Addon('@materia/mailjet')
 @NgModule({

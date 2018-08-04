@@ -2,10 +2,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { AddonView } from '@materia/addons';
 import { DatePipe } from '@angular/common';
-import { TemplateEditorComponent } from '../dialog/template-editor/template-editor.component';
-import { SendModalComponent } from '../dialog/send-modal/send-modal.component';
+import { AddonView } from '@materia/addons';
+
+import { TemplateEditorComponent } from '../../dialogs/template-editor/template-editor.component';
+import { SendModalComponent } from '../../dialogs/send-modal/send-modal.component';
 
 @AddonView('@materia/mailjet')
 @Component({
