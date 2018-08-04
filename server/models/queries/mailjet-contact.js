@@ -15,6 +15,30 @@ class MailjetContact {
 			return result.body.Data;
 		}).catch(err => err)
 	}
+
+	get(params) {
+		var contact = this.mailjet.get(`contact/${params.EmailOrId}`);
+		return contact.request()
+        .then((result) => {
+			return result.body.Data;
+		}).catch(err => err)
+	}
+
+	create(params) {
+		const createContact = this.mailjet.post('contact')
+		return createContact.request(params)
+		.then((result) => {
+			return result.body.Data;
+		}).catch(err => err)
+	}
+
+	update(params) {
+		const updateContact = this.mailjet.put('contact')
+		return updateContact.request(params)
+		.then((result) => {
+			return result.body.Data;
+		}).catch(err => err)
+	}
 }
 
 module.exports = MailjetContact;

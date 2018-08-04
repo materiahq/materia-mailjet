@@ -95,5 +95,121 @@
         "limit": 1000
       }]
     }
+  },
+  {
+    "id": "create",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet-contact",
+      "action": "create",
+      "params": [
+        {
+          "name": "Email",
+          "type": "text",
+          "required": true,
+          "component": "input"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "required": false,
+          "component": "input"
+        },
+        {
+          "name": "IsExcludedFromCampaigns",
+          "type": "boolean",
+          "required": false,
+          "component": "switch"
+        }
+      ]
+    }
+  },
+  {
+    "id": "update",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet-contact",
+      "action": "update",
+      "params": [
+        {
+          "name": "Email",
+          "type": "text",
+          "required": true,
+          "component": "input"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "required": false,
+          "component": "input"
+        },
+        {
+          "name": "IsExcludedFromCampaigns",
+          "type": "boolean",
+          "required": false,
+          "component": "switch"
+        }
+      ]
+    }
+  },
+  {
+    "id": "get",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet-contact",
+      "action": "get",
+      "params": [
+        {
+          "name": "EmailOrId",
+          "type": "text",
+          "required": true,
+          "component": "input"
+        }
+      ]
+    }
+  },
+  {
+    "id": "findOne",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet-contact",
+      "action": "get",
+      "params": [
+        {
+          "name": "EmailOrId",
+          "type": "text",
+          "required": true,
+          "component": "input"
+        }
+      ]
+    }
+  },
+  {
+    "id": "createContact",
+    "type": "custom",
+    "opts": {
+      "model": "mailjet-contact",
+      "action": "create",
+      "params": [
+        {
+          "name": "Email",
+          "type": "text",
+          "required": true,
+          "component": "input"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "required": false,
+          "component": "input"
+        },
+        {
+          "name": "IsExcludedFromCampaigns",
+          "type": "boolean",
+          "required": false,
+          "component": "switch"
+        }
+      ]
+    }
   }]
 }
