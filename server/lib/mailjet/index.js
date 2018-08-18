@@ -14,9 +14,9 @@ class MailjetSender {
   }
 
   send(params) {
-    var sendEmail = this.mailjet.post('send');
+    const sendEmail = this.mailjet.post('send');
 
-    var emailData = {
+    const emailData = {
       'FromEmail': this.from,
       'Subject': params.subject,
       'Text-part': params.body,
