@@ -4,5 +4,9 @@
   "deleteDestPath": false,
   "lib": {
     "entryFile": "client/public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "tslib",
+    "node-mailjet"
+  ]
 }
