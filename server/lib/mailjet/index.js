@@ -1,63 +1,77 @@
 class MailjetSender {
-	constructor(key, secret, from, name) {
-		if (key && secret && from && name) {
-			this.connect(key, secret, from, name)
-			this.from = from;
-			this.name = name;
-		}
+  constructor(key, secret, from, name) {
+    if (key && secret && from && name) {
+      this.connect(key, secret, from, name)
+      this.from = from;
+      this.name = name;
+    }
+  }
+
+  connect(key, secret, from, name) {
+    this.from = from;
+    this.name = name;
+    this.mailjet = require('node-mailjet').connect(key, secret);
+  }
+
+  send(params) {
+    var sendEmail = this.mailjet.post('send');
+
+    var emailData = {
+      'FromEmail': this.from,
+      'Subject': params.subject,
+      'Text-part': params.body,
+      'Recipients': [{
+        'Email': params.to
+      }]
+    }
+
+    if (this.name) {
+      emailData['FromName'] = this.name;
+    }
+
+    return sendEmail.request(emailData);
+  }
+
+  sendTemplate(params) {
+	const recipient = {'Email': params.to};
+	if (params.variables) {
+		recipient.Vars = JSON.parse(params.variables);
 	}
+	const sendTemplateById = this.mailjet.post('send')
+	const emailData = {
+        'FromEmail': params.fromEmail ? params.fromEmail : this.from,
+        'FromName': params.from ? params.from : this.name,
+        'Subject': params.subject,
+        'Mj-TemplateID': params.templateId,
+        'Mj-TemplateLanguage': 'true',
+        'Recipients': [recipient]
+      };
+      return sendTemplateById.request(emailData);
+  }
 
-	connect(key, secret, from, name) {
-		this.from = from;
-		this.name = name;
-		this.mailjet = require('node-mailjet').connect(key, secret);
-	}
-
-	send(params) {
-		var sendEmail = this.mailjet.post('send');
-
-		var emailData = {
-			'FromEmail': this.from,
-			'Subject': params.subject,
-			'Text-part': params.body,
-			'Recipients': [{
-				'Email': params.to
-			}]
-		}
-
-		if (this.name) {
-			emailData['FromName'] = this.name;
-		}
-
-		return sendEmail.request(emailData);
-	}
-
-	sendTemplate(params) {
-		var sendEmail = this.mailjet.post('send');
-
-		var emailData = {
-			'FromEmail': this.from,
-			'Subject': params.subject,
-			'Recipients': [{
-				'Email': params.to
-			}]
-		}
-
-		if (this.name) {
-			emailData['FromName'] = this.name;
-		}
-		return this.getTemplateContent({ID: params.templateId}).then(result => {
-			delete params.templateId;
-			const content = result.body.Data[0];
-			emailData['Html-part'] = content['Html-part'];
-			return sendEmail.request(emailData);
-		 });
-	}
-
-	getTemplateContent(params) {
-		const getTemplateContent = this.mailjet.get(`template/${params.ID}/detailcontent`);
-		return getTemplateContent.request();
-	}
+  // Same as sendTemplate() but uses Mailjet API v3.1
+  sendTemplateByIdV31(params) {
+    const sendTemplateById = this.mailjet
+      .post('send', {
+        'version': 'v3.1'
+	  })
+	  const emailData = {
+        'Messages': [{
+          'From': {
+            'Email': params.fromEmail ? params.fromEmail : this.from,
+            'Name': params.from ? params.from : this.name
+          },
+          'To': [{
+            'Email': params.to
+          }],
+          'TemplateID': params.templateId,
+          'TemplateLanguage': true,
+          'Subject': params.subject,
+          'Variables': params.variables ? JSON.parse(params.variables) :{}
+        }]
+      };
+      return sendTemplateById.request(emailData);
+  }
 }
 
 module.exports = MailjetSender

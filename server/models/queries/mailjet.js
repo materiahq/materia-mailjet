@@ -18,6 +18,16 @@ class MailjetModel {
 			return result.body;
 		}).catch(err => err)
 	}
+
+	sendTemplateById(params) {
+		return this.emailSender.sendTemplateById(params).then((result) => {
+			console.log('Result : ', result.body);
+			return result.body;
+		}).catch(err => {
+			console.log('Error :', err);
+			return err;
+		})
+	}
 }
 
 module.exports = MailjetModel;

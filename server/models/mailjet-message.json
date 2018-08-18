@@ -143,7 +143,20 @@
       "id": "sendTemplate",
       "type": "custom",
       "opts": {
-        "params": [{
+        "params": [
+          {
+            "name": "fromEmail",
+            "type": "text",
+            "required": false,
+            "component": "email"
+          },
+          {
+            "name": "from",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
             "name": "to",
             "type": "text",
             "required": true,
@@ -159,6 +172,12 @@
             "name": "subject",
             "type": "text",
             "required": true,
+            "component": "input"
+          },
+          {
+            "name": "variables",
+            "type": "text",
+            "required": false,
             "component": "input"
           }
         ],
