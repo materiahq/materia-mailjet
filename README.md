@@ -1,17 +1,20 @@
-# Materia - Addon Boilerplate
+# Materia - Addon Mailjet
 
-Starter kit to create a Materia Addon.
+Send emails in your materia applications with your mailjet account. This addon uses node-mailjet under the hood.
+
+## Prerequisites
+
+You need a Mailjet account to use this addon.
 
 ## Features
 
-- Minimal server
-- Default addon view (Angular 6 + Angular Material)
-- **Custom setup dialog**
-- Build system (@angular/cli + ng-packagr + TypeScript + Sass)
+- Send simple emails or templates
+- Statistics for your Mailjet ApiKey
+- Manage your Mailjet contacts
 
 ## Installation from NPM
 
-In your Materia application, run `yarn add @materia/addon-boilerplate`
+In your Materia application, run `yarn add @materia/mailjet`
 
 Restart Materia Designer
 
@@ -20,8 +23,8 @@ Restart Materia Designer
 Clone this repository:
 
 ```
-git clone git@github.com:thyb/materia-addon-boilerplate.git
-cd materia-addon-boilerplate
+git clone git@github.com:thyb/materia-mailjet.git
+cd materia-mailjet
 ```
 
 Then install dependencies and build:
@@ -40,7 +43,7 @@ cd dist && npm link
 and in your materia application
 
 ```
-npm link @materia/addon-boilerplate
+npm link @materia/mailjet
 ```
 
-then add `"@materia/addon-boilerplate": "^1.0.0"` in the dependencies of the package.json - it will let Materia knows of the existance of the addon.
+then add `"@materia/mailjet": "^1.0.0"` in the dependencies of the package.json - it will let Materia knows of the existance of the addon.
