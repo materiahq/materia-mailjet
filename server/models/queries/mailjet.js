@@ -9,7 +9,7 @@ class MailjetModel {
 
 	send(params) {
 		return this.emailSender.send(params).then((result) => {
-			return result.body.Data;
+			return result.body;
 		}).catch(err => err)
 	}
 
