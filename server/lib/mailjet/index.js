@@ -35,7 +35,8 @@ class MailjetSender {
   sendTemplate(params) {
 	const recipient = {'Email': params.to};
 	if (params.variables) {
-		recipient.Vars = JSON.parse(params.variables);
+      const isString = typeof params.variables === 'string';
+      recipient.Vars = isString ? JSON.parse(params.variables) : params.variables;
 	}
 	const sendTemplateById = this.mailjet.post('send')
 	const emailData = {
