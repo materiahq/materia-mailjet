@@ -141,6 +141,9 @@ export class MailjetViewComponent implements OnInit {
           setTimeout(() => {
             this.statsProcessing = false;
           }, 1000);
+        } else {
+          this.data = [];
+          this.statsProcessing = false;
         }
       });
     } else {
