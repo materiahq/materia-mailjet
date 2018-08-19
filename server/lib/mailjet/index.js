@@ -25,6 +25,10 @@ class MailjetSender {
       }]
     }
 
+    if (params.body_html) {
+      emailData['Html-part'] = params.body_html;
+    }
+
     if (this.name) {
       emailData['FromName'] = this.name;
     }

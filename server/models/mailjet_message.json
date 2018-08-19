@@ -133,6 +133,12 @@
             "type": "text",
             "required": true,
             "component": "textarea"
+          },
+          {
+            "name": "body_html",
+            "type": "text",
+            "required": false,
+            "component": "textarea"
           }
         ],
         "action": "send",
