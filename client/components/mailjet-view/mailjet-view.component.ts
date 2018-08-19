@@ -95,7 +95,7 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private _sendSimpleMessage(data) {
-    this.runQuery('mailjet-message', 'send', { subject: data.subject, body: data.body, to: data.to }).then(() => {
+    this.runQuery('mailjet_message', 'send', { subject: data.subject, body: data.body, to: data.to }).then(() => {
       this.sendDialogRef.close();
       this.snackBar.open(`Email send`, null, { duration: 2000 });
       this.reload();
@@ -103,7 +103,7 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private _sendTemplateMessage(data) {
-    this.runQuery('mailjet-message', 'sendTemplate', { templateId: data.template, subject: data.subject, to: data.to }).then(() => {
+    this.runQuery('mailjet_message', 'sendTemplate', { templateId: data.template, subject: data.subject, to: data.to }).then(() => {
       this.sendDialogRef.close();
       this.snackBar.open(`Email send`, null, { duration: 2000 });
       this.reload();
@@ -146,12 +146,12 @@ export class MailjetViewComponent implements OnInit {
     } else {
       this.data = this.stats[timeline];
     }
-    this.runQuery('mailjet-message', 'list', { FromTS: fromTimestamp, limit: 1000 })
+    this.runQuery('mailjet_message', 'list', { FromTS: fromTimestamp, limit: 1000 })
       .then((response: any) => {
         this.emails = [...response.data];
         this.nbEmails = response.count;
       });
-    this.runQuery('mailjet-contact', 'list', { FromTS: fromTimestamp, limit: 1000 }).then((result: any) => {
+    this.runQuery('mailjet_contact', 'list', { FromTS: fromTimestamp, limit: 1000 }).then((result: any) => {
       this.contacts = result.data;
     });
     this.getMailjetUser().then(() => {
@@ -180,17 +180,17 @@ export class MailjetViewComponent implements OnInit {
   }
 
   loadTemplates() {
-    this.runQuery('mailjet-template', 'findAll', { OwnerId: this.mailjetUser.ID }).then((templateResult: any) => {
+    this.runQuery('mailjet_template', 'findAll', { OwnerId: this.mailjetUser.ID }).then((templateResult: any) => {
       this.templates = templateResult.data;
     });
   }
 
   private _createNewTemplate(data) {
-    this.runQuery('mailjet-template', 'create',
+    this.runQuery('mailjet_template', 'create',
       { Name: data.name, Author: data.author, Purposes: data.templateType, Locale: this.mailjetUser.Locale })
       .then((result: any) => {
         const newTemplate = result.data[0];
-        this.runQuery('mailjet-template', 'updateContent', {
+        this.runQuery('mailjet_template', 'updateContent', {
           ID: newTemplate.ID, 'Html-part': `<html>
       <body>
         <h1 style="text-align: center; font-weight: 300; color: #0D47A1; margin: 20px;">
@@ -279,7 +279,7 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private getMailjetUser() {
-    return this.runQuery('mailjet-user', 'list').then((result: { count: number, data: any }) => {
+    return this.runQuery('mailjet_user', 'list').then((result: { count: number, data: any }) => {
       this.mailjetUser = result.data[0];
       return this.mailjetUser;
     });
@@ -289,7 +289,7 @@ export class MailjetViewComponent implements OnInit {
     const queryParams = params ?
       Object.assign({}, params, { CounterResolution: 'Day', CounterTiming: 'Message', CounterSource: 'APIKey' })
       : { CounterResolution: 'Day', CounterTiming: 'Message', CounterSource: 'APIKey' };
-    return this.runQuery('mailjet-statistic', 'find', queryParams)
+    return this.runQuery('mailjet_statistic', 'find', queryParams)
       .then((result: { count: number, data: any }) => result.data);
   }
 
