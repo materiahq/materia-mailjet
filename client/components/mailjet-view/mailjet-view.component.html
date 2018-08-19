@@ -29,7 +29,7 @@
               </div>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-              <mat-list>
+              <mat-list *ngIf="emails && emails.length">
                 <mat-list-item class="list-title">
                   <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                     <span fxFlex>Email</span>
@@ -54,8 +54,8 @@
                   <mat-divider></mat-divider>
                 </mat-list-item>
               </mat-list>
-              <div *ngIf="emails && emails.length == 0" style="min-height: 140px;" fxLayout="column" fxLayoutAlign="start center">
-                <p style="padding-left: 16px; margin-bottom: 15px;">
+              <div *ngIf="emails && emails.length == 0" fxFlex fxLayout="column" fxLayoutAlign="center center">
+                <p style="margin-bottom: 15px;">
                   <strong>No email has been sent during this period</strong>
                 </p>
                 <button mat-button color="primary" (click)="openSendDialog('simple')">Send a test email now</button>
@@ -70,7 +70,7 @@
               </div>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-            <mat-list>
+            <mat-list *ngIf="contacts && contacts.length">
               <mat-list-item class="list-title">
                   <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
                       <span fxFlex>Email</span>
@@ -93,6 +93,9 @@
               </mat-list-item>
             </mat-list>
           </ng-template>
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="contacts && !contacts.length">
+            <span>You haven't any contacts yet</span>
+          </div>
           </mat-expansion-panel>
           <mat-expansion-panel (opened)="templatesExpanded = true" (closed)="templatesExpanded = false" [ngClass]="{'flexed': templatesExpanded}">
             <mat-expansion-panel-header fxLayout="row" fxLayoutAlign="center center">
@@ -137,9 +140,11 @@
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
-            <div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! templates">
-              <span>You haven't created any template yet</span>
-              <button mat-raised-button color="primary" (click)="openTemplateEditor(true)">
+            <div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! templates || (templates && ! templates.length)">
+              <p style="margin-bottom: 15px;">
+                <strong>You haven't created any template yet</strong>
+              </p>
+              <button mat-button color="primary" (click)="openTemplateEditor(true)">
                 Create my first template
               </button>
             </div>
