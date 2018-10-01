@@ -1,4 +1,4 @@
-<div fxLayout="column" fxFlex class="mailjet unicorn-dark-theme">
+<div fxLayout="column" fxFlex>
   <mat-card fxFlex fxLayout="column">
     <mailjet-header
       [settings]="settings"
@@ -151,6 +151,12 @@
             </ng-template>
           </mat-expansion-panel>
         </mat-accordion>
+      </mat-card-content>
+      <mat-card-content fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="! settings || ! settings.from || ! settings.apikey" style="padding: 15px;">
+        <p>You need a Mailjet account to use this addon.</p>
+        <button mat-raised-button (click)="openMailjetSignup()" class="mailjet-button">SIGNUP TO MAILJET</button>
+        <p style="margin-top: 45px;">Already have a Mailjet account ? Please fill the settings with your <span class="link" (click)="openInBrowser.emit('https://app.mailjet.com/account/api_keys')">Mailjet API keys</span>:</p>
+        <button mat-raised-button (click)="openSetup.emit()" class="mailjet-button">ADDON SETTINGS</button>
       </mat-card-content>
     </div>
   </mat-card>

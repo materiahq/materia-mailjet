@@ -188,6 +188,14 @@ export class MailjetViewComponent implements OnInit {
     });
   }
 
+  openMailjetSignup() {
+    this.openInBrowser.emit('https://app.mailjet.com/signup');
+  }
+
+  openMailjetApikeyPage() {
+    this.openInBrowser.emit('https://app.mailjet.com/account/api_keys');
+  }
+
   private _createNewTemplate(data) {
     this.runQuery('mailjet_template', 'create',
       { Name: data.name, Author: data.author, Purposes: data.templateType, Locale: this.mailjetUser.Locale })
