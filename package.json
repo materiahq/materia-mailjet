@@ -1,6 +1,6 @@
 {
   "name": "@materia/mailjet",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "",
   "author": "thibaud.arnault@gmail.com",
   "license": "MIT",
@@ -33,6 +33,7 @@
     "@angular/material": "^6.4.0",
     "@angular/platform-browser": "^6.0.9",
     "@materia-ui/ngx-monaco-editor": "^1.0.0",
+    "@materia/addons": "1.0.0-beta.2",
     "@swimlane/ngx-charts": "^9.0.0"
   },
   "devDependencies": {
