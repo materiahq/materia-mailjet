@@ -4546,9 +4546,9 @@ node-libs-browser@^2.0.0:
     util "^0.10.3"
     vm-browserify "0.0.4"
 
-node-mailjet@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/node-mailjet/-/node-mailjet-3.2.1.tgz#4f2292309f474ad99c35777e6e5c4d3e1b6b7fc6"
+node-mailjet@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/node-mailjet/-/node-mailjet-3.3.1.tgz#f06ed4765abf3d6d57e662c32cb586fd7e79a540"
   dependencies:
     bluebird "^3.5.0"
     json-bigint "^0.2.3"

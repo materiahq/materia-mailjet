@@ -13,7 +13,7 @@ class MailjetContact {
 		return contact.request()
         .then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 
 	get(params) {
@@ -21,7 +21,7 @@ class MailjetContact {
 		return contact.request()
         .then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 
 	create(params) {
@@ -29,7 +29,7 @@ class MailjetContact {
 		return createContact.request(params)
 		.then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 
 	update(params) {
@@ -37,7 +37,7 @@ class MailjetContact {
 		return updateContact.request(params)
 		.then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 }
 

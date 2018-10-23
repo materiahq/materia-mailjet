@@ -13,7 +13,7 @@ class MailjetUser {
         return user.request()
         .then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 }
 

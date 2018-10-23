@@ -13,7 +13,7 @@ class MailjetCampaign {
 		return campaign.request()
         .then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 }
 

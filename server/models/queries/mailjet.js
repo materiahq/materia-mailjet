@@ -10,13 +10,14 @@ class MailjetModel {
 	send(params) {
 		return this.emailSender.send(params).then((result) => {
 			return result.body;
-		}).catch(err => err)
+		})
 	}
 
 	sendTemplate(params) {
+		console.log('sendTemplate: ' + JSON.stringify(params));
 		return this.emailSender.sendTemplate(params).then((result) => {
 			return result.body;
-		}).catch(err => err)
+		})
 	}
 
 	sendTemplateById(params) {

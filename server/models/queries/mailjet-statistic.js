@@ -21,7 +21,7 @@ class MailjetStatistic {
         return stats.request(newParams)
         .then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 
 	list() {
@@ -29,7 +29,7 @@ class MailjetStatistic {
         return stats.request({CounterSource: "APIKey", CounterResolution: "Lifetime", CounterTiming: "Message"})
         .then((result) => {
 			return result.body.Data;
-		}).catch(err => err)
+		})
 	}
 }
 

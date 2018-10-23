@@ -27,7 +27,7 @@ class MailjetMessage {
     return message.request(newParams)
       .then((result) => {
         return result.body.Data;
-      }).catch(err => err)
+      })
   }
 
   send(params) {
@@ -49,7 +49,7 @@ class MailjetMessage {
     return sendEmail.request(emailData)
       .then((result) => {
         return result.body.Data;
-      }).catch(err => err)
+      })
   }
 
   sendTemplateById(params) {
@@ -76,7 +76,7 @@ class MailjetMessage {
     return sendTemplate.request(emailData)
       .then((result) => {
         return result.body;
-      }).catch(err => err)
+      })
     /*return this.getTemplateContent({ID: params.templateId}).then(result => {
 			delete params.templateId;
 			const content = result.body.Data[0];
@@ -84,7 +84,7 @@ class MailjetMessage {
             return sendEmail.request(emailData)
             .then((result) => {
                 return result.body.Data;
-            }).catch(err => err)
+            })
 		 });*/
   }
 
@@ -105,17 +105,17 @@ class MailjetMessage {
     return this.getTemplateContent({
       ID: params.templateId
     }).then(result => {
-        console.log('Template content : ', result['Html-part']);
+      console.log('Template content : ', result['Html-part']);
       const html = result['Html-part'];
       emailData['Html-part'] = html;
       return sendEmail.request(emailData)
-    }).then((result) => result.body).catch(err => err);
+    }).then((result) => result.body)
   }
 
   getTemplateContent(params) {
     const getContent = this.mailjet.get(`template/${params.ID}/detailcontent`);
     return getContent.request()
-      .then((result) => result.body.Data[0]).catch(err => err);
+      .then((result) => result.body.Data[0])
   }
 
   sendTemplateV3(params) {
@@ -149,9 +149,6 @@ class MailjetMessage {
       .then((result) => {
         console.log('Send template result : ', result.body);
         return result.body;
-      }).catch(err => {
-        console.log('Send template error :', err);
-        return err
       })
     /*return this.getTemplateContent({ID: params.templateId}).then(result => {
 			delete params.templateId;
@@ -160,7 +157,7 @@ class MailjetMessage {
             return sendEmail.request(emailData)
             .then((result) => {
                 return result.body.Data;
-            }).catch(err => err)
+            })
 		 });*/
   }
 }

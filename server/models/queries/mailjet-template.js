@@ -19,8 +19,7 @@ class MailjetTemplate {
     }
     var templates = this.mailjet.get('template');
     return templates.request(params)
-      .then((result) => result.body.Data)
-      .catch(err => err);
+      .then((result) => result.body.Data);
   }
 
   create(params) {
@@ -29,27 +28,26 @@ class MailjetTemplate {
     }
     const createTemplate = this.mailjet.post('template');
     return createTemplate.request(params)
-      .then((result) => result.body.Data)
-      .catch(err => err);
+      .then((result) => result.body.Data);
   }
 
   delete(params) {
     const deleteTemplate = this.mailjet.delete(`template/${params.ID}`);
     return deleteTemplate.request()
-    .then(() => true).catch(err => err);
+    .then(() => true);
   }
 
   updateContent(params) {
     const updateContent = this.mailjet.post(`template/${params.ID}/detailcontent`);
 		delete params.ID;
     return updateContent.request(params)
-    .then((result) => result.body.Data).catch(err => err);
+    .then((result) => result.body.Data);
   }
 
   getContent(params) {
     const getContent = this.mailjet.get(`template/${params.ID}/detailcontent`);
     return getContent.request()
-    .then((result) => result.body.Data).catch(err => err);
+    .then((result) => result.body.Data);
   }
 }
 
