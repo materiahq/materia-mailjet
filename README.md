@@ -46,4 +46,4 @@ and in your materia application
 npm link @materia/mailjet
 ```
 
-then add `@materia/mailjet` in the links array of the materia.json configuration file - it will let Materia knows of the existance of the addon.
+then add `"@materia/mailjet"` in the links array of the materia.json configuration file - it will let Materia knows of the existance of the addon.
