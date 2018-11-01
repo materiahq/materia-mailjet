@@ -1,6 +1,7 @@
 {
   "virtual": true,
-  "fields": [{
+  "fields": [
+    {
       "name": "ID",
       "type": "number",
       "read": true,
@@ -100,15 +101,18 @@
     }
   ],
   "relations": [],
-  "queries": [{
+  "queries": [
+    {
       "id": "list",
       "type": "custom",
       "opts": {
+        "params": [
+          {
+            "limit": 1000
+          }
+        ],
         "model": "mailjet-message",
-        "action": "list",
-        "params": [{
-          "limit": 1000
-        }]
+        "action": "list"
       }
     },
     {
@@ -142,7 +146,7 @@
           }
         ],
         "action": "send",
-        "model": "mailjet"
+        "model": "mailjet-message"
       }
     },
     {
@@ -188,7 +192,7 @@
           }
         ],
         "action": "sendTemplate",
-        "model": "mailjet"
+        "model": "mailjet-message"
       }
     }
   ]
