@@ -2,15 +2,15 @@
   "name": "@materia/mailjet",
   "version": "1.0.0-beta.2",
   "description": "",
-  "author": "thibaud.arnault@gmail.com",
+  "author": "team@getmateria.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thyb/materia-addon-boilerplate/issues"
+    "url": "https://github.com/materiahq/materia-mailjet/issues"
   },
-  "homepage": "https://github.com/thyb/materia-addon-boilerplate#readme",
+  "homepage": "https://github.com/materiahq/materia-mailjet#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thyb/materia-addon-boilerplate.git"
+    "url": "git+https://github.com/materiahq/materia-mailjet.git"
   },
   "scripts": {
     "build": "ng build",
