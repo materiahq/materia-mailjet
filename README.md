@@ -14,7 +14,7 @@ You need a Mailjet account to use this addon.
 
 ## Installation from NPM
 
-In your Materia application, run `yarn add @materia/mailjet`
+In your Materia application, run `npm install @materia/mailjet` or `yarn add @materia/mailjet`
 
 Restart Materia Designer
 
@@ -23,7 +23,7 @@ Restart Materia Designer
 Clone this repository:
 
 ```
-git clone git@github.com:thyb/materia-mailjet.git
+git clone git@github.com:materiahq/materia-mailjet.git
 cd materia-mailjet
 ```
 
@@ -46,4 +46,4 @@ and in your materia application
 npm link @materia/mailjet
 ```
 
-then add `"@materia/mailjet": "^1.0.0"` in the dependencies of the package.json - it will let Materia knows of the existance of the addon.
+then add `@materia/mailjet` in the links array of the materia.json configuration file - it will let Materia knows of the existance of the addon.
