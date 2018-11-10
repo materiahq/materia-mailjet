@@ -18,7 +18,7 @@
               </div>
             </mat-expansion-panel-header>
             <div fxFlex fxLayout="row">
-              <mailjet-statistic [data]="data" [expanded]="statsExpanded" [loading]="statsProcessing"></mailjet-statistic>
+              <mailjet-statistic [data]="data" [xAbsis]="timeUnits" [expanded]="statsExpanded" [loading]="statsProcessing"></mailjet-statistic>
             </div>
           </mat-expansion-panel>
           <mat-expansion-panel (opened)="emailsExpanded = true" (closed)="emailsExpanded = false" [ngClass]="{'flexed': emailsExpanded}">

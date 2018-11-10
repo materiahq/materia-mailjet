@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, ViewChild } from '@angular/core';
-import { LineChartComponent } from '@swimlane/ngx-charts';
+import { Component, Input, OnChanges } from '@angular/core';
+import { EChartOption } from 'echarts';
 
 @Component({
   selector: 'mailjet-statistic',
@@ -7,38 +7,61 @@ import { LineChartComponent } from '@swimlane/ngx-charts';
   styleUrls: ['./mailjet-statistic.component.scss']
 })
 export class MailjetStatisticComponent implements OnChanges {
-  @Input() data: any;
+  @Input() data: {name: string, data: number[], type: string, color: string}[];
   @Input() loading: boolean;
   @Input() expanded: boolean;
-
-  @ViewChild(LineChartComponent) chart: LineChartComponent;
+  @Input() xAbsis: string[];
 
   counts: any = {
     sent: 0,
     opened: 0,
     clicked: 0,
     spam: 0,
-    bounced: 0
+    bounced: 0,
+    blocked: 0
   };
+  legend: string[];
+  chartOptions: EChartOption;
 
-  constructor() { }
+  constructor( ) { }
 
   ngOnChanges(changes) {
-    if (changes && changes.expanded && changes.expanded.currentValue && this.chart) {
-      setTimeout(() => {
-        this.chart.update();
-      }, 500);
-    }
-    if (changes && changes.data && changes.data.currentValue) {
-      const data = changes.data.currentValue;
+    if (changes && this.data) {
+      const data = this.data;
       data.forEach(d => {
-        if (d.series && d.series.length) {
+        if (d.data && d.data.length) {
           let count = this.counts[d.name.toLowerCase()] = 0;
-          d.series.forEach(s => {
-            count = count + s.value;
+          d.data.forEach(value => {
+            count = count + value;
           });
           this.counts[d.name.toLowerCase()] = count;
         }
+      });
+      this.legend = this.data.map(d => d.name);
+      this.chartOptions = Object.assign({}, {
+        legend: {
+          top: 'top',
+          left: 'center',
+          data: this.legend
+        },
+        grid: {
+          left: '3%',
+          right: '3%',
+          bottom: '1%',
+          containLabel: true
+      },
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          boundaryGap: false,
+          type: 'category',
+          data: this.xAbsis
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: this.data
       });
     }
   }

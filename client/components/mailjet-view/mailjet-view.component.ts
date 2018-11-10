@@ -16,7 +16,7 @@ import { SendModalComponent } from '../../dialogs/send-modal/send-modal.componen
   providers: []
 })
 export class MailjetViewComponent implements OnInit {
-  nbEmails: any;
+  nbEmails: number;
   emails = [];
   contacts: any[];
   templates: any[];
@@ -38,13 +38,15 @@ export class MailjetViewComponent implements OnInit {
     opened: '#4CAF50',
     clicked: '#8BC34A',
     spam: '#FFC107',
-    bounce: '#F44336'
+    bounce: '#F44336',
+    blocked: 'black'
   };
   statsExpanded: boolean;
   contactsExpanded: boolean;
   templatesExpanded: boolean;
   emailsExpanded: boolean;
   statsProcessing: boolean;
+  timeUnits: string[];
 
   @Input() app;
   @Input() settings;
@@ -125,30 +127,27 @@ export class MailjetViewComponent implements OnInit {
 
   init(timeline) {
     const fromTimestamp = this._getTimeline(timeline);
-    if (!this.stats[timeline]) {
-      this.statsProcessing = true;
-      this.getStats({ FromTS: fromTimestamp }).then(stats => {
-        if (stats && stats.length) {
-          stats = this._fillStats(stats, fromTimestamp);
-          this.data = [
-            this.getSerie('MessageSentCount', 'Sent', stats),
-            this.getSerie('MessageOpenedCount', 'Opened', stats),
-            this.getSerie('MessageClickedCount', 'Clicked', stats),
-            this.getSerie('MessageSpamCount', 'Spam', stats),
-            this.getSerie('MessageHardBouncedCount', 'Bounce', stats)
-          ];
-          this.stats[timeline] = this.data;
-          setTimeout(() => {
-            this.statsProcessing = false;
-          }, 1000);
-        } else {
-          this.data = [];
+    this.statsProcessing = true;
+    this.getStats({ FromTS: fromTimestamp }).then(stats => {
+      if (stats && stats.length) {
+        stats = this._fillStats(stats, fromTimestamp);
+        this.data = [
+          this.getSerie('MessageSentCount', 'Sent', stats),
+          this.getSerie('MessageOpenedCount', 'Opened', stats),
+          this.getSerie('MessageClickedCount', 'Clicked', stats),
+          this.getSerie('MessageSpamCount', 'Spam', stats),
+          this.getSerie('MessageHardBouncedCount', 'Bounce', stats),
+          this.getSerie('MessageBlockedCount', 'Blocked', stats)
+        ];
+        this.stats[timeline] = this.data;
+        setTimeout(() => {
           this.statsProcessing = false;
-        }
-      });
-    } else {
-      this.data = this.stats[timeline];
-    }
+        }, 1000);
+      } else {
+        this.data = [];
+        this.statsProcessing = false;
+      }
+    });
     this.runQuery('mailjet_message', 'list', { FromTS: fromTimestamp, limit: 1000 })
       .then((response: any) => {
         this.emails = [...response.data];
@@ -227,6 +226,9 @@ export class MailjetViewComponent implements OnInit {
 
   private _fillStats(stats, fromTs) {
     const timeUnits = this._getTimeUnits(fromTs);
+    this.timeUnits = timeUnits.map((d) => {
+      return this.datePipe.transform(d, 'shortDate');
+    });
     const newStats = [];
     timeUnits.forEach(timeUnit => {
       let match = false;
@@ -248,6 +250,7 @@ export class MailjetViewComponent implements OnInit {
           MessageOpenedCount: 0,
           MessageClickedCount: 0,
           MessageHardBouncedCount: 0,
+          MessageBlockedCount: 0,
           Timeslice: timeUnit
         });
       }
@@ -283,6 +286,7 @@ export class MailjetViewComponent implements OnInit {
       return last3month.toISOString();
     }
   }
+
   private runQuery(entity: string, query: string, params?: any) {
     return this.http
       .post(`${this.baseUrl}/entities/${entity}/queries/${query}`, params)
@@ -307,14 +311,13 @@ export class MailjetViewComponent implements OnInit {
   private getSerie(name, displayName, data) {
     const series = [];
     data.forEach(row => {
-      series.push({
-        name: this.datePipe.transform(row['Timeslice'], 'shortDate'),
-        value: row[name]
-      });
+      series.push(row[name]);
     });
     return {
       name: displayName,
-      series: series
+      data: series,
+      type: 'line',
+      color: this.statusColors[displayName.toLowerCase()]
     };
   }
 }

@@ -5,15 +5,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './mailjet-header.component.html',
   styleUrls: ['./mailjet-header.component.scss']
 })
-export class MailjetHeaderComponent implements OnInit {
+export class MailjetHeaderComponent {
   @Input() settings: any;
   @Output() settingsOpened = new EventEmitter();
   @Output() sendDialogOpened = new EventEmitter();
   @Output() timelineChanged = new EventEmitter<string>();
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

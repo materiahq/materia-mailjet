@@ -1,5 +1,5 @@
 /*
- * Public API Surface of addon-material
+ * Public API Surface of materia-mailjet
  */
 
 export * from './components/mailjet-view/mailjet-view.component';

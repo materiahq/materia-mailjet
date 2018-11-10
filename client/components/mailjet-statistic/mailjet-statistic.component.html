@@ -5,18 +5,19 @@
     <mailjet-stats-counter backgroundColor="#8BC34A" width="80" height="60" color="white" label="Clicked" [count]="counts['clicked']"></mailjet-stats-counter>
     <mailjet-stats-counter backgroundColor="#FFC107" width="80" height="60" color="white" label="Spam" [count]="counts['spam']"></mailjet-stats-counter>
     <mailjet-stats-counter backgroundColor="#F44336" width="80" height="60" color="white" label="Bounce" [count]="counts['bounce']"></mailjet-stats-counter>
+    <mailjet-stats-counter backgroundColor="black" width="80" height="60" color="white" label="Blocked" [count]="counts['blocked']"></mailjet-stats-counter>
   </div>
-  <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="chart-section">
+  <div fxFlex fxLayout="column" class="chart-section">
     <div class="chart-container">
-      <ngx-charts-line-chart [scheme]="{ domain: ['#2196F3', '#4CAF50', '#8BC34A', '#FFC107', '#FF5722', '#F44336'] }" [results]="data" [gradient]="false"
-        [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="false" [showYAxisLabel]="false">
-      </ngx-charts-line-chart>
+      <div *ngIf="xAbsis && data" style="height: 100%; width: 100%;" echarts
+        [options]="chartOptions">
+      </div>
     </div>
   </div>
 </div>
 <div fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="loading">
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
-<div fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf="!loading && data && !data.length">
+<div fxFlex fxLayout="row" fxLayoutAlign="center center" *ngIf=" ! loading && data && ! data.length">
   <p>No statistics for this period</p>
 </div>
