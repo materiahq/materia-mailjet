@@ -1,7 +1,7 @@
 
 export default class MailjetAddon {
   public static displayName = 'Mailjet';
-  public static logo = 'https://pbs.twimg.com/profile_images/811557097758461952/Q679jb7i.jpg';
+  public static logo = 'https://raw.githubusercontent.com/materiahq/materia-website-content/master/logo/addons/mailjet.jpg';
 
   public static installSettings = [
     {
