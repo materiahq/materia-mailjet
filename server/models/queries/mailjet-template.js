@@ -13,13 +13,17 @@ class MailjetTemplate {
   }
 
   list(params) {
-    if (params.OwnerId) {
-      params.User = params.OwnerId;
-      delete params.OwnerId;
+    if (this.mailjet) {
+      if (params.OwnerId) {
+        params.User = params.OwnerId;
+        delete params.OwnerId;
+      }
+      var templates = this.mailjet.get('template');
+      return templates.request(params)
+        .then((result) => result.body.Data);
+    } else {
+      return { message: 'Error: @materia/mailjet config not found' };
     }
-    var templates = this.mailjet.get('template');
-    return templates.request(params)
-      .then((result) => result.body.Data);
   }
 
   create(params) {
@@ -34,20 +38,20 @@ class MailjetTemplate {
   delete(params) {
     const deleteTemplate = this.mailjet.delete(`template/${params.ID}`);
     return deleteTemplate.request()
-    .then(() => true);
+      .then(() => true);
   }
 
   updateContent(params) {
     const updateContent = this.mailjet.post(`template/${params.ID}/detailcontent`);
-		delete params.ID;
+    delete params.ID;
     return updateContent.request(params)
-    .then((result) => result.body.Data);
+      .then((result) => result.body.Data);
   }
 
   getContent(params) {
     const getContent = this.mailjet.get(`template/${params.ID}/detailcontent`);
     return getContent.request()
-    .then((result) => result.body.Data);
+      .then((result) => result.body.Data);
   }
 }
 
