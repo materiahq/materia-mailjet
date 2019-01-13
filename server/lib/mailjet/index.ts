@@ -1,4 +1,7 @@
-class MailjetSender {
+export class MailjetSender {
+  mailjet
+  name: string;
+  from: string;
 
   constructor(key, secret, from, name) {
     if (key && secret && from && name) {
@@ -38,7 +41,7 @@ class MailjetSender {
   }
 
   sendTemplate(params) {
-    const recipient = {'Email': params.to};
+    const recipient: any = {'Email': params.to};
     if (params.variables) {
         const isString = typeof params.variables === 'string';
         recipient.Vars = isString ? JSON.parse(params.variables) : params.variables;
@@ -80,5 +83,3 @@ class MailjetSender {
       return sendTemplateById.request(emailData);
   }*/
 }
-
-module.exports = MailjetSender;

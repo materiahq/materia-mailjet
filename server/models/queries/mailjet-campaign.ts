@@ -1,9 +1,11 @@
-const MailjetSender = require('../../lib/mailjet');
+import { MailjetSender } from '../../lib/mailjet';
+import { App, Entity } from '@materia/server';
 
 class MailjetCampaign {
-	constructor(app, entity) {
-		this.app = app;
-		this.entity = entity;
+	mailjetLib: MailjetSender;
+	mailjet: any;
+
+	constructor(private app: App, private entity: Entity) {
 		if (this.app.addons && this.app.addons.addonsConfig) {
 			const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
 			if (mailjetConfig && mailjetConfig.apikey && mailjetConfig.secret && mailjetConfig.from && mailjetConfig.name) {

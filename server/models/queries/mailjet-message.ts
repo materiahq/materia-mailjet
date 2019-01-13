@@ -1,15 +1,16 @@
-const MailjetSender = require('../../lib/mailjet');
+import { MailjetSender } from '../../lib/mailjet';
+import { App, Entity } from '@materia/server';
 
 class MailjetMessage {
+	mailjetLib: MailjetSender;
+	mailjet: any;
 
-	constructor(app, entity) {
-		this.app = app;
-		this.entity = entity;
+	constructor(private app: App, private entity: Entity) {
 		if (this.app.addons && this.app.addons.addonsConfig) {
 			const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
 			if (mailjetConfig && mailjetConfig.apikey && mailjetConfig.secret && mailjetConfig.from && mailjetConfig.name) {
-				this.emailSender = new MailjetSender(app.addons.addonsConfig['@materia/mailjet'].apikey, app.addons.addonsConfig['@materia/mailjet'].secret, app.addons.addonsConfig['@materia/mailjet'].from, app.addons.addonsConfig['@materia/mailjet'].name);
-				this.mailjet = this.emailSender.mailjet;
+				this.mailjetLib = new MailjetSender(app.addons.addonsConfig['@materia/mailjet'].apikey, app.addons.addonsConfig['@materia/mailjet'].secret, app.addons.addonsConfig['@materia/mailjet'].from, app.addons.addonsConfig['@materia/mailjet'].name);
+				this.mailjet = this.mailjetLib.mailjet;
 			}
 		}
 	}
@@ -41,8 +42,8 @@ class MailjetMessage {
 	}
 
 	send(params) {
-		if (this.emailSender) {
-			return this.emailSender.send(params).then((result) => {
+		if (this.mailjetLib) {
+			return this.mailjetLib.send(params).then((result) => {
 				return result.body;
 			})
 		} else {
@@ -51,8 +52,8 @@ class MailjetMessage {
 	}
 
 	sendTemplate(params) {
-		if (this.emailSender) {
-			return this.emailSender.sendTemplate(params).then((result) => {
+		if (this.mailjetLib) {
+			return this.mailjetLib.sendTemplate(params).then((result) => {
 				return result.body;
 			});
 		} else {
