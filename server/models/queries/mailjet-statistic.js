@@ -1,11 +1,11 @@
-const MailjetSender = require('../../lib/mailjet')
+const MailjetSender = require('../../lib/mailjet');
 
 class MailjetStatistic {
 	constructor(app, entity) {
 		this.app = app;
 		this.entity = entity;
-		if (app.addons && app.addonsConfig) {
-			const mailjetConfig = app.addons.addonsConfig['@materia/mailjet'];
+		if (this.app.addons && this.app.addons.addonsConfig) {
+			const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
 			if (mailjetConfig && mailjetConfig.apikey && mailjetConfig.secret && mailjetConfig.from && mailjetConfig.name) {
 				this.mailjetLib = new MailjetSender(app.addons.addonsConfig['@materia/mailjet'].apikey, app.addons.addonsConfig['@materia/mailjet'].secret, app.addons.addonsConfig['@materia/mailjet'].from, app.addons.addonsConfig['@materia/mailjet'].name);
 				this.mailjet = this.mailjetLib.mailjet;
@@ -29,7 +29,7 @@ class MailjetStatistic {
 					return result.body.Data;
 				})
 		} else {
-			return { message: 'Error: @materia/mailjet config not found' };
+			return Promise.reject(new Error('Addon @materia/mailjet not configured'));
 		}
 	}
 
@@ -41,7 +41,7 @@ class MailjetStatistic {
 					return result.body.Data;
 				})
 		} else {
-			return { message: 'Error: @materia/mailjet config not found' };
+			return Promise.reject(new Error('Addon @materia/mailjet not configured'));
 		}
 	}
 }
