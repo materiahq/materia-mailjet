@@ -2,14 +2,25 @@ import { MailjetSender } from '../../lib/mailjet';
 import { App, Entity } from '@materia/server';
 
 class MailjetTemplate {
-	mailjetLib: MailjetSender;
+  mailjetLib: MailjetSender;
   mailjet: any;
 
-	constructor(private app: App, private entity: Entity) {
+  constructor(private app: App, private entity: Entity) {
     if (this.app.addons && this.app.addons.addonsConfig) {
       const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
-      if (mailjetConfig && mailjetConfig.apikey && mailjetConfig.secret && mailjetConfig.from && mailjetConfig.name) {
-        this.mailjetLib = new MailjetSender(app.addons.addonsConfig['@materia/mailjet'].apikey, app.addons.addonsConfig['@materia/mailjet'].secret, app.addons.addonsConfig['@materia/mailjet'].from, app.addons.addonsConfig['@materia/mailjet'].name);
+      if (
+        mailjetConfig &&
+        mailjetConfig.apikey &&
+        mailjetConfig.secret &&
+        mailjetConfig.from &&
+        mailjetConfig.name
+      ) {
+        this.mailjetLib = new MailjetSender(
+          app.addons.addonsConfig['@materia/mailjet'].apikey,
+          app.addons.addonsConfig['@materia/mailjet'].secret,
+          app.addons.addonsConfig['@materia/mailjet'].from,
+          app.addons.addonsConfig['@materia/mailjet'].name
+        );
         this.mailjet = this.mailjetLib.mailjet;
       }
     }
@@ -21,9 +32,8 @@ class MailjetTemplate {
         params.User = params.OwnerId;
         delete params.OwnerId;
       }
-      var templates = this.mailjet.get('template');
-      return templates.request(params)
-        .then((result) => result.body.Data);
+      const templates = this.mailjet.get('template');
+      return templates.request(params).then(result => result.body.Data);
     } else {
       return Promise.reject(new Error('Addon @materia/mailjet not configured'));
     }
@@ -35,8 +45,7 @@ class MailjetTemplate {
         params.Purposes = params.Purposes.split(',');
       }
       const createTemplate = this.mailjet.post('template');
-      return createTemplate.request(params)
-        .then((result) => result.body.Data);
+      return createTemplate.request(params).then(result => result.body.Data);
     } else {
       return Promise.reject(new Error('Addon @materia/mailjet not configured'));
     }
@@ -45,8 +54,7 @@ class MailjetTemplate {
   delete(params) {
     if (this.mailjet) {
       const deleteTemplate = this.mailjet.delete(`template/${params.ID}`);
-      return deleteTemplate.request()
-        .then(() => true);
+      return deleteTemplate.request().then(() => true);
     } else {
       return Promise.reject(new Error('Addon @materia/mailjet not configured'));
     }
@@ -54,10 +62,11 @@ class MailjetTemplate {
 
   updateContent(params) {
     if (this.mailjet) {
-      const updateContent = this.mailjet.post(`template/${params.ID}/detailcontent`);
+      const updateContent = this.mailjet.post(
+        `template/${params.ID}/detailcontent`
+      );
       delete params.ID;
-      return updateContent.request(params)
-        .then((result) => result.body.Data);
+      return updateContent.request(params).then(result => result.body.Data);
     } else {
       return Promise.reject(new Error('Addon @materia/mailjet not configured'));
     }
@@ -65,9 +74,10 @@ class MailjetTemplate {
 
   getContent(params) {
     if (this.mailjet) {
-      const getContent = this.mailjet.get(`template/${params.ID}/detailcontent`);
-      return getContent.request()
-        .then((result) => result.body.Data);
+      const getContent = this.mailjet.get(
+        `template/${params.ID}/detailcontent`
+      );
+      return getContent.request().then(result => result.body.Data);
     } else {
       return Promise.reject(new Error('Addon @materia/mailjet not configured'));
     }

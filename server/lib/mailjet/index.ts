@@ -1,11 +1,11 @@
 export class MailjetSender {
-  mailjet
+  mailjet;
   name: string;
   from: string;
 
   constructor(key, secret, from, name) {
     if (key && secret && from && name) {
-      this.connect(key, secret, from, name)
+      this.connect(key, secret, from, name);
       this.from = from;
       this.name = name;
     }
@@ -46,8 +46,8 @@ export class MailjetSender {
         const isString = typeof params.variables === 'string';
         recipient.Vars = isString ? JSON.parse(params.variables) : params.variables;
     }
-  	const sendTemplateById = this.mailjet.post('send')
-	  const emailData = {
+    const sendTemplateById = this.mailjet.post('send');
+    const emailData = {
         'FromEmail': params.fromEmail ? params.fromEmail : this.from,
         'FromName': params.from ? params.from : this.name,
         'Subject': params.subject,
