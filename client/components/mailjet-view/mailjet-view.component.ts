@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { AddonView } from '@materia/addons';
 
@@ -16,6 +16,18 @@ import { SendModalComponent } from '../../dialogs/send-modal/send-modal.componen
   providers: []
 })
 export class MailjetViewComponent implements OnInit {
+  @Input() app;
+  @Input() settings;
+  @Input() baseUrl: string;
+
+  @Output() openSetup = new EventEmitter<void>();
+  @Output() openInBrowser: EventEmitter<string> = new EventEmitter();
+  @Output() snackbarSuccess = new EventEmitter<string>();
+  @Output() snackbarError = new EventEmitter<any>();
+
+  @ViewChild(TemplateEditorComponent) templateEditor: TemplateEditorComponent;
+  @ViewChild(SendModalComponent) sendModalComponent: SendModalComponent;
+
   nbEmails: number;
   emails = [];
   contacts: any[];
@@ -48,23 +60,11 @@ export class MailjetViewComponent implements OnInit {
   statsProcessing: boolean;
   timeUnits: string[];
 
-  @Input() app;
-  @Input() settings;
-  @Input() baseUrl: string;
-
-  @Output() openSetup = new EventEmitter<void>();
-  @Output() openInBrowser: EventEmitter<string> = new EventEmitter();
-
-  @ViewChild(TemplateEditorComponent) templateEditor: TemplateEditorComponent;
-  @ViewChild(SendModalComponent) sendModalComponent: SendModalComponent;
-
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private datePipe: DatePipe
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.statsExpanded = true;
@@ -99,17 +99,17 @@ export class MailjetViewComponent implements OnInit {
   private _sendSimpleMessage(data) {
     this.runQuery('mailjet_message', 'send', { subject: data.subject, body: data.body, to: data.to }).then(() => {
       this.sendDialogRef.close();
-      this.snackBar.open(`Email send`, null, { duration: 2000 });
+      this.snackbarSuccess.emit('Email successfully send');
       this.reload();
-    });
+    }).catch(err => this.snackbarError.emit(err));
   }
 
   private _sendTemplateMessage(data) {
     this.runQuery('mailjet_message', 'sendTemplate', { templateId: data.template, subject: data.subject, to: data.to }).then(() => {
       this.sendDialogRef.close();
-      this.snackBar.open(`Email send`, null, { duration: 2000 });
+      this.snackbarSuccess.emit('Email successfully send');
       this.reload();
-    });
+    }).catch(err => this.snackbarError.emit(err));
   }
 
   closeSendDialog() {
@@ -147,6 +147,9 @@ export class MailjetViewComponent implements OnInit {
         this.data = [];
         this.statsProcessing = false;
       }
+    }).catch(err => {
+      this.snackbarError.emit(err);
+      this.statsProcessing = false;
     });
     this.runQuery('mailjet_message', 'list', { FromTS: fromTimestamp, limit: 1000 })
       .then((response: any) => {
@@ -243,7 +246,7 @@ export class MailjetViewComponent implements OnInit {
           newStats.push(stat);
         }
       });
-      if (!match) {
+      if ( ! match) {
         newStats.push({
           MessageSentCount: 0,
           MessageSpamCount: 0,
