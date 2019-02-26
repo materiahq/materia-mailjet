@@ -108,7 +108,40 @@
       "opts": {
         "params": [
           {
-            "limit": 1000
+            "name": "Limit",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Offset",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "FromTS",
+            "type": "date",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "ToTS",
+            "type": "date",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Sort",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Contact",
+            "type": "number",
+            "required": false,
+            "component": "input"
           }
         ],
         "model": "mailjet-message",

@@ -1,33 +1,17 @@
+import { App } from '@materia/server';
+
 import { MailjetSender } from '../../lib/mailjet';
-import { App, Entity } from '@materia/server';
 
 class MailjetStatistic {
   mailjetLib: MailjetSender;
-  mailjet: any;
 
-  constructor(private app: App, private entity: Entity) {
-    if (this.app.addons && this.app.addons.addonsConfig) {
-      const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
-      if (
-        mailjetConfig &&
-        mailjetConfig.apikey &&
-        mailjetConfig.secret &&
-        mailjetConfig.from &&
-        mailjetConfig.name
-      ) {
-        this.mailjetLib = new MailjetSender(
-          app.addons.addonsConfig['@materia/mailjet'].apikey,
-          app.addons.addonsConfig['@materia/mailjet'].secret,
-          app.addons.addonsConfig['@materia/mailjet'].from,
-          app.addons.addonsConfig['@materia/mailjet'].name
-        );
-        this.mailjet = this.mailjetLib.mailjet;
-      }
-    }
+  constructor(private app: App) {
+    this.mailjetLib = new MailjetSender(this.app);
   }
 
   find(params) {
-    if (this.mailjet) {
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
       const resolution = params.CounterResolution
         ? params.CounterResolution
         : 'Lifetime';
@@ -43,7 +27,7 @@ class MailjetStatistic {
         delete newParams.FromTS;
         delete newParams.ToTS;
       }
-      const stats = this.mailjet.get('statcounters');
+      const stats = this.mailjetLib.mailjet.get('statcounters');
       return stats.request(newParams).then(result => {
         return result.body.Data;
       });
@@ -53,8 +37,9 @@ class MailjetStatistic {
   }
 
   list() {
-    if (this.mailjet) {
-      const stats = this.mailjet.get('statcounters');
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
+      const stats = this.mailjetLib.mailjet.get('statcounters');
       return stats
         .request({
           CounterSource: 'APIKey',

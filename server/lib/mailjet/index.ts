@@ -1,19 +1,45 @@
-export class MailjetSender {
-  mailjet;
-  name: string;
-  from: string;
+import { App } from '@materia/server';
 
-  constructor(key, secret, from, name) {
-    if (key && secret && from && name) {
-      this.connect(key, secret, from, name);
-      this.from = from;
-      this.name = name;
+export class MailjetSender {
+  static fromName: string;
+  static from: string;
+  static apikey: string;
+  static secret: string;
+  mailjet;
+
+  get settingsHasChanged(): boolean {
+    const {apikey, secret, from, name} = this.app.addons.addonsConfig['@materia/mailjet'];
+    if (MailjetSender.apikey && MailjetSender.secret && MailjetSender.from && MailjetSender.fromName) {
+      return apikey !== MailjetSender.apikey ||
+        secret !== MailjetSender.secret ||
+        from !== MailjetSender.from ||
+        name !== MailjetSender.fromName;
+    }
+    return false;
+  }
+
+  constructor(private app: App) {
+    this.init();
+  }
+
+  reload(): void {
+    if (this.settingsHasChanged) {
+      this.init();
     }
   }
 
-  connect(key, secret, from, name) {
-    this.from = from;
-    this.name = name;
+  init(): void {
+    const {apikey, secret, from, name} = this.app.addons.addonsConfig['@materia/mailjet'];
+    if (apikey && secret && from && name) {
+      this.connect(apikey, secret);
+      MailjetSender.from = from;
+      MailjetSender.fromName = name;
+      MailjetSender.apikey = apikey;
+      MailjetSender.secret = secret;
+    }
+  }
+
+  connect(key, secret): void {
     this.mailjet = require('node-mailjet').connect(key, secret);
   }
 
@@ -21,20 +47,20 @@ export class MailjetSender {
     const sendEmail = this.mailjet.post('send');
 
     const emailData = {
-      'FromEmail': this.from,
+      'FromEmail': MailjetSender.from,
       'Subject': params.subject,
       'Text-part': params.body,
       'Recipients': [{
         'Email': params.to
       }]
-    }
+    };
 
     if (params.body_html) {
       emailData['Html-part'] = params.body_html;
     }
 
-    if (this.name) {
-      emailData['FromName'] = this.name;
+    if (MailjetSender.name) {
+      emailData['FromName'] = MailjetSender.name;
     }
 
     return sendEmail.request(emailData);
@@ -48,8 +74,8 @@ export class MailjetSender {
     }
     const sendTemplateById = this.mailjet.post('send');
     const emailData = {
-        'FromEmail': params.fromEmail ? params.fromEmail : this.from,
-        'FromName': params.from ? params.from : this.name,
+        'FromEmail': params.fromEmail ? params.fromEmail : MailjetSender.from,
+        'FromName': params.from ? params.from : MailjetSender.name,
         'Subject': params.subject,
         'Mj-TemplateID': params.templateId,
         'Mj-TemplateLanguage': 'true',
@@ -68,8 +94,8 @@ export class MailjetSender {
 	  const emailData = {
         'Messages': [{
           'From': {
-            'Email': params.fromEmail ? params.fromEmail : this.from,
-            'Name': params.from ? params.from : this.name
+            'Email': params.fromEmail ? params.fromEmail : MailjetSender.from,
+            'Name': params.from ? params.from : MailjetSender.name
           },
           'To': [{
             'Email': params.to

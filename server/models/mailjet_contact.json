@@ -1,6 +1,7 @@
 {
   "virtual": true,
-  "fields": [{
+  "fields": [
+    {
       "name": "ID",
       "type": "number",
       "read": true,
@@ -85,73 +86,91 @@
     }
   ],
   "relations": [],
-  "queries": [{
-    "id": "list",
-    "type": "custom",
-    "opts": {
-      "model": "mailjet-contact",
-      "action": "list",
-      "params": [{
-        "limit": 1000
-      }]
-    }
-  },
-  {
+  "queries": [
+    {
+      "id": "list",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet-contact",
+        "action": "list",
+        "params": [
+          {
+            "name": "Limit",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Offset",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Sort",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          }
+        ]
+      }
+    },
+    {
     "id": "create",
     "type": "custom",
     "opts": {
-      "model": "mailjet-contact",
-      "action": "create",
-      "params": [
-        {
-          "name": "Email",
-          "type": "text",
-          "required": true,
-          "component": "input"
-        },
-        {
-          "name": "Name",
-          "type": "text",
-          "required": false,
-          "component": "input"
-        },
-        {
-          "name": "IsExcludedFromCampaigns",
-          "type": "boolean",
-          "required": false,
-          "component": "switch"
-        }
-      ]
-    }
-  },
-  {
-    "id": "update",
-    "type": "custom",
-    "opts": {
-      "model": "mailjet-contact",
-      "action": "update",
-      "params": [
-        {
-          "name": "Email",
-          "type": "text",
-          "required": true,
-          "component": "input"
-        },
-        {
-          "name": "Name",
-          "type": "text",
-          "required": false,
-          "component": "input"
-        },
-        {
-          "name": "IsExcludedFromCampaigns",
-          "type": "boolean",
-          "required": false,
-          "component": "switch"
-        }
-      ]
-    }
-  },
+        "model": "mailjet-contact",
+        "action": "create",
+        "params": [
+          {
+            "name": "Email",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "Name",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "IsExcludedFromCampaigns",
+            "type": "boolean",
+            "required": false,
+            "component": "switch"
+          }
+        ]
+      }
+    },
+    {
+      "id": "update",
+      "type": "custom",
+      "opts": {
+        "model": "mailjet-contact",
+        "action": "update",
+        "params": [
+          {
+            "name": "Email",
+            "type": "text",
+            "required": true,
+            "component": "input"
+          },
+          {
+            "name": "Name",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "IsExcludedFromCampaigns",
+            "type": "boolean",
+            "required": false,
+            "component": "switch"
+          }
+        ]
+      }
+    },
   {
     "id": "get",
     "type": "custom",

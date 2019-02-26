@@ -1,35 +1,18 @@
-import { App, Entity } from '@materia/server';
+import { App } from '@materia/server';
 
 import { MailjetSender } from '../../lib/mailjet';
 
 class MailjetCampaign {
   mailjetLib: MailjetSender;
-  mailjet: any;
 
-  constructor(private app: App, private entity: Entity) {
-    if (this.app.addons && this.app.addons.addonsConfig) {
-      const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
-      if (
-        mailjetConfig &&
-        mailjetConfig.apikey &&
-        mailjetConfig.secret &&
-        mailjetConfig.from &&
-        mailjetConfig.name
-      ) {
-        this.mailjetLib = new MailjetSender(
-          app.addons.addonsConfig['@materia/mailjet'].apikey,
-          app.addons.addonsConfig['@materia/mailjet'].secret,
-          app.addons.addonsConfig['@materia/mailjet'].from,
-          app.addons.addonsConfig['@materia/mailjet'].name
-        );
-        this.mailjet = this.mailjetLib.mailjet;
-      }
-    }
+  constructor(private app: App) {
+      this.mailjetLib = new MailjetSender(this.app);
   }
 
   list() {
-    if (this.mailjet) {
-      const campaign = this.mailjet.get('campaign');
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
+      const campaign = this.mailjetLib.mailjet.get('campaign');
       return campaign.request().then(result => {
         return result.body.Data;
       });

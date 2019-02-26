@@ -1,34 +1,18 @@
+import { App } from '@materia/server';
+
 import { MailjetSender } from '../../lib/mailjet';
-import { App, Entity } from '@materia/server';
 
 class MailjetContact {
   mailjetLib: MailjetSender;
-  mailjet: any;
 
-  constructor(private app: App, private entity: Entity) {
-    if (this.app.addons && this.app.addons.addonsConfig) {
-      const mailjetConfig = this.app.addons.addonsConfig['@materia/mailjet'];
-      if (
-        mailjetConfig &&
-        mailjetConfig.apikey &&
-        mailjetConfig.secret &&
-        mailjetConfig.from &&
-        mailjetConfig.name
-      ) {
-        this.mailjetLib = new MailjetSender(
-          app.addons.addonsConfig['@materia/mailjet'].apikey,
-          app.addons.addonsConfig['@materia/mailjet'].secret,
-          app.addons.addonsConfig['@materia/mailjet'].from,
-          app.addons.addonsConfig['@materia/mailjet'].name
-        );
-        this.mailjet = this.mailjetLib.mailjet;
-      }
-    }
+  constructor(private app: App) {
+    this.mailjetLib = new MailjetSender(this.app);
   }
 
   list() {
-    if (this.mailjet) {
-      const contact = this.mailjet.get('contact');
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
+      const contact = this.mailjetLib.mailjet.get('contact');
       return contact.request().then(result => {
         return result.body.Data;
       });
@@ -38,8 +22,9 @@ class MailjetContact {
   }
 
   get(params) {
-    if (this.mailjet) {
-      const contact = this.mailjet.get(`contact/${params.EmailOrId}`);
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
+      const contact = this.mailjetLib.mailjet.get(`contact/${params.EmailOrId}`);
       return contact.request().then(result => {
         return result.body.Data;
       });
@@ -49,8 +34,9 @@ class MailjetContact {
   }
 
   create(params) {
-    if (this.mailjet) {
-      const createContact = this.mailjet.post('contact');
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
+      const createContact = this.mailjetLib.mailjet.post('contact');
       return createContact.request(params).then(result => {
         return result.body.Data;
       });
@@ -60,8 +46,9 @@ class MailjetContact {
   }
 
   update(params) {
-    if (this.mailjet) {
-      const updateContact = this.mailjet.put('contact');
+    this.mailjetLib.reload();
+    if (this.mailjetLib.mailjet) {
+      const updateContact = this.mailjetLib.mailjet.put('contact');
       return updateContact.request(params).then(result => {
         return result.body.Data;
       });
