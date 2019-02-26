@@ -9,11 +9,11 @@ class MailjetCampaign {
       this.mailjetLib = new MailjetSender(this.app);
   }
 
-  list() {
+  list(params) {
     this.mailjetLib.reload();
     if (this.mailjetLib.mailjet) {
       const campaign = this.mailjetLib.mailjet.get('campaign');
-      return campaign.request().then(result => {
+      return campaign.request(params).then(result => {
         return result.body.Data;
       });
     } else {

@@ -88,7 +88,26 @@
         "opts": {
           "model": "mailjet-campaign",
           "action": "list",
-          "params": []
+          "params": [
+            {
+              "name": "Limit",
+              "type": "number",
+              "required": false,
+              "component": "input"
+            },
+            {
+              "name": "Offset",
+              "type": "number",
+              "required": false,
+              "component": "input"
+            },
+            {
+              "name": "Sort",
+              "type": "text",
+              "required": false,
+              "component": "input"
+            }
+          ]
         }
       }]
 }

@@ -92,8 +92,23 @@
       "opts": {
         "model": "mailjet-template",
         "action": "list",
-        "params": [{
-          "limit": 1000
+        "params": [          {
+          "name": "Limit",
+          "type": "number",
+          "required": false,
+          "component": "input"
+        },
+        {
+          "name": "Offset",
+          "type": "number",
+          "required": false,
+          "component": "input"
+        },
+        {
+          "name": "Sort",
+          "type": "text",
+          "required": false,
+          "component": "input"
         }]
       }
     },

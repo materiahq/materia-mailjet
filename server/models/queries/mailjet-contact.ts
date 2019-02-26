@@ -9,11 +9,11 @@ class MailjetContact {
     this.mailjetLib = new MailjetSender(this.app);
   }
 
-  list() {
+  list(params) {
     this.mailjetLib.reload();
     if (this.mailjetLib.mailjet) {
       const contact = this.mailjetLib.mailjet.get('contact');
-      return contact.request().then(result => {
+      return contact.request(params).then(result => {
         return result.body.Data;
       });
     } else {
