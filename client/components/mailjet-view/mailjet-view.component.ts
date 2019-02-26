@@ -65,7 +65,7 @@ export class MailjetViewComponent implements OnInit {
   emailsExpanded: boolean;
   statsProcessing: boolean;
   timeUnits: string[];
-  loadingError: boolean;
+  loadingError = false;
 
   constructor(
     private http: HttpClient,
