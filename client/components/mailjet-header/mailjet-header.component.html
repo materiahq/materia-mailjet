@@ -14,11 +14,11 @@
   <br>
   <a class="settings-link" (click)="settingsOpened.emit()">Configure it now!</a>
 </div>
-<div fxLayout="column" fxLayoutAlign="start center" *ngIf="settings && settings.from && settings.apikey">
+<div fxLayout="column" fxLayoutAlign="start center" *ngIf="settings && settings.from && settings.apikey && ! error">
   <button mat-raised-button color="primary" (click)="sendDialogOpened.emit()">Send a test email</button>
 </div>
 <div fxLayout="column">
-  <mat-button-toggle-group #statsButtonGroup="matButtonToggleGroup" value="lastWeek" (valueChange)="timelineChanged.emit($event)" *ngIf="settings && settings.from && settings.apikey">
+  <mat-button-toggle-group #statsButtonGroup="matButtonToggleGroup" value="lastWeek" (valueChange)="timelineChanged.emit($event)" *ngIf="settings && settings.from && settings.apikey && ! error">
     <mat-button-toggle value="lastWeek">Week</mat-button-toggle>
     <mat-button-toggle value="lastMonth">Month</mat-button-toggle>
   </mat-button-toggle-group>
