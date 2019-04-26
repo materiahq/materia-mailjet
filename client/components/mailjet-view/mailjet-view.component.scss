@@ -3,7 +3,7 @@
 	display: flex;
 	height: 100%;
 }
-:host::ng-deep .mat-expansion-panel-content.mat-expanded {
+:host::ng-deep .mat-expansion-panel-content {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
@@ -60,7 +60,7 @@ mat-card-content {
 }
 
 .settings-link {
-	cursor: pointer; 
+	cursor: pointer;
 	text-decoration: underline;
 }
 .template-actions {

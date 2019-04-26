@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { EChartOption } from 'echarts';
 
 @Component({
   selector: 'mailjet-statistic',
@@ -21,7 +20,7 @@ export class MailjetStatisticComponent implements OnChanges {
     blocked: 0
   };
   legend: string[];
-  chartOptions: EChartOption;
+  chartOptions: any;
 
   constructor( ) { }
 
