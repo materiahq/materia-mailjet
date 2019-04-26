@@ -8,14 +8,12 @@ export class MailjetSender {
   mailjet;
 
   get settingsHasChanged(): boolean {
-    const {apikey, secret, from, name} = this.app.addons.addonsConfig['@materia/mailjet'];
-    if (MailjetSender.apikey && MailjetSender.secret && MailjetSender.from && MailjetSender.fromName) {
-      return apikey !== MailjetSender.apikey ||
-        secret !== MailjetSender.secret ||
-        from !== MailjetSender.from ||
-        name !== MailjetSender.fromName;
-    }
-    return false;
+    const mailjetConfig = this.app.addons && this.app.addons.addonsConfig ? this.app.addons.addonsConfig['@materia/mailjet'] : {};
+    const { apikey, secret, from, name } = mailjetConfig;
+    return apikey !== MailjetSender.apikey ||
+      secret !== MailjetSender.secret ||
+      from !== MailjetSender.from ||
+      name !== MailjetSender.fromName;
   }
 
   constructor(private app: App) {
@@ -29,13 +27,15 @@ export class MailjetSender {
   }
 
   init(): void {
-    const {apikey, secret, from, name} = this.app.addons.addonsConfig['@materia/mailjet'];
-    if (apikey && secret && from && name) {
-      this.connect(apikey, secret);
-      MailjetSender.from = from;
-      MailjetSender.fromName = name;
-      MailjetSender.apikey = apikey;
-      MailjetSender.secret = secret;
+    if (this.app.addons && this.app.addons.addonsConfig) {
+      const { apikey, secret, from, name } = this.app.addons.addonsConfig['@materia/mailjet'];
+      if (apikey && secret && from && name) {
+        this.connect(apikey, secret);
+        MailjetSender.from = from;
+        MailjetSender.fromName = name;
+        MailjetSender.apikey = apikey;
+        MailjetSender.secret = secret;
+      }
     }
   }
 
