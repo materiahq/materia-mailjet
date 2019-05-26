@@ -12,10 +12,6 @@ class MailjetTemplate {
   list(params) {
     this.mailjetLib.reload();
     if (this.mailjetLib.mailjet) {
-      if (params.OwnerId) {
-        params.User = params.OwnerId;
-        delete params.OwnerId;
-      }
       const templates = this.mailjetLib.mailjet.get('template');
       return templates.request(params).then(result => result.body.Data);
     } else {

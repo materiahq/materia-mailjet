@@ -92,7 +92,7 @@
       "opts": {
         "model": "mailjet-template",
         "action": "list",
-        "params": [          {
+        "params": [{
           "name": "Limit",
           "type": "number",
           "required": false,
@@ -116,14 +116,33 @@
       "id": "findAll",
       "type": "custom",
       "opts": {
-        "params": [{
-            "name": "OwnerId",
-            "type": "number",
+        "params": [
+          {
+            "name": "Purposes",
+            "type": "text",
             "required": false,
             "component": "input"
           },
           {
             "name": "OwnerType",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Limit",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Offset",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Sort",
             "type": "text",
             "required": false,
             "component": "input"
