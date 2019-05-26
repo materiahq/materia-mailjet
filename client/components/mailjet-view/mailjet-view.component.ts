@@ -199,10 +199,15 @@ export class MailjetViewComponent implements OnInit {
   }
 
   loadTemplates() {
-    this.runQuery('mailjet_template', 'findAll', {
-      OwnerId: this.mailjetUser.ID
-    }).then((templateResult: any) => {
-      this.templates = templateResult.data;
+    Promise.all([
+      this.runQuery('mailjet_template', 'findAll', {
+        OwnerType: 'user'
+      }),
+      this.runQuery('mailjet_template', 'findAll', {
+        OwnerType: 'apikey'
+      })
+    ]).then(([templateResult1, templateResult2]: any) => {
+      this.templates = [...templateResult1.data, ...templateResult2.data];
     });
   }
 
