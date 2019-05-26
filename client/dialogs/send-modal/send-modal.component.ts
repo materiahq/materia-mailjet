@@ -7,7 +7,7 @@ import {
   Input,
   EventEmitter
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'mailjet-send-modal',
@@ -26,10 +26,27 @@ export class SendModalComponent implements OnInit {
   @Output() cancelled = new EventEmitter();
   @ViewChild('sendDialog') template: TemplateRef<any>;
 
+  get templateVariablesControl(): FormArray {
+    return (this.sendForm.get('variables') as FormArray);
+  }
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.refreshForm();
+  }
+
+  addTemplateVariable() {
+    this.templateVariablesControl.push(
+      this.fb.group({
+        name: [null, Validators.required],
+        value: [null, Validators.required]
+      })
+    );
+  }
+
+  removeTemplateVariable(index) {
+    this.templateVariablesControl.removeAt(index);
   }
 
   refreshForm(type?) {
@@ -40,7 +57,8 @@ export class SendModalComponent implements OnInit {
       this.sendForm = this.fb.group({
         to: [this.to ? this.to : '', Validators.required],
         subject: [this.subject ? this.subject : '', Validators.required],
-        body: ['']
+        body: [''],
+        variables: this.fb.array([])
       });
     } else {
       if (! this.templateId) {
@@ -49,13 +67,16 @@ export class SendModalComponent implements OnInit {
       this.sendForm = this.fb.group({
         to: [this.to ? this.to : '', Validators.required],
         subject: [this.subject ? this.subject : '', Validators.required],
-        template: [this.templateId, Validators.required]
+        template: [this.templateId, Validators.required],
+        variables: this.fb.array([])
       });
     }
   }
 
   send() {
-    const data = Object.assign({}, {type: this.type}, this.sendForm.value);
-    this.confirmed.emit(data);
+    if (this.sendForm.valid) {
+      const data = Object.assign({}, {type: this.type}, this.sendForm.value);
+      this.confirmed.emit(data);
+    }
   }
 }

@@ -1,16 +1,27 @@
-button {
-    margin: 5px;
+.mailjet-theme {
+  background: #ffa726;
+  color: white;
+}
+mat-toolbar {
+  mat-icon {
+    margin: 8px;
+  }
 }
 form {
-    padding: 10px 15px;
-}
-.mailjet-theme {
-    background: #FFA726;
-    color: white;
-}
-mat-icon {
-    margin: 8px;
-}
-mat-form-field {
-    width: 180px;
+  padding: 10px 15px;
+  width: 300px;
+  mat-button-toggle-group {
+    margin-bottom: 15px;
+  }
+  mat-form-field {
+    margin: 0 5px;
+  }
+  .template-variables {
+    mat-form-field {
+      width: 125px;
+    }
+  }
+  button {
+    margin: 5px;
+  }
 }

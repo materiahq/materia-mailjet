@@ -331,10 +331,14 @@ export class MailjetViewComponent implements OnInit {
   }
 
   private _sendTemplateMessage(data) {
+    const variables: any = {};
+    data.variables.forEach((variable) => variables[variable.name] = variable.value);
     this.runQuery('mailjet_message', 'sendTemplate', {
       templateId: data.template,
       subject: data.subject,
-      to: data.to
+      to: data.to,
+      variables: Object.keys(variables).length ? variables : null,
+      error_reporting: true
     })
       .then(() => {
         this.sendDialogRef.close();
