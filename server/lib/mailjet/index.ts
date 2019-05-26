@@ -44,17 +44,22 @@ export class MailjetSender {
   }
 
   send(params) {
+    const recipient: any = {'Email': params.to};
     const sendEmail = this.mailjet.post('send');
-
+    if (params.variables) {
+      const isString = typeof params.variables === 'string';
+      recipient.Vars = isString ? JSON.parse(params.variables) : params.variables;
+    }
     const emailData = {
       'FromEmail': MailjetSender.from,
       'Subject': params.subject,
       'Text-part': params.body,
-      'Recipients': [{
-        'Email': params.to
-      }]
+      'Recipients': [recipient],
+      'Mj-TemplateLanguage': true
     };
-
+    if (params.error_reporting) {
+      emailData['Mj-TemplateErrorReporting'] = params.error_reporting_email ? params.error_reporting_email : emailData['FromEmail'];
+    }
     if (params.body_html) {
       emailData['Html-part'] = params.body_html;
     }
@@ -77,10 +82,13 @@ export class MailjetSender {
         'FromEmail': params.fromEmail ? params.fromEmail : MailjetSender.from,
         'FromName': params.from ? params.from : MailjetSender.name,
         'Subject': params.subject,
+        'Recipients': [recipient],
         'Mj-TemplateID': params.templateId,
-        'Mj-TemplateLanguage': 'true',
-        'Recipients': [recipient]
+        'Mj-TemplateLanguage': true
     };
+    if (params.error_reporting) {
+      emailData['Mj-TemplateErrorReporting'] = params.error_reporting_email ? params.error_reporting_email : emailData['FromEmail'];
+    }
     return sendTemplateById.request(emailData);
   }
 

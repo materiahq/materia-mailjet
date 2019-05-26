@@ -176,6 +176,24 @@
             "type": "text",
             "required": false,
             "component": "textarea"
+          },
+          {
+            "name": "variables",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "error_reporting",
+            "type": "boolean",
+            "required": true,
+            "component": "switch"
+          },
+          {
+            "name": "error_reporting_email",
+            "type": "text",
+            "required": false,
+            "component": "input"
           }
         ],
         "action": "send",
@@ -219,6 +237,18 @@
           },
           {
             "name": "variables",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "error_reporting",
+            "type": "boolean",
+            "required": true,
+            "component": "switch"
+          },
+          {
+            "name": "error_reporting_email",
             "type": "text",
             "required": false,
             "component": "input"
