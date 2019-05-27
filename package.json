@@ -1,6 +1,6 @@
 {
   "name": "@materia/mailjet",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-rc.0",
   "description": "Emailing Materia addon to send email in your application using Mailjet",
   "author": "team@getmateria.com",
   "license": "MIT",
