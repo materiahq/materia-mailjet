@@ -4,8 +4,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild,
-  TemplateRef
+  ViewChild
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
@@ -148,7 +147,7 @@ export class MailjetViewComponent implements OnInit {
         }
         return this.runQuery('mailjet_message', 'list', {
           FromTS: fromTimestamp,
-          limit: 1000
+          limit: 100
         });
       })
       .then((messagesResponse: any) => {
@@ -156,7 +155,7 @@ export class MailjetViewComponent implements OnInit {
         this.nbEmails = messagesResponse.count;
         return this.runQuery('mailjet_contact', 'list', {
           FromTS: fromTimestamp,
-          limit: 1000
+          limit: 100
         });
       })
       .then((result: any) => {
@@ -166,7 +165,7 @@ export class MailjetViewComponent implements OnInit {
       .then(() => {
         this.loadTemplates();
       })
-      .catch(err => {
+      .catch(_ => {
         this.loadingError = true;
         this.statsProcessing = false;
       });
@@ -201,10 +200,12 @@ export class MailjetViewComponent implements OnInit {
   loadTemplates() {
     Promise.all([
       this.runQuery('mailjet_template', 'findAll', {
-        OwnerType: 'user'
+        OwnerType: 'user',
+        Limit: 100
       }),
       this.runQuery('mailjet_template', 'findAll', {
-        OwnerType: 'apikey'
+        OwnerType: 'apikey',
+        Limit: 100
       })
     ]).then(([templateResult1, templateResult2]: any) => {
       this.templates = [...templateResult1.data, ...templateResult2.data];
@@ -249,7 +250,7 @@ export class MailjetViewComponent implements OnInit {
           Subject: 'Subject',
           'Reply-To': this.settings.from
         }
-      }).then(templateContent => {
+      }).then(_ => {
         this.templateDialogRef.close();
         this.loadTemplates();
         this.openMailjetTemplateEditor(newTemplate);
