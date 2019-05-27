@@ -186,7 +186,7 @@
           {
             "name": "error_reporting",
             "type": "boolean",
-            "required": true,
+            "required": false,
             "component": "switch"
           },
           {

@@ -326,7 +326,8 @@ export class MailjetViewComponent implements OnInit {
     this.runQuery('mailjet_message', 'send', {
       subject: data.subject,
       body: data.body,
-      to: data.to
+      to: data.to,
+      error_reporting: true
     })
       .then(() => {
         this.sendDialogRef.close();
