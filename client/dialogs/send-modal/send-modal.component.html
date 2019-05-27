@@ -6,7 +6,7 @@
     <h1>Send an email</h1>
   </mat-toolbar>
   <div fxLayout="column">
-    <form fxLayout="column" [formGroup]="sendForm">
+    <form fxLayout="column" [formGroup]="sendForm" (submit)="send()">
       <div fxLayout="row" fxLayoutAlign="center center">
         <mat-button-toggle-group #messageTypeGroup="matButtonToggleGroup" [value]="type" (valueChange)="refreshForm($event)">
           <mat-button-toggle value="simple">Simple</mat-button-toggle>
@@ -36,7 +36,7 @@
           <span [matBadge]="sendForm.controls['variables']?.value?.length || 0" matBadgeOverlap="false">Template variables</span>
           <span fxFlex>
           </span>
-          <button mat-icon-button (click)="addTemplateVariable()">
+          <button mat-icon-button type="button" (click)="addTemplateVariable()">
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -51,11 +51,14 @@
               <mat-error>This field is required.</mat-error>
             </mat-form-field>
           </ng-container>
+          <button mat-icon-button type="button" (click)="removeTemplateVariable(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="start center" [style.marginTop.px]="15">
-        <button mat-raised-button class="mailjet-theme" (click)="send()">SEND</button>
-        <button mat-raised-button (click)="cancelled.emit()">CANCEL</button>
+        <button mat-raised-button type="submit" class="mailjet-theme">Send</button>
+        <button mat-raised-button type="button" (click)="cancelled.emit()">Cancel</button>
       </div>
     </form>
   </div>

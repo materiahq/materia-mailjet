@@ -17,11 +17,16 @@ form {
     margin: 0 5px;
   }
   .template-variables {
+    margin-top: 15px;
     mat-form-field {
-      width: 125px;
+      width: 100px;
     }
   }
   button {
     margin: 5px;
+  }
+  &::ng-deep .mat-badge-content {
+    color: white;
+    background: #FFA726;
   }
 }
