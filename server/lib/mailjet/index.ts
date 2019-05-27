@@ -64,8 +64,8 @@ export class MailjetSender {
       emailData['Html-part'] = params.body_html;
     }
 
-    if (MailjetSender.name) {
-      emailData['FromName'] = MailjetSender.name;
+    if (MailjetSender.fromName) {
+      emailData['FromName'] = MailjetSender.fromName;
     }
 
     return sendEmail.request(emailData);
@@ -80,7 +80,7 @@ export class MailjetSender {
     const sendTemplateById = this.mailjet.post('send');
     const emailData = {
         'FromEmail': params.fromEmail ? params.fromEmail : MailjetSender.from,
-        'FromName': params.from ? params.from : MailjetSender.name,
+        'FromName': params.from ? params.from : MailjetSender.fromName,
         'Subject': params.subject,
         'Recipients': [recipient],
         'Mj-TemplateID': params.templateId,
@@ -103,7 +103,7 @@ export class MailjetSender {
         'Messages': [{
           'From': {
             'Email': params.fromEmail ? params.fromEmail : MailjetSender.from,
-            'Name': params.from ? params.from : MailjetSender.name
+            'Name': params.from ? params.from : MailjetSender.fromName
           },
           'To': [{
             'Email': params.to
