@@ -33,7 +33,8 @@
 	color: #FFA726;
 }
 mat-expansion-panel {
-	width: 100%;
+  width: 100%;
+  min-height: 48px;
 }
 mat-card {
 	margin: 8px;
