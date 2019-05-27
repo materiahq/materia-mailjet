@@ -48,7 +48,7 @@
                     <div style="width: 100%;" fxLayout="row" fxLayoutAlign="start center">
                       <span fxFlex>{{ email.ContactAlt }}</span>
                       <span fxFlex fxLayout="row" style="margin-left: 10px;">
-                        {{ email.ArrivedAt | date }}
+                        {{ email.ArrivedAt | date:'medium' }}
                       </span>
                       <span fxFlex>{{ email.Subject }}
                       </span>

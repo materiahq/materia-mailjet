@@ -151,7 +151,7 @@ export class MailjetViewComponent implements OnInit {
         });
       })
       .then((messagesResponse: any) => {
-        this.emails = [...messagesResponse.data];
+        this.emails = [...messagesResponse.data.reverse()];
         this.nbEmails = messagesResponse.count;
         return this.runQuery('mailjet_contact', 'list', {
           FromTS: fromTimestamp,
