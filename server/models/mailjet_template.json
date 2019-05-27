@@ -92,24 +92,26 @@
       "opts": {
         "model": "mailjet-template",
         "action": "list",
-        "params": [{
-          "name": "Limit",
-          "type": "number",
-          "required": false,
-          "component": "input"
-        },
-        {
-          "name": "Offset",
-          "type": "number",
-          "required": false,
-          "component": "input"
-        },
-        {
-          "name": "Sort",
-          "type": "text",
-          "required": false,
-          "component": "input"
-        }]
+        "params": [
+          {
+            "name": "Limit",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Offset",
+            "type": "number",
+            "required": false,
+            "component": "input"
+          },
+          {
+            "name": "Sort",
+            "type": "text",
+            "required": false,
+            "component": "input"
+          }
+        ]
       }
     },
     {
@@ -195,7 +197,8 @@
       "id": "createTemplate",
       "type": "custom",
       "opts": {
-        "params": [{
+        "params": [
+          {
             "name": "Name",
             "type": "text",
             "required": true,
@@ -250,7 +253,8 @@
       "id": "delete",
       "type": "custom",
       "opts": {
-        "params": [{
+        "params": [
+          {
             "name": "ID",
             "type": "number",
             "required": true,
@@ -266,7 +270,8 @@
       "id": "updateContent",
       "type": "custom",
       "opts": {
-        "params": [{
+        "params": [
+          {
             "name": "ID",
             "type": "number",
             "required": true,
@@ -293,7 +298,8 @@
       "id": "getContent",
       "type": "custom",
       "opts": {
-        "params": [{
+        "params": [
+          {
             "name": "ID",
             "type": "number",
             "required": true,
