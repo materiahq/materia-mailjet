@@ -318,22 +318,22 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@materia/addons@^1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@materia/addons/-/addons-1.0.0-beta.2.tgz#c1de5bf314e75915ca0dcb5ef98dcad0087ec155"
-  integrity sha512-0+zunRtZAJktPu9fTNwZg/gmdtNmAToXEoH2gUibhbUuA5oC0WWFcfbNMpDNkcGX+QnaX+uiqHWuRf+gh9a7WA==
+"@materia/addons@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@materia/addons/-/addons-1.0.0.tgz#3c1d22b1a4da5071d90604c03aba8478230f3afc"
+  integrity sha512-D6uGXBuIkJYbqsnu/TyaVtv7XkL6x2+nD3WWxtBaQi591SiDMF4y/Wzw6o1jqnm17gPkIp5YX4XVXkfXRZ85vw==
 
-"@materia/interfaces@^1.0.0-beta.9":
-  version "1.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@materia/interfaces/-/interfaces-1.0.0-beta.9.tgz#7a8284e9cc5ec6cb581d60f398f19c6b983a9c1f"
-  integrity sha512-25GL49kd/+mlaZpTVV/fNHQb+th7vA8LanTxeBFmftIJgRvc6jMXv/mPpMTB+qYeVGjdpEEYm3Or6s29iUJmIw==
+"@materia/interfaces@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@materia/interfaces/-/interfaces-1.0.0.tgz#165aff396c8e215b29af06e1095e802bc77118aa"
+  integrity sha512-9EYEV5F/X0QoL8OsCy6s2KKpU+Qf7NBRe2zVl7r8ISzOJn31bwoAxDLQD30BfH6ZqVGLfNyjgPrQaCmmAcMcog==
 
-"@materia/server@^1.0.0-rc.0":
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@materia/server/-/server-1.0.0-rc.0.tgz#a082b38a677334d0b19be8eaca4fe55e63c216db"
-  integrity sha512-s5IWF50gg+4ZG43nmTC1uwSfDHVRaYgI0zUFlFKYZRe4adcfgQbRhr4elIjFYrlqcheuKWqlaT0Lp0pDAbsblA==
+"@materia/server@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@materia/server/-/server-1.0.0.tgz#dadac163056e6557e1a5081fbd5808da00709f70"
+  integrity sha512-3sy3xg+7yGGuK52JwAvjWsSMFuF6lCFcCsbR+fXwC9pgeEKAQ+xX9r+VpZCdijAvNVXwvhaAIgGHxSKAIMeSng==
   dependencies:
-    "@materia/interfaces" "^1.0.0-beta.9"
+    "@materia/interfaces" "^1.0.0"
     "@types/bluebird" "^3.5.26"
     "@types/express" "^4.0.34"
     "@types/validator" "^10.11.0"
