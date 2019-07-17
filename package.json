@@ -12,6 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/materiahq/materia-mailjet.git"
   },
+  "keywords": ["materia", "mailjet", "email"],
   "scripts": {
     "build": "ng build",
     "e2e": "ng e2e",
