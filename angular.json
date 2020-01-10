@@ -13,11 +13,13 @@
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "tsconfig.lib.json",
-            "project": "ng-package.json"
+            "project": "ng-package.json",
+            "aot": true
           },
           "configurations": {
             "production": {
-              "project": "ng-package.prod.json"
+              "project": "ng-package.prod.json",
+              "tsConfig": "tsconfig.lib.prod.json"
             }
           }
         },
@@ -44,5 +46,8 @@
       }
     }
   },
-  "defaultProject": "materia-mailjet-addon"
+  "defaultProject": "materia-mailjet-addon",
+  "cli": {
+    "analytics": false
+  }
 }
