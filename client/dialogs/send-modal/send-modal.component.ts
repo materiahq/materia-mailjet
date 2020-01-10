@@ -1,13 +1,12 @@
 import {
   Component,
   OnInit,
-  ViewChild,
-  TemplateRef,
   Output,
   Input,
   EventEmitter
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'mailjet-send-modal',
@@ -24,13 +23,12 @@ export class SendModalComponent implements OnInit {
 
   @Output() confirmed = new EventEmitter();
   @Output() cancelled = new EventEmitter();
-  @ViewChild('sendDialog') template: TemplateRef<any>;
 
   get templateVariablesControl(): FormArray {
     return (this.sendForm.get('variables') as FormArray);
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<SendModalComponent>) { }
 
   ngOnInit() {
     this.refreshForm();
@@ -76,7 +74,11 @@ export class SendModalComponent implements OnInit {
   send() {
     if (this.sendForm.valid) {
       const data = Object.assign({}, {type: this.type}, this.sendForm.value);
-      this.confirmed.emit(data);
+      this.dialogRef.close(data);
     }
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 }

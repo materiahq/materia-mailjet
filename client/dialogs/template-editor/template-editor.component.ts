@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, ViewChild, TemplateRef, EventEmitter} from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -13,12 +14,7 @@ export class TemplateEditorComponent implements OnInit {
   @Input() settings;
   @Input() user;
 
-  @Output() cancelled = new EventEmitter();
-  @Output() confirmed = new EventEmitter();
-
-  @ViewChild('templateDialog') template: TemplateRef<any>;
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<TemplateEditorComponent>) { }
 
   ngOnInit() {
     this.refreshTemplateForm();
@@ -33,11 +29,11 @@ export class TemplateEditorComponent implements OnInit {
   }
 
   confirm() {
-    this.confirmed.emit(this.templateForm.value);
+    this.dialogRef.close(this.templateForm.value);
   }
 
   cancel() {
-    this.cancelled.emit();
+    this.dialogRef.close();
   }
 
 }

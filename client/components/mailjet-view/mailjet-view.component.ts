@@ -4,12 +4,15 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AddonView } from '@materia/addons';
+import { filter } from 'rxjs/operators';
 
 import { TemplateEditorComponent } from '../../dialogs/template-editor/template-editor.component';
 import { SendModalComponent } from '../../dialogs/send-modal/send-modal.component';
@@ -20,7 +23,7 @@ import { SendModalComponent } from '../../dialogs/send-modal/send-modal.componen
   templateUrl: './mailjet-view.component.html',
   styleUrls: ['./mailjet-view.component.scss']
 })
-export class MailjetViewComponent implements OnInit {
+export class MailjetViewComponent implements OnInit, OnChanges {
   @Input() app;
   @Input() settings;
   @Input() baseUrl: string;
@@ -30,22 +33,13 @@ export class MailjetViewComponent implements OnInit {
   @Output() snackbarSuccess = new EventEmitter<string>();
   @Output() snackbarError = new EventEmitter<any>();
 
-  @ViewChild(TemplateEditorComponent) templateEditor: TemplateEditorComponent;
-  @ViewChild(SendModalComponent) sendModalComponent: SendModalComponent;
-
   nbEmails: number;
   emails = [];
   contacts: any[];
   templates: any[];
 
-  sendTo: string;
-  sendSubject: string;
-  sendType: string;
-  templateSelected: any;
-
-  sendDialogRef: any;
-  templateDialogRef: any;
-  newTemplate: boolean;
+  sendDialogRef: MatDialogRef<SendModalComponent>;
+  templateDialogRef: MatDialogRef<TemplateEditorComponent>;
 
   data: any[];
   stats: any = {};
@@ -79,23 +73,36 @@ export class MailjetViewComponent implements OnInit {
     }
   }
 
-  openSendDialog(type) {
-    this.sendSubject = '[TEST] Subject';
-    this.sendType = type;
-    this.sendModalComponent.refreshForm(type);
-    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, {
+  ngOnChanges(changes) {
+    console.log('Changes : ', changes);
+  }
+
+  openSendDialog(type, templateSelected?) {
+    this.sendDialogRef = this.dialog.open(SendModalComponent, {
       panelClass: 'no-padding'
     });
+    this.sendDialogRef.componentInstance.subject = '[TEST] Subject';
+    this.sendDialogRef.componentInstance.type = type;
+    if (type === 'template' && templateSelected) {
+      this.sendDialogRef.componentInstance.templateId = templateSelected;
+    }
+    this.sendDialogRef.componentInstance.templates = this.templates;
+    this.sendDialogRef.afterClosed()
+      .pipe(filter(result => result !== 'cancel'))
+      .subscribe(this.send);
   }
 
   openSendToDialog(mail) {
-    this.sendSubject = '[TEST] Subject';
-    this.sendTo = mail;
-    this.sendType = 'simple';
-    this.sendModalComponent.refreshForm();
-    this.sendDialogRef = this.dialog.open(this.sendModalComponent.template, {
+    this.sendDialogRef = this.dialog.open(SendModalComponent, {
       panelClass: 'no-padding'
     });
+    this.sendDialogRef.componentInstance.subject = '[TEST] Subject';
+    this.sendDialogRef.componentInstance.type = 'simple';
+    this.sendDialogRef.componentInstance.to = mail;
+    this.sendDialogRef.componentInstance.templates = this.templates;
+    this.sendDialogRef.afterClosed()
+      .pipe(filter(result => result !== 'cancel'))
+      .subscribe(this.send);
   }
 
   send(data) {
@@ -104,10 +111,6 @@ export class MailjetViewComponent implements OnInit {
     } else {
       this._sendTemplateMessage(data);
     }
-  }
-
-  closeSendDialog() {
-    this.sendDialogRef.close();
   }
 
   statsTimelineChange(timeline) {
@@ -180,21 +183,19 @@ export class MailjetViewComponent implements OnInit {
   }
 
   openTemplateEditor(newTemplate) {
-    this.newTemplate = newTemplate;
-    this.templateEditor.refreshTemplateForm();
-    this.templateDialogRef = this.dialog.open(this.templateEditor.template, {
+    this.templateDialogRef = this.dialog.open(TemplateEditorComponent, {
       panelClass: 'no-padding'
     });
-  }
-
-  closeTemplateEditor() {
-    this.templateDialogRef.close();
+    this.templateDialogRef.componentInstance.edition = newTemplate;
+    this.templateDialogRef.componentInstance.user = this.mailjetUser;
+    this.templateDialogRef.componentInstance.settings = this.settings;
+    this.templateDialogRef.afterClosed().
+      pipe(filter(result => result))
+      .subscribe(this.saveTemplate);
   }
 
   saveTemplate(data) {
-    if (this.newTemplate) {
-      this._createNewTemplate(data);
-    }
+    this._createNewTemplate(data);
   }
 
   loadTemplates() {

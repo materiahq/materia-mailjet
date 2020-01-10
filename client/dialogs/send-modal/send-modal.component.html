@@ -1,65 +1,63 @@
-<ng-template #sendDialog>
-  <mat-toolbar class="mailjet-theme">
-    <mat-icon>
-      send
-    </mat-icon>
-    <h1>Send an email</h1>
-  </mat-toolbar>
-  <div fxLayout="column">
-    <form fxLayout="column" [formGroup]="sendForm" (submit)="send()">
-      <div fxLayout="row" fxLayoutAlign="center center">
-        <mat-button-toggle-group #messageTypeGroup="matButtonToggleGroup" [value]="type" (valueChange)="refreshForm($event)">
-          <mat-button-toggle value="simple">Simple</mat-button-toggle>
-          <mat-button-toggle value="template" [disabled]="! templates?.length">Template</mat-button-toggle>
-        </mat-button-toggle-group>
+<mat-toolbar class="mailjet-theme">
+  <mat-icon>
+    send
+  </mat-icon>
+  <h1>Send an email</h1>
+</mat-toolbar>
+<div fxLayout="column">
+  <form fxLayout="column" [formGroup]="sendForm" (submit)="send()">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <mat-button-toggle-group #messageTypeGroup="matButtonToggleGroup" [value]="type" (valueChange)="refreshForm($event)">
+        <mat-button-toggle value="simple">Simple</mat-button-toggle>
+        <mat-button-toggle value="template" [disabled]="! templates?.length">Template</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <mat-form-field>
+      <input matInput placeholder="Subject" formControlName="subject" required>
+      <mat-error>This field is required.</mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="type === 'simple'">
+      <textarea matInput placeholder="Body" formControlName="body"></textarea>
+    </mat-form-field>
+    <mat-form-field *ngIf="type === 'template'">
+      <mat-select placeholder="Template" formControlName="template">
+        <mat-option *ngFor="let template of templates" [value]="template.ID">
+          {{ template.Name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="To" formControlName="to" required>
+      <mat-error>This field is required.</mat-error>
+    </mat-form-field>
+    <div fxLayout="column" class="template-variables">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <span [matBadge]="sendForm.controls['variables']?.value?.length || 0" matBadgeOverlap="false">Template variables</span>
+        <span fxFlex>
+        </span>
+        <button mat-icon-button type="button" (click)="addTemplateVariable()">
+          <mat-icon>add</mat-icon>
+        </button>
       </div>
-      <mat-form-field>
-        <input matInput placeholder="Subject" formControlName="subject" required>
-        <mat-error>This field is required.</mat-error>
-      </mat-form-field>
-      <mat-form-field *ngIf="type === 'simple'">
-        <textarea matInput placeholder="Body" formControlName="body"></textarea>
-      </mat-form-field>
-      <mat-form-field *ngIf="type === 'template'">
-        <mat-select placeholder="Template" formControlName="template">
-          <mat-option *ngFor="let template of templates" [value]="template.ID">
-            {{ template.Name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="To" formControlName="to" required>
-        <mat-error>This field is required.</mat-error>
-      </mat-form-field>
-      <div fxLayout="column" class="template-variables">
-        <div fxLayout="row" fxLayoutAlign="start center">
-          <span [matBadge]="sendForm.controls['variables']?.value?.length || 0" matBadgeOverlap="false">Template variables</span>
-          <span fxFlex>
-          </span>
-          <button mat-icon-button type="button" (click)="addTemplateVariable()">
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
-        <div fxLayout="row" *ngFor="let creds of sendForm.get('variables')['controls']; let i = index" formArrayName="variables">
-          <ng-container [formGroupName]="i">
-            <mat-form-field>
-              <input matInput placeholder="Name" formControlName="name" required>
-              <mat-error>This field is required.</mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput placeholder="Value" formControlName="value" required>
-              <mat-error>This field is required.</mat-error>
-            </mat-form-field>
-          </ng-container>
-          <button mat-icon-button type="button" (click)="removeTemplateVariable(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
+      <div fxLayout="row" *ngFor="let creds of sendForm.get('variables')['controls']; let i = index" formArrayName="variables">
+        <ng-container [formGroupName]="i">
+          <mat-form-field>
+            <input matInput placeholder="Name" formControlName="name" required>
+            <mat-error>This field is required.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Value" formControlName="value" required>
+            <mat-error>This field is required.</mat-error>
+          </mat-form-field>
+        </ng-container>
+        <button mat-icon-button type="button" (click)="removeTemplateVariable(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
-      <div fxLayout="row" fxLayoutAlign="start center" [style.marginTop.px]="15">
-        <button mat-raised-button type="submit" class="mailjet-theme">Send</button>
-        <button mat-raised-button type="button" (click)="cancelled.emit()">Cancel</button>
-      </div>
-    </form>
-  </div>
-</ng-template>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" [style.marginTop.px]="15">
+      <button mat-raised-button type="submit" class="mailjet-theme">Send</button>
+      <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

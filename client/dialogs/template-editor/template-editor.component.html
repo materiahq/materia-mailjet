@@ -1,33 +1,31 @@
-<ng-template #templateDialog>
-  <mat-toolbar class="mailjet-theme">
-    <mat-icon>
-      chrome_reader_mode
-    </mat-icon>
-    <h1>{{ edition ? 'Edit' : 'New' }} template</h1>
-  </mat-toolbar>
-  <form fxLayout="column" [formGroup]="templateForm">
-    <mat-form-field>
-      <input matInput placeholder="Template name" formControlName="name">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Author" formControlName="author">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Template type" formControlName="templateType">
-        <mat-option value="marketing">
-          Marketing
-        </mat-option>
-        <mat-option value="transactional">
-          Transactional
-        </mat-option>
-        <mat-option value="automation">
-          Automation
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <button mat-raised-button class="mailjet-theme" (click)="confirm()">Confirm</button>
-      <button mat-raised-button (click)="cancel()">Cancel</button>
-    </div>
-  </form>
-</ng-template>
+<mat-toolbar class="mailjet-theme">
+  <mat-icon>
+    chrome_reader_mode
+  </mat-icon>
+  <h1>{{ edition ? 'Edit' : 'New' }} template</h1>
+</mat-toolbar>
+<form fxLayout="column" [formGroup]="templateForm">
+  <mat-form-field>
+    <input matInput placeholder="Template name" formControlName="name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Author" formControlName="author">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Template type" formControlName="templateType">
+      <mat-option value="marketing">
+        Marketing
+      </mat-option>
+      <mat-option value="transactional">
+        Transactional
+      </mat-option>
+      <mat-option value="automation">
+        Automation
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button class="mailjet-theme" (click)="confirm()">Confirm</button>
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+  </div>
+</form>

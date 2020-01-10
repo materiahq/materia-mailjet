@@ -134,7 +134,7 @@
                     <span fxFlex>{{ template.CreatedAt | date }}
                     </span>
                     <button mat-icon-button>
-                        <mat-icon matTooltip="Send" (click)="openSendDialog('template'); templateSelected = template.ID;">send</mat-icon>
+                        <mat-icon matTooltip="Send" (click)="openSendDialog('template', template.ID);">send</mat-icon>
                       </button>
                     <button mat-icon-button>
                       <mat-icon matTooltip="Edit" (click)="openMailjetTemplateEditor(template)">edit</mat-icon>
@@ -160,9 +160,6 @@
     </div>
   </mat-card>
 </div>
-<mailjet-template-editor [edition]="!newTemplate" [user]="mailjetUser" [settings]="settings" (confirmed)="saveTemplate($event)" (cancelled)="closeTemplateEditor()">
-</mailjet-template-editor>
-<mailjet-send-modal [templates]="templates" [templateId]="templateSelected" [to]="sendTo" [subject]="sendSubject" [type]="sendType" (cancelled)="closeSendDialog()" (confirmed)="send($event)"></mailjet-send-modal>
 <ng-template #loadingErrorTemplate>
 	<mat-card-content fxLayout="column" fxFlex fxLayoutAlign="center center" [style.margin]="'50px'" [style.background]="'#F44336'" [style.color]="'white'">
 		<span style="font-size: 15px; margin: 10px;">
