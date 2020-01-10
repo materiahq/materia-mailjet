@@ -7,7 +7,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AddonView } from '@materia/addons';
 
