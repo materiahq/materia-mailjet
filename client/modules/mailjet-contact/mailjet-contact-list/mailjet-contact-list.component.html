@@ -1,0 +1,28 @@
+<mat-list *ngIf="contacts && contacts.length; else noData">
+  <mat-list-item class="list-title">
+      <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+          <span fxFlex>Email</span>
+          <span fxFlex>CreatedAt
+          </span>
+          <span style="width: 50px;">
+          </span>
+      </div>
+      <mat-divider></mat-divider>
+  </mat-list-item>
+  <mat-list-item *ngFor="let contact of contacts">
+    <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+      <span fxFlex>{{ contact.Email }}</span>
+      <span fxFlex>{{ contact.CreatedAt | date }}
+      </span>
+      <button mat-icon-button>
+        <mat-icon matTooltip="Send an email" (click)="openSendToDialog.emit(contact.Email)">send</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<ng-template #noData>
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <span>You haven't any contacts yet</span>
+  </div>
+</ng-template>

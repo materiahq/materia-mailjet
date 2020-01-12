@@ -1,0 +1,34 @@
+<mat-list *ngIf="emails && emails.length; else noData">
+  <mat-list-item class="list-title">
+    <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+      <span fxFlex>Email</span>
+      <span fxFlex fxLayout="row" style="margin-left: 10px;">ArrivedAt
+      </span>
+      <span fxFlex>Subject
+      </span>
+      <span>Status
+      </span>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <mat-list-item *ngFor="let email of emails">
+    <div style="width: 100%;" fxLayout="row" fxLayoutAlign="start center">
+      <span fxFlex>{{ email.ContactAlt }}</span>
+      <span fxFlex fxLayout="row" style="margin-left: 10px;">
+        {{ email.ArrivedAt | date:'medium' }}
+      </span>
+      <span fxFlex>{{ email.Subject }}
+      </span>
+      <span fxLayout="row" [style.color]="statusColors[email.Status]" style="font-weight: bold;">{{ email.Status }}</span>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<ng-template #noData>
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <p>
+      <strong>No email has been sent during this period</strong>
+    </p>
+    <button mat-button color="primary" (click)="openSendDialog.emit()">Send a test email now</button>
+  </div>
+</ng-template>

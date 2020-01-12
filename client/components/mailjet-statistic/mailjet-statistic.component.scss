@@ -5,14 +5,23 @@
     flex: 1;
     overflow: hidden;
 }
+.legend {
+  height: 100%; overflow: auto;
+  .legend-container {
+    margin: 5px 24px 15px 24px;
+  }
+}
 .chart-section {
     position: relative;
-}
-.chart-container {
-    position: absolute;
-    top: 0;
-    bottom: 15px;
-    left: 24px;
-    right: 24px;
-    display: flex;
+    .chart-container {
+      position: absolute;
+      top: 0;
+      bottom: 15px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      .chart {
+        height: 100%; width: 100%;
+      }
+  }
 }

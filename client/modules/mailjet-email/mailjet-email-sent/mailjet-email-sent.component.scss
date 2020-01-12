@@ -1,0 +1,15 @@
+:host {
+  flex: 1;
+  display: flex;
+}
+.list-title {
+  background: #FAFAFA;
+  width: 100%;
+  font-weight: 500;
+}
+mat-divider {
+  margin: 0 24px;
+}
+p {
+  margin-bottom: 15px;
+}

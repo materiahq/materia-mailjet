@@ -3,10 +3,7 @@ import {
   OnInit,
   Input,
   Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-  ChangeDetectionStrategy
+  EventEmitter
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +13,7 @@ import { filter } from 'rxjs/operators';
 
 import { TemplateEditorComponent } from '../../dialogs/template-editor/template-editor.component';
 import { SendModalComponent } from '../../dialogs/send-modal/send-modal.component';
+import { QueryService } from '../../services/query.service';
 
 @AddonView('@materia/mailjet')
 @Component({
@@ -23,7 +21,7 @@ import { SendModalComponent } from '../../dialogs/send-modal/send-modal.componen
   templateUrl: './mailjet-view.component.html',
   styleUrls: ['./mailjet-view.component.scss']
 })
-export class MailjetViewComponent implements OnInit, OnChanges {
+export class MailjetViewComponent implements OnInit {
   @Input() app;
   @Input() settings;
   @Input() baseUrl: string;
@@ -63,7 +61,8 @@ export class MailjetViewComponent implements OnInit, OnChanges {
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private queryService: QueryService
   ) {}
 
   ngOnInit() {
@@ -71,10 +70,6 @@ export class MailjetViewComponent implements OnInit, OnChanges {
     if (this.settings.secret && this.settings.apikey) {
       this.statsProcessing = true;
     }
-  }
-
-  ngOnChanges(changes) {
-    console.log('Changes : ', changes);
   }
 
   openSendDialog(type, templateSelected?) {
@@ -88,7 +83,7 @@ export class MailjetViewComponent implements OnInit, OnChanges {
     }
     this.sendDialogRef.componentInstance.templates = this.templates;
     this.sendDialogRef.afterClosed()
-      .pipe(filter(result => result !== 'cancel'))
+      .pipe(filter(result => result))
       .subscribe(this.send);
   }
 
@@ -101,7 +96,7 @@ export class MailjetViewComponent implements OnInit, OnChanges {
     this.sendDialogRef.componentInstance.to = mail;
     this.sendDialogRef.componentInstance.templates = this.templates;
     this.sendDialogRef.afterClosed()
-      .pipe(filter(result => result !== 'cancel'))
+      .pipe(filter(result => result))
       .subscribe(this.send);
   }
 
@@ -357,9 +352,7 @@ export class MailjetViewComponent implements OnInit, OnChanges {
   }
 
   private runQuery(entity: string, query: string, params?: any) {
-    return this.http
-      .post(`${this.baseUrl}/entities/${entity}/queries/${query}`, params)
-      .toPromise();
+    return this.queryService.run(this.baseUrl, entity, query, params).toPromise();
   }
 
   private getMailjetUser() {

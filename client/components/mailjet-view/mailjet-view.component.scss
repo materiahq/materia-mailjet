@@ -16,7 +16,8 @@
 	overflow-x: hidden;
 }
 :host::ng-deep mat-list {
-	margin: 0 24px;
+  margin: 0 24px;
+  flex: 1;
 }
 :host::ng-deep .mat-badge-content {
     color: white;
@@ -63,8 +64,4 @@ mat-card-content {
 .settings-link {
 	cursor: pointer;
 	text-decoration: underline;
-}
-.template-actions {
-	padding: 0 24px;
-	min-height: 40px;
 }

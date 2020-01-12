@@ -1,0 +1,27 @@
+:host {
+  flex: 1;
+  display: flex;
+}
+.list-title {
+  background: #FAFAFA;
+  div {
+    width: 100%;
+    font-weight: 500;
+    .title-button {
+      width: 100px;
+      button {
+        margin: 5px;
+      }
+    }
+  }
+}
+.template-actions {
+	padding: 0 24px;
+	min-height: 40px;
+}
+mat-divider {
+  margin: 0 24px;
+}
+p {
+  margin-bottom: 15px;
+}

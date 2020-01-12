@@ -1,0 +1,45 @@
+<mat-list *ngIf="templates && templates.length; else firstTemplate">
+  <mat-list-item class="list-title">
+      <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+          <span fxFlex>Name</span>
+          <span fxFlex>Author
+          </span>
+          <span fxFlex>CreatedAt
+          </span>
+          <span class="title-button">
+            <button *ngIf="expanded" mat-mini-fab matTooltip="New template">
+              <mat-icon (click)="new.emit()">
+                add
+              </mat-icon>
+            </button>
+          </span>
+      </div>
+      <mat-divider></mat-divider>
+  </mat-list-item>
+  <mat-list-item *ngFor="let template of templates">
+    <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+      <span fxFlex>{{ template.Name }}</span>
+      <span fxFlex>{{ template.Author }}
+      </span>
+      <span fxFlex>{{ template.CreatedAt | date }}
+      </span>
+      <button mat-icon-button>
+          <mat-icon matTooltip="Send" (click)="openSendDialog.emit(template.ID);">send</mat-icon>
+        </button>
+      <button mat-icon-button>
+        <mat-icon matTooltip="Edit" (click)="edit.emit(template)">edit</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<ng-template #firstTemplate>
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <p>
+      <strong>You haven't created any template yet</strong>
+    </p>
+    <button mat-button color="primary" (click)="new.emit()">
+      Create my first template
+    </button>
+  </div>
+</ng-template>
