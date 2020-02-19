@@ -6,12 +6,10 @@
 :host::ng-deep .mat-expansion-panel-content {
 	display: flex;
 	flex: 1;
-	flex-direction: column;
+  flex-direction: column;
+  overflow: hidden
 }
 :host::ng-deep .mat-expansion-panel-body {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
@@ -23,7 +21,9 @@
     color: white;
     background: #FFA726;
 }
-
+:host::ng-deep .mat-accordion {
+  overflow: hidden;
+}
 .mailjet-button {
 	color: white;
 	background: #FFA726;
