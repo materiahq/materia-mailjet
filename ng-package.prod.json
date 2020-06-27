@@ -6,6 +6,7 @@
   },
   "whitelistedNonPeerDependencies": [
     "tslib",
-    "node-mailjet"
+    "node-mailjet",
+    "axios"
   ]
 }
