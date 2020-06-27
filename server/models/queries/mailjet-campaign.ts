@@ -1,24 +1,18 @@
 import { App } from '@materia/server';
 
-import { MailjetSender } from '../../lib/mailjet';
+import { MailjetService } from '../../lib/mailjet';
 
 class MailjetCampaign {
-  mailjetLib: MailjetSender;
+  mailjetLib: MailjetService;
 
   constructor(private app: App) {
-      this.mailjetLib = new MailjetSender(this.app);
+    this.mailjetLib = new MailjetService(this.app);
   }
 
   list(params) {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const campaign = this.mailjetLib.mailjet.get('campaign');
-      return campaign.request(params).then(result => {
-        return result.body.Data;
-      });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
-    }
+    this.mailjetLib.checkApi();
+    const campaign = this.mailjetLib.api.get('campaign');
+    return campaign.request(params).then(({ body: { Data }}) => Data);
   }
 }
 

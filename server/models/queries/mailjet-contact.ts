@@ -1,60 +1,38 @@
-import { App } from '@materia/server';
+import { App } from "@materia/server";
 
-import { MailjetSender } from '../../lib/mailjet';
+import { MailjetService } from "../../lib/mailjet";
 
 class MailjetContact {
-  mailjetLib: MailjetSender;
+  mailjetLib: MailjetService;
 
   constructor(private app: App) {
-    this.mailjetLib = new MailjetSender(this.app);
+    this.mailjetLib = new MailjetService(this.app);
   }
 
   list(params) {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const contact = this.mailjetLib.mailjet.get('contact');
-      return contact.request(params).then(result => {
-        return result.body.Data;
-      });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
-    }
+    this.mailjetLib.checkApi();
+    const contact = this.mailjetLib.api.get("contact");
+    return contact.request(params).then(({ body: { Data }}) => Data);
   }
 
   get(params) {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const contact = this.mailjetLib.mailjet.get(`contact/${params.EmailOrId}`);
-      return contact.request().then(result => {
-        return result.body.Data;
-      });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
-    }
+    this.mailjetLib.checkApi();
+    const contact = this.mailjetLib.api.get(
+      `contact/${params.EmailOrId}`
+    );
+    return contact.request().then(({ body: { Data }}) => Data);
   }
 
   create(params) {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const createContact = this.mailjetLib.mailjet.post('contact');
-      return createContact.request(params).then(result => {
-        return result.body.Data;
-      });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
-    }
+    this.mailjetLib.checkApi();
+    const createContact = this.mailjetLib.api.post("contact");
+    return createContact.request(params).then(({ body: { Data }}) => Data);
   }
 
   update(params) {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const updateContact = this.mailjetLib.mailjet.put('contact');
-      return updateContact.request(params).then(result => {
-        return result.body.Data;
-      });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
-    }
+    this.mailjetLib.checkApi();
+    const updateContact = this.mailjetLib.api.put("contact");
+    return updateContact.request(params).then(({ body: { Data }}) => Data);
   }
 }
 

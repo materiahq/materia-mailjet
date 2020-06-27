@@ -1,57 +1,42 @@
 import { App } from '@materia/server';
 
-import { MailjetSender } from '../../lib/mailjet';
+import { MailjetService } from '../../lib/mailjet';
 
 class MailjetStatistic {
-  mailjetLib: MailjetSender;
+  mailjetLib: MailjetService;
 
   constructor(private app: App) {
-    this.mailjetLib = new MailjetSender(this.app);
+    this.mailjetLib = new MailjetService(this.app);
   }
 
   find(params) {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const resolution = params.CounterResolution
-        ? params.CounterResolution
-        : 'Lifetime';
-      const lastweek = new Date();
-      lastweek.setDate(new Date().getDate() - 7);
-      const newParams = Object.assign(
-        {},
-        { FromTS: lastweek.toISOString(), Sort: 'Timeslice' },
-        params,
-        { CounterResoltion: resolution }
-      );
-      if (params.CounterResolution === 'Lifetime') {
-        delete newParams.FromTS;
-        delete newParams.ToTS;
-      }
-      const stats = this.mailjetLib.mailjet.get('statcounters');
-      return stats.request(newParams).then(result => {
-        return result.body.Data;
-      });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
+    this.mailjetLib.checkApi();
+    const resolution = params.CounterResolution
+      ? params.CounterResolution
+      : 'Lifetime';
+    const lastweek = new Date();
+    lastweek.setDate(new Date().getDate() - 7);
+    const newParams = Object.assign({},
+      { FromTS: lastweek.toISOString(), Sort: 'Timeslice' },
+      params,
+      { CounterResoltion: resolution }
+    );
+    if (params.CounterResolution === 'Lifetime') {
+      delete newParams.FromTS;
+      delete newParams.ToTS;
     }
+    return this.mailjetLib.api.get('statcounters')
+      .request(newParams).then(({ body: { Data } }) => Data);
   }
 
   list() {
-    this.mailjetLib.reload();
-    if (this.mailjetLib.mailjet) {
-      const stats = this.mailjetLib.mailjet.get('statcounters');
-      return stats
-        .request({
-          CounterSource: 'APIKey',
-          CounterResolution: 'Lifetime',
-          CounterTiming: 'Message'
-        })
-        .then(result => {
-          return result.body.Data;
-        });
-    } else {
-      return Promise.reject(new Error('Addon @materia/mailjet not configured'));
-    }
+    this.mailjetLib.checkApi();
+    return this.mailjetLib.api.get('statcounters').request({
+      CounterSource: 'APIKey',
+      CounterResolution: 'Lifetime',
+      CounterTiming: 'Message'
+    })
+    .then(({ body: { Data } }) => Data);
   }
 }
 

@@ -74,7 +74,7 @@
     "rxjs": "6.5.4",
     "ts-node": "~7.0.0",
     "tslint": "^5.16.0",
-    "typescript": "~3.6.4",
+    "typescript": "3.7.5",
     "zone.js": "~0.10.3"
   },
   "materia": {
